@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container jumbotron">
+        <h2>Chuyển dữ liệu từ JSON string, vào object</h2>
+        <p id="demo-json-person-john"></p>
+        <p id="demojsonpersonLisa"></p>
+    </div>
+</body>
+
+<script>
+    //code mẫu
+    //1.định nghĩa JSON string 
+    var gMyJSONPersonString = `{"name":"John Doe", "age":31, "city":"New York","pets":[ "Dog", "Cat", "Parrot"] }`;
+    //2.parsing, chuyển JSON string thành Object
+    var gMyPersonJoe = JSON.parse(gMyJSONPersonString);
+
+    //3. viết myPerson, pet số 0  ra web
+    var gDemoJsonPersonJohnElement = document.getElementById("demo-json-person-john");
+    gDemoJsonPersonJohnElement.innerHTML = gMyPersonJoe.pets[0];
+</script>
+
+<script>
+    // hãy viết code của bạn cho Lisa
+    //  name: Lisa Moore
+    //  age: 28
+    //  city: Atlanta
+    //  pets của Lisa sẽ là mảng object, mỗi object có 03 thuộc tính: type, name, age như sau:
+    //       dog, Billy, 2
+    //       cat, Moon, 4
+    //       parrot, Phu, 6
+    //       hamster, Mona,1
+    var gJsonStringLisa = `{"name": "Lisa", "age": "28", "city": "Atlanta", "pets": [
+        {"type": "dog", "name": "Billy", "age": "2"},
+        {"type": "cat", "name": "Moon", "age": "4"},
+        {"type": "parrot", "name": "Phu", "age": "6"},
+        {"type": "hamster", "name": "Mona", "age": "1"}]}`;
+
+    var gPersonLisa = JSON.parse(gJsonStringLisa);
+
+    var gDemoJsonPersonLisaElement = document.getElementById("demojsonpersonLisa");
+    gDemoJsonPersonLisaElement.innerHTML = "Type: " + gPersonLisa.pets[3].type + "<br/>" +
+        "Name: " + gPersonLisa.pets[3].name + "<br/>" +
+        "Age: " + gPersonLisa.pets[3].age
+    ;
+
+
+</script>
+</body>

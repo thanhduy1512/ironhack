@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+      * {
+        font-size: small;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="text-center my-4">
+        <h2>Danh Sách Người Dùng</h2>
+      </div>
+      <table class="table table-bordered table-striped table-hover">
+        <thead>
+          <tr>
+            <th>Mã người dùng</th>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Country</th>
+            <th>Subject</th>
+            <th>Customer Type</th>
+            <th>Register Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <script>
+      const gREQUEST_READY_STATE_FINISH_OK = 4;
+      const gREQUEST_STATUS_OK = 200;
+      const gBASE_URL =
+        "http://42.115.221.44:8080/devcamp-register-java-api/users";
+      const gDETAIL_PAGE = "DetailUser.html";
+      var gTableBody = $("tbody");
+
+      onPageLoading();
+      $("tbody").on("click", ".details", function () {
+        console.log("Detail clicked");
+        onBtnDetailClick(this);
+      });
+      function onPageLoading() {
+        sendRequest();
+      }
+
+      function sendRequest() {
+        $.ajax({
+          url: gBASE_URL,
+          type: "GET",
+          dataType: "json",
+          success: function (res) {
+            console.log(res);
+            loadDataUserToTable(res);
+          },
+          error: function (err) {
+            console.log(err.responseText);
+            loadDataUserToTable(err.responseText);
+          },
+        });
+      }
+      function loadDataUserToTable(paramUsersObj) {
+        for (let i = 0; i < paramUsersObj.length; i++) {
+          var vRow =
+            "<tr>" +
+            "<td>" +
+            paramUsersObj[i].id +
+            "</td>" +
+            "<td>" +
+            paramUsersObj[i].firstname +
+            "</td>" +
+            "<td>" +
+            paramUsersObj[i].lastname +
+            "</td>" +
+            "<td>" +
+            paramUsersObj[i].country +
+            "</td>" +
+            "<td>" +
+            paramUsersObj[i].subject +
+            "</td>" +
+            "<td>" +
+            paramUsersObj[i].customerType +
+            "</td>" +
+            "<td>" +
+            paramUsersObj[i].registerStatus +
+            "</td>" +
+            "<td><button class='btn btn-primary details' data-id='" +
+            paramUsersObj[i].id +
+            "' data-firstname='" +
+            paramUsersObj[i].firstname +
+            "' data-lastname='" +
+            paramUsersObj[i].lastname +
+            "' data-country='" +
+            paramUsersObj[i].country +
+            "' data-subject='" +
+            paramUsersObj[i].subject +
+            "' data-customertype='" +
+            paramUsersObj[i].customerType +
+            "' data-registerstatus='" +
+            paramUsersObj[i].registerStatus +
+            "'>Details</button></td></tr>";
+
+          gTableBody.append(vRow);
+        }
+      }
+
+      function onBtnDetailClick(paramElement) {
+        var vID = $(paramElement).data("id");
+        var vFirstname = $(paramElement).data("firstname");
+        var vLastname = $(paramElement).data("lastname");
+        var vCountry = $(paramElement).data("country");
+        var vSubject = $(paramElement).data("subject");
+        var vCustomerType = $(paramElement).data("customertype");
+        var vRegisterStatus = $(paramElement).data("registerstatus");
+
+        console.log("User ID: " + vID);
+        console.log("Firstname: " + vFirstname);
+        console.log("Lastname: " + vLastname);
+        console.log("Country: " + vCountry);
+        console.log("Subject: " + vSubject);
+        console.log("Customer Type: " + vCustomerType);
+        console.log("Register Status: " + vRegisterStatus);
+
+        var vUrlSiteToOpen = gDETAIL_PAGE + "?id=" + vID;
+
+        window.location.href = vUrlSiteToOpen;
+      }
+    </script>
+  </body>
+</html>

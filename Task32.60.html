@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        font-size: medium;
+      }
+
+      i {
+        color: brown;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="text-center mt-4 mb-4">
+        <h2>User Administration</h2>
+      </div>
+      <div class="container jumbotron">
+        <div class="row">
+          <div class="col-2">
+            <p>First Name<i>(*)</i></p>
+          </div>
+          <div class="col-4">
+            <input id="firstname" class="form-control" />
+          </div>
+          <div class="col-2">
+            <p>Last Name<i>(*)</i></p>
+          </div>
+          <div class="col-4">
+            <input id="lastname" class="form-control" />
+          </div>
+          <div class="col-2">
+            <p>Age<i>(*)</i></p>
+          </div>
+          <div class="col-4">
+            <input type="number" id="age" class="form-control" />
+          </div>
+          <div class="col-2">
+            <p>Email<i>(*)</i></p>
+          </div>
+          <div class="col-4">
+            <input type="email" id="email" class="form-control" />
+          </div>
+        </div>
+        <div class="text-right mt-5">
+          <button id="btn-save" class="btn btn-success">Save Data</button>
+        </div>
+      </div>
+
+      <table class="table table-bordered table-striped table-hover">
+        <thead>
+          <tr>
+            <th>Mã người dùng</th>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Age</th>
+            <th>Email</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <script>
+      var gJsonUser = `{
+        "users": [
+          {
+            "userId": 1,
+            "firstname": "Test1",
+            "lastname": "User1",
+            "age": 18,
+            "email": "test@1.com"
+          },
+          {
+            "userId": 2,
+            "firstname": "Test2",
+            "lastname": "User2",
+            "age": 19,
+            "email": "alalo@2.com"
+          },
+          {
+            "userId": 3,
+            "firstname": "Test3",
+            "lastname": "User3",
+            "age": 18,
+            "email": "3333@1.com"
+          }
+        ]
+      }`;
+      //table
+      var gTableBody = $("tbody");
+      var gObjUsers = JSON.parse(gJsonUser);
+      console.log(gObjUsers.users);
+
+      var gUpdatedPerson = {
+        userId: 0,
+        firstname: "",
+        lastname: "",
+        age: 0,
+        email: "",
+      };
+
+      onPageLoading();
+      $("tbody").on("click", ".btnEdit", function () {
+        console.log("Edit Clicked");
+        onBtnEditClick(this);
+      });
+
+      $("tbody").on("click", ".btnDel", function () {
+        console.log("Delete Clicked");
+        onBtnDelClick(this);
+      });
+
+      $("#btn-save").on("click", function () {
+        console.log("Save Clicked");
+        onBtnSaveClick();
+      });
+
+      function onPageLoading() {
+        loadUserToTable();
+      }
+
+      function loadUserToTable() {
+        gTableBody.html("");
+        for (let i = 0; i < gObjUsers.users.length; i++) {
+          var vRow = `<tr>
+                <td>${gObjUsers.users[i].userId}</td>
+                <td>${gObjUsers.users[i].firstname}</td>
+                <td>${gObjUsers.users[i].lastname}</td>
+                <td>${gObjUsers.users[i].age}</td>
+                <td>${gObjUsers.users[i].email}</td>
+                <td>
+                    <button class="btn btn-warning btnEdit mr-2"
+                    data-userid="${gObjUsers.users[i].userId}"
+                    data-firstname="${gObjUsers.users[i].firstname}"
+                    data-lastname="${gObjUsers.users[i].lastname}"
+                    data-age="${gObjUsers.users[i].age}"
+                    data-email="${gObjUsers.users[i].email}"
+                    >
+                        Edit
+                    </button>
+                    <button class="btn btn-danger btnDel" data-userid="${gObjUsers.users[i].userId}">
+                        Delete
+                    </button>
+                </td>
+                <tr>`;
+          gTableBody.append(vRow);
+        }
+      }
+
+      function onBtnEditClick(paramElement) {
+        var vUserId = $(paramElement).data("userid");
+        var vFirstname = $(paramElement).data("firstname");
+        var vLastname = $(paramElement).data("lastname");
+        var vAge = $(paramElement).data("age");
+        var vEmail = $(paramElement).data("email");
+        gUpdatedPerson.userId = vUserId;
+        gUpdatedPerson.firstname = vFirstname;
+        gUpdatedPerson.lastname = vLastname;
+        gUpdatedPerson.age = vAge;
+        gUpdatedPerson.email = vEmail;
+        $("#firstname").val(vFirstname);
+        $("#lastname").val(vLastname);
+        $("#age").val(vAge);
+        $("#email").val(vEmail);
+      }
+
+      function onBtnDelClick(paramElement) {
+        var vUserId = $(paramElement).data("userid");
+
+        for (let i = 0; i < gObjUsers.users.length; i++) {
+          if (vUserId === gObjUsers.users[i].userId) {
+            var bCheck = confirm("Are you sure to delete this user?");
+            if (bCheck) {
+              gObjUsers.users.splice(i, 1);
+              return loadUserToTable();
+            } else {
+              return loadUserToTable();
+            }
+          }
+        }
+      }
+
+      function onBtnSaveClick() {
+        var vPerson = {
+          userId: 0,
+          firstname: "",
+          lastname: "",
+          age: 0,
+          email: "",
+        };
+        getData(vPerson);
+        var vIsValid = validateData(vPerson);
+        if (vIsValid) {
+          loadSaveToTable(vPerson);
+        }
+      }
+
+      function getData(paramPerson) {
+        paramPerson.firstname = $("#firstname").val();
+        paramPerson.lastname = $("#lastname").val();
+        paramPerson.age = $("#age").val();
+        paramPerson.email = $("#email").val();
+      }
+
+      function validateData(paramPerson) {
+        if (paramPerson.firstname.trim() == "") {
+          alert("Provide First Name!");
+          return false;
+        }
+        if (paramPerson.lastname.trim() == "") {
+          alert("Provide Last Name!");
+          return false;
+        }
+        if (
+          paramPerson.age < 0 ||
+          paramPerson.age > 200 ||
+          paramPerson.age == ""
+        ) {
+          alert("Invalid Age!");
+          return false;
+        }
+        if (paramPerson.email.trim() == "") {
+          alert("Provide Email!");
+          return false;
+        }
+        if (
+          !paramPerson.email.includes("@") ||
+          !paramPerson.email.includes(".")
+        ) {
+          alert("Invalid Email!");
+          return false;
+        }
+        return true;
+      }
+
+      function loadSaveToTable(paramPerson) {
+        if (gUpdatedPerson.userId !== 0) {
+          getData(gUpdatedPerson);
+          var vIsValid = validateData(gUpdatedPerson);
+          if (vIsValid) {
+            for (let i = 0; i < gObjUsers.users.length; i++) {
+              if (gUpdatedPerson.userId === gObjUsers.users[i].userId) {
+                gObjUsers.users[i] = gUpdatedPerson;
+                $("#firstname:text").val("");
+                $("#lastname:text").val("");
+                $("#age").val("");
+                $("#email").val("");
+                loadUserToTable();
+                return (gUpdatedPerson.userId = 0);
+              }
+            }
+          }
+        } else {
+          paramPerson.userId = gObjUsers.users.length + 1;
+          gObjUsers.users.push(paramPerson);
+          $("#firstname:text").val("");
+          $("#lastname:text").val("");
+          $("#age").val("");
+          $("#email").val("");
+          return loadUserToTable();
+        }
+      }
+    </script>
+  </body>
+</html>

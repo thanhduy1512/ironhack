@@ -1,0 +1,37 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+input {
+  padding: 10px;
+  font-family: FontAwesome, "Open Sans", Verdana, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: inherit;
+}
+
+#slide-content {
+  padding-top: 180px;
+  color: white;
+}
+
+#slide-content p {
+  color: #cccccc;
+}
+
+.card-footer .person-img {
+  border-radius: 50%;
+}
+
+.card-footer span {
+  padding: 0 !important;
+}
+
+.footer-links a {
+  margin: 0 0 30px 30px;
+}
+
+.footer-links p {
+  margin: 0 0 30px 80px;
+}

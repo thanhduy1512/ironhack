@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta
+      charset="UTF-8"
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="jumbotron container">
+      <form id="voucher-form">
+        <div class="form-group">
+          <h3 class="text-center">Sample form: đăng kí visa</h3>
+        </div>
+        <div class="form-group">
+          <label>First Name</label>
+          <input
+            type="text"
+            id="firstNameInput"
+            name="firstname"
+            class="form-control"
+            placeholder="Your name.."
+          />
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input
+            type="text"
+            id="lastNameInput"
+            name="lastname"
+            class="form-control"
+            placeholder="Your last name.."
+          />
+        </div>
+        <div class="form-group">
+          <label>Country</label>
+          <select id="countrySelect" class="form-control" name="country">
+            <option value="australia">Australia</option>
+            <option value="canada">Canada</option>
+            <option value="usa">USA</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Subject</label>
+          <textarea
+            id="subjectInput"
+            name="subject"
+            class="form-control"
+            placeholder="Write something.."
+            style="height: 50px"
+          ></textarea>
+        </div>
+        <div class="form-group">
+          <button
+            onclick="btnSubmitForm()"
+            id="btnSubmit"
+            class="btn btn-primary"
+            type="button"
+          >
+            Submit Regisration Data
+          </button>
+        </div>
+      </form>
+      <div id="result" class="bg-warning"></div>
+    </div>
+
+    <script>
+      //viết code của bạn ở đây
+      const gREQUEST_STATUS_FINISH_AND_OK = 200;
+
+      var gFirstName = document.getElementById("firstNameInput");
+      var gLastName = document.getElementById("lastNameInput");
+      var gCountry = document.getElementById("countrySelect");
+      var gSubject = document.getElementById("subjectInput");
+      var gBtnSubmit = document.getElementById("btnSubmit");
+
+      function btnSubmitForm() {
+        var vPerson = {
+          firstName: "",
+          lastName: "",
+          country: "",
+          subject: "",
+        };
+
+        //Get Data
+        getFormData(vPerson);
+
+        //Validate Data
+        var vIsValid = validateData(vPerson);
+        if (vIsValid) {
+          var vXmlHttp = new XMLHttpRequest();
+          sendRequest(vPerson, vXmlHttp);
+          handleResponse(vXmlHttp);
+        } else {
+          alert("Nhập Liệu Sai");
+        }
+      }
+
+      function getFormData(paramPerson) {
+        paramPerson.firstName = gFirstName.value.trim();
+        paramPerson.lastName = gLastName.value.trim();
+        paramPerson.country = gCountry.value.trim();
+        paramPerson.subject = gSubject.value.trim();
+      }
+
+      function validateData(paramPerson) {
+        if (paramPerson.firstName === "") {
+          return false;
+        }
+        if (paramPerson.lastName === "") {
+          return false;
+        }
+        if (paramPerson.country === "") {
+          return false;
+        }
+        if (paramPerson.subject === "") {
+          return false;
+        }
+        return true;
+      }
+
+      function sendRequest(paramPerson, paramXmlHttp) {
+        paramXmlHttp.open(
+          "GET",
+          "http://42.115.221.44:8080/devcamp-register-java-api/rest-api?firstname=" +
+            paramPerson.firstName +
+            "&lastname=" +
+            paramPerson.lastName +
+            "&country=" +
+            paramPerson.country +
+            "&subject=" +
+            paramPerson.subject,
+          false
+        );
+        paramXmlHttp.send();
+      }
+
+      function handleResponse(paramXmlHttp) {
+        var gResult = document.getElementById("result");
+        var vStatusCode = paramXmlHttp.status;
+        if (vStatusCode == gREQUEST_STATUS_FINISH_AND_OK) {
+          var vPersonResponse = JSON.parse(paramXmlHttp.responseText);
+          gResult.innerHTML =
+            "Customer Id: " +
+            vPersonResponse.id +
+            "<br/>" +
+            "Customer Type: " +
+            vPersonResponse.customerType +
+            "<br/>" +
+            "Register Status: " +
+            vPersonResponse.registerStatus;
+        } else {
+          gResult.innerHTML = "Person Not Found";
+        }
+      }
+      // mô tả API bạn có thể tìm ở file Txt đi kèm trong thư mục
+    </script>
+  </body>
+</html>

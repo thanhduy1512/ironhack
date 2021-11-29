@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </head>
+
+  <body>
+    <div class="container jumbotron">
+      <div class="col-12">
+        <div class="text-center mb-5"><h1>Create Order</h1></div>
+        <form>
+          <div class="form-group row">
+            <label for="" class="col-sm-2 col-form-label">Cỡ Combo</label>
+            <div class="col-sm-4">
+              <select id="select-combo-size" class="form-control">
+                <option value="">Chọn cỡ Combo (Combo size)</option>
+                <option value="S">Nhỏ</option>
+                <option value="M">Vừa</option>
+                <option value="L">Lớn</option>
+              </select>
+            </div>
+            <label for="" class="col-sm-2 col-form-label">Đồ uống</label>
+            <div class="col-sm-4">
+              <select class="form-control" id="select-drink">
+                <option value="">Chọn đồ uống</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Mã voucher</label>
+            <div class="col-sm-4">
+              <input
+                id="inp-voucher"
+                type="text"
+                class="form-control"
+                placeholder="Voucher ID (mã voucher)"
+              />
+            </div>
+            <!-- làm thêm select nữa vào đây -->
+            <label for="" class="col-sm-2 col-form-label">Pizza</label>
+            <div class="col-sm-4">
+              <select class="form-control" id="select-pizza">
+                <option value="">Chọn pizza</option>
+                <option value="SEAFOOD">Seafood</option>
+                <option value="HAWAII">Hawaii</option>
+                <option value="BACON">Bacon</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="">Họ và tên</label>
+            <div class="col-sm-4">
+              <input
+                id="inp-fullname"
+                type="email"
+                class="form-control"
+                placeholder="Họ và tên"
+              />
+            </div>
+            <label for="" class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-4">
+              <input
+                id="inp-email"
+                type="email"
+                class="form-control"
+                placeholder="Email"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Số điện thoại</label>
+            <div class="col-sm-4">
+              <input
+                id="inp-phone"
+                type="text"
+                class="form-control"
+                placeholder="Số điện thoại"
+              />
+            </div>
+            <label class="col-sm-2 col-form-label">Địa chỉ</label>
+            <div class="col-sm-4">
+              <input
+                id="inp-address"
+                type="diaChi"
+                class="form-control"
+                placeholder="Địa chỉ"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Lời nhắn</label>
+            <textarea
+              id="inp-message"
+              class="form-control h-75"
+              placeholder="Lời nhắn"
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <button
+              onclick="onCreateOrderClick()"
+              type="button"
+              class="btn btn-primary"
+            >
+              Create Order
+            </button>
+            <button
+              onclick="onShowOrderClick()"
+              id="btn-show-data"
+              type="button"
+              class="btn btn-secondary"
+            >
+              Show Order Data in New Form
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script>
+      "use strict";
+      /*** REGION 1 - Global variables - Vùng khai báo biến, hằng số, tham số TOÀN CỤC */
+      const gREQUEST_STATUS_OK = 200;
+      const gREQUEST_CREATE_SUCCESS = 201;
+      const gREQUEST_READY_STATUS_FINISH_AND_OK = 4;
+      const gBASEURL = "http://42.115.221.44:8080/devcamp-pizza365/orders";
+      const gCONTENt_TYPE_JSON_UTF8 = "application/json;charset=UTF-8";
+
+      const gDETAIL_PAGE = "Task25.50.orderDetail.html";
+
+      var gComboSize = document.getElementById("select-combo-size");
+      var gDrink = document.getElementById("select-drink");
+      var gVoucherId = document.getElementById("inp-voucher");
+      var gSelectPizza = document.getElementById("select-pizza");
+      var gInputFullname = document.getElementById("inp-fullname");
+      var gInputEmail = document.getElementById("inp-email");
+      var gInputPhone = document.getElementById("inp-phone");
+      var gInputAddress = document.getElementById("inp-address");
+      var gInputMessage = document.getElementById("inp-message");
+
+      var gBtnShowData = document.getElementById("btn-show-data");
+
+      var gObjectOrder = {
+        kichCo: "",
+        duongKinh: "",
+        suon: "",
+        salad: "",
+        loaiPizza: "",
+        idVourcher: "",
+        idLoaiNuocUong: "",
+        soLuongNuoc: "",
+        hoTen: "",
+        thanhTien: "",
+        email: "",
+        soDienThoai: "",
+        diaChi: "",
+        loiNhan: "",
+      };
+
+      /*** REGION 2 - Vùng gán / thực thi sự kiện cho các elements */
+      onPageLoading();
+
+      /*** REGION 3 - Event handlers - Vùng khai báo các hàm xử lý sự kiện */
+      function onPageLoading() {
+        // load dữ liệu vào select car
+        loadDataDrinkList();
+      }
+
+      function onCreateOrderClick() {
+        getOrderData(gObjectOrder);
+
+        var vIsValid = validateOrderData(gObjectOrder);
+        var vXmlHttpCreateOrder = new XMLHttpRequest();
+
+        if (vIsValid) {
+          console.log("valid");
+          sendRequestCreateOrder(gObjectOrder, vXmlHttpCreateOrder);
+
+          vXmlHttpCreateOrder.onreadystatechange = function () {
+            if (
+              this.readyState == gREQUEST_READY_STATUS_FINISH_AND_OK &&
+              this.status == gREQUEST_CREATE_SUCCESS
+            ) {
+              var createdOrder = vXmlHttpCreateOrder.responseText;
+              console.log(createdOrder);
+              processResponseOrder(vXmlHttpCreateOrder);
+            }
+          };
+        }
+      }
+
+      function onShowOrderClick() {
+        console.log(gBtnShowData.dataset.orderid);
+
+        var vUrlSiteToOpen =
+          gDETAIL_PAGE + "?" + "orderid=" + gBtnShowData.dataset.orderid;
+
+        window.location.href = vUrlSiteToOpen;
+      }
+      /*** REGION 4 - Common funtions - Vùng khai báo hàm dùng chung trong toàn bộ chương trình*/
+      // Hàm thực hiện call api để load dữ liệu vào drink list
+      function getOrderData(paramObjOrder) {
+        paramObjOrder.kichCo = gComboSize.value;
+        if (paramObjOrder.kichCo == "S") {
+          paramObjOrder.duongKinh = "20";
+          paramObjOrder.suon = "2";
+          paramObjOrder.salad = "200";
+          paramObjOrder.thanhTien = "150000";
+          paramObjOrder.soLuongNuoc = "2";
+        }
+        if (paramObjOrder.kichCo == "M") {
+          paramObjOrder.duongKinh = "25";
+          paramObjOrder.suon = "4";
+          paramObjOrder.salad = "300";
+          paramObjOrder.soLuongNuoc = "3";
+          paramObjOrder.thanhTien = "200000";
+        }
+        if (paramObjOrder.kichCo == "L") {
+          paramObjOrder.duongKinh = "30";
+          paramObjOrder.suon = "8";
+          paramObjOrder.soLuongNuoc = "4";
+          paramObjOrder.salad = "500";
+          paramObjOrder.thanhTien = "250000";
+        }
+        paramObjOrder.loaiPizza = gSelectPizza.value;
+        paramObjOrder.idVourcher = gVoucherId.value.trim();
+        paramObjOrder.idLoaiNuocUong = gDrink.value;
+        paramObjOrder.hoTen = gInputFullname.value;
+        paramObjOrder.email = gInputEmail.value.trim();
+        paramObjOrder.soDienThoai = gInputPhone.value.trim();
+        paramObjOrder.diaChi = gInputAddress.value;
+        paramObjOrder.loiNhan = gInputMessage.value;
+      }
+
+      function validateOrderData(paramObjOrder) {
+        if (paramObjOrder.kichCo == "") {
+          alert("Choose Combo!");
+          return false;
+        }
+        if (paramObjOrder.idLoaiNuocUong == "") {
+          alert("Choose Drink!");
+          return false;
+        }
+        if (paramObjOrder.loaiPizza == "") {
+          alert("Choose Pizza!");
+          return false;
+        }
+        if (paramObjOrder.hoTen.trim() == "") {
+          alert("Provide Fullname!");
+          return false;
+        }
+        if (paramObjOrder.email == "") {
+          alert("Provide Email!");
+          return false;
+        }
+        if (paramObjOrder.soDienThoai == "") {
+          alert("Provide Phone Number!");
+          return false;
+        }
+        if (paramObjOrder.diaChi.trim() == "") {
+          alert("Provide Address!");
+          return false;
+        }
+        return true;
+      }
+
+      function sendRequestCreateOrder(paramObjOrder, paramXmlHttp) {
+        paramXmlHttp.open("POST", gBASEURL, true);
+        paramXmlHttp.setRequestHeader("Content-Type", gCONTENt_TYPE_JSON_UTF8);
+        paramXmlHttp.send(JSON.stringify(paramObjOrder));
+      }
+
+      function processResponseOrder(paramXmlHttp) {
+        var vObjOrderResponse = JSON.parse(paramXmlHttp.responseText);
+
+        gBtnShowData.setAttribute("data-orderid", vObjOrderResponse.orderId);
+      }
+
+      function loadDataDrinkList() {
+        var vXhttp = new XMLHttpRequest();
+        vXhttp.open(
+          "GET",
+          "http://42.115.221.44:8080/devcamp-pizza365/drinks",
+          true
+        );
+        vXhttp.send();
+        vXhttp.onreadystatechange = function () {
+          if (
+            this.readyState == gREQUEST_READY_STATUS_FINISH_AND_OK &&
+            this.status == gREQUEST_STATUS_OK
+          ) {
+            console.log(vXhttp.responseText); // ghi response text ra console.log
+            handleLoadDataToSelectDrink(vXhttp);
+          }
+        };
+      }
+
+      // handle data load to select drink
+      function handleLoadDataToSelectDrink(paramXhttp) {
+        var vArrayDrinkList = JSON.parse(paramXhttp.responseText);
+        console.log("array drink list = " + vArrayDrinkList.length);
+        //load data to drink select
+        var vElementSelectDrink = document.getElementById("select-drink");
+        for (
+          var bIterator = 0;
+          bIterator < vArrayDrinkList.length;
+          bIterator++
+        ) {
+          var vDrinkOptionElement = document.createElement("option");
+          vDrinkOptionElement.value = vArrayDrinkList[bIterator].maNuocUong;
+          vDrinkOptionElement.text = vArrayDrinkList[bIterator].tenNuocUong;
+          vElementSelectDrink.appendChild(vDrinkOptionElement);
+        }
+      }
+    </script>
+  </body>
+</html>

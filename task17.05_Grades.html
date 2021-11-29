@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <div class="container mt-5">
+      <form>
+        <div class="form-group">
+          <label for="">Student</label>
+          <select class="form-control" id="studentSelect"></select>
+        </div>
+        <div class="form-group">
+          <label for="">Test Score</label>
+          <input class="form-control" type="number" id="testScore" />
+        </div>
+        <div class="form-group">
+          <label for="">Subject</label>
+          <select class="form-control" id="subjectSelect"></select>
+        </div>
+        <div class="form-group">
+          <label for="">Attend Date</label>
+          <input class="form-control" type="date" id="attendDate" />
+        </div>
+      </form>
+      <button onclick="onClickSaveData()" class="btn btn-primary">
+        Save Data
+      </button>
+      <div
+        class="mt-5"
+        id="resultData"
+        style="background-color: yellowgreen; display: none"
+      >
+        <h2>Test</h2>
+      </div>
+    </div>
+  </body>
+  <script>
+    "use strict";
+    /*** REGION 1 - Global variables - Vùng khai báo biến, hằng số, tham số TOÀN CỤC */
+    // Json chứa danh sách sinh viên
+    var gJsonStudents = `[
+      {
+        "id": 1,
+        "studentCode": 20071750,
+        "username": "linhdh",
+        "firstname": "Linh",
+        "lastname": "Dinh",
+        "birthday": "25/09/1990",
+        "email": "linh.dinh@gmail.com",
+        "studyYear": 2015
+      },
+      {
+        "id": 2,
+        "studentCode": 20102345,
+        "username": "namdh",
+        "firstname": "Do",
+        "lastname": "Nam",
+        "birthday": "12/10/1990",
+        "email": "nam.d@gmail.com",
+        "studyYear": 2016
+      },
+      {
+        "id": 3,
+        "studentCode": 20071850,
+        "username": "longtt",
+        "firstname": "Tran",
+        "lastname": "Long",
+        "birthday": "04/07/1991",
+        "email": "long@gmail.com",
+        "studyYear": 2015
+      },
+      {
+        "id": 4,
+        "studentCode": 20101234,
+        "username": "dungnp",
+        "firstname": "Ngo",
+        "lastname": "Phuong Dung",
+        "birthday": "10/12/1990",
+        "email": "dung.ngo@hotmail.com",
+        "studyYear": 2017
+      },
+      {
+        "id": 5,
+        "studentCode": 20082850,
+        "username": "minhvd",
+        "firstname": "Vu",
+        "lastname": "Minh",
+        "birthday": "12/12/1992",
+        "email": "minhvu@yahoo.com",
+        "studyYear": 2015
+      },
+      {
+        "id": 6,
+        "studentCode": 20091234,
+        "username": "trungtt",
+        "firstname": "Tran",
+        "lastname": "Trung",
+        "birthday": "05/07/1990",
+        "email": "trungthanh@gmail.com",
+        "studyYear": 2018
+      },
+      {
+        "id": 7,
+        "studentCode": 20077001,
+        "username": "nganp",
+        "firstname": "Ngo Phuong",
+        "lastname": "Nga",
+        "birthday": "04/10/1991",
+        "email": "nganp.mail@yahoo.com",
+        "studyYear": 2014
+      },
+      {
+        "id": 8,
+        "studentCode": 20077002,
+        "username": "kienpc",
+        "firstname": "Pham",
+        "lastname": "Kien",
+        "birthday": "08/10/1990",
+        "email": "kienp@hotmail.com",
+        "studyYear": 2015
+      },
+      {
+        "id": 9,
+        "studentCode": 20077003,
+        "username": "longnp",
+        "firstname": "Ngo",
+        "lastname": "Long",
+        "birthday": "03/11/1990",
+        "email": "longngo@gmail.com",
+        "studyYear": 2014
+      },
+      {
+        "id": 10,
+        "studentCode": 20078750,
+        "username": "minhnt",
+        "firstname": "Nguyen",
+        "lastname": "Minh",
+        "birthday": "12/01/1991",
+        "email": "minhnguyen@yahoo.com",
+        "studyYear": 2016
+      }
+    ]`;
+
+    // JSON chứa danh sách môn học
+    var gSubjects = `[
+      {
+        "id": 1,
+        "subjectCode": "MAT101",
+        "subjectName": "Toán cao cấp",
+        "credit": 4
+      },
+      {
+        "id": 2,
+        "subjectCode": "PHY101",
+        "subjectName": "Vật lý đại cương",
+        "credit": 3
+      },
+      {
+        "id": 3,
+        "subjectCode": "MAT102",
+        "subjectName": "Giải tích 1",
+        "credit": 4
+      },
+      {
+        "id": 4,
+        "subjectCode": "MAT103",
+        "subjectName": "Toán rời rạc",
+        "credit": 4
+      },
+      {
+        "id": 5,
+        "subjectCode": "PHY103",
+        "subjectName": "Vật lý nguyên tử",
+        "credit": 5
+      },
+      {
+        "id": 6,
+        "subjectCode": "PHY401",
+        "subjectName": "Vật lý chuyên ngành 1",
+        "credit": 2
+      },
+      {
+        "id": 7,
+        "subjectCode": "CHEM301",
+        "subjectName": "Hóa học hữu cơ",
+        "credit": 3
+      },
+      {
+        "id": 8,
+        "subjectCode": "ENG403",
+        "subjectName": "Tiếng Anh chuyên ngành 1",
+        "credit": 3
+      },
+      {
+        "id": 9,
+        "subjectCode": "ENG101",
+        "subjectName": "Tiếng Anh đại cương",
+        "credit": 3
+      },
+      {
+        "id": 10,
+        "subjectCode": "ECO101",
+        "subjectName": "Kinh tế học đại cương",
+        "credit": 3
+      }
+    ]`;
+    /*** REGION 2 - Vùng gán / gọi các hàm xử lý sự kiện cho các elements */
+
+    var gStudentsList = JSON.parse(gJsonStudents);
+    var gSubjectsList = JSON.parse(gSubjects);
+
+    onPageLoading();
+
+    /*** REGION 3 - Event handlers - Vùng khai báo các hàm xử lý sự kiện */
+
+    function onPageLoading() {
+      loadStudentToSelect();
+      loadSubjectToSelect();
+    }
+
+    function onClickSaveData() {
+      //collect data
+      var vStudentSeclect = document.getElementById("studentSelect");
+      var vTestScore = document.getElementById("testScore");
+      var vSubjectSelect = document.getElementById("subjectSelect");
+      var vAttendDate = document.getElementById("attendDate");
+
+      var vStudentDataObject = {
+        student: vStudentSeclect.value,
+        testScore: vTestScore.value.trim(),
+        subject: vSubjectSelect.value,
+        attendDate: vAttendDate.value.trim(),
+      };
+
+      //validate data
+      var isValid = validateData(vStudentDataObject);
+
+      if (isValid) {
+        //proccess show data
+        showData(vStudentDataObject);
+      }
+    }
+
+    /*** REGION 4 - Common funtions - Vùng khai báo các hàm dùng chung trong toàn bộ chương trình */
+
+    function loadStudentToSelect() {
+      var vStudentSelectElement = document.getElementById("studentSelect");
+      for (let i = 0; i < gStudentsList.length; i++) {
+        var vStudentOptionElement = document.createElement("option");
+        vStudentOptionElement.value = gStudentsList[i].id;
+        vStudentOptionElement.text = gStudentsList[i].username;
+        vStudentSelectElement.appendChild(vStudentOptionElement);
+      }
+    }
+
+    function loadSubjectToSelect() {
+      var vSubjectSelectElement = document.getElementById("subjectSelect");
+      for (let i = 0; i < gSubjectsList.length; i++) {
+        var vSubjectOptionElement = document.createElement("option");
+        vSubjectOptionElement.value = gSubjectsList[i].id;
+        vSubjectOptionElement.text = gSubjectsList[i].subjectName;
+        vSubjectSelectElement.appendChild(vSubjectOptionElement);
+      }
+    }
+
+    function validateData(paramObject) {
+      if (paramObject.testScore == "") {
+        alert("Provide Test Score");
+        return false;
+      }
+      if (paramObject.testScore < 0 || paramObject.testScore > 10) {
+        alert("Wrong Test Score");
+        return false;
+      }
+      if (paramObject.attendDate == "") {
+        alert("Provide Attend Date");
+        return false;
+      }
+      return true;
+    }
+
+    function showData(paramObject) {
+      var { vStudentFullName, vSubjectName } = findData(paramObject);
+      var resultElement = document.getElementById("resultData");
+      resultElement.innerHTML = "";
+      resultElement.style.display = "block";
+      var resultTemplate = `
+        <p>Student: ${vStudentFullName}</p>
+        <p>Subject: ${vSubjectName}</p>
+        <p>Score: ${paramObject.testScore}</p>
+        <p>Date: ${paramObject.attendDate}</p>
+      `;
+      resultElement.innerHTML = resultTemplate;
+    }
+
+    function findData(paramObject) {
+      var vStudentFullName = "";
+      var vSubjectName = "";
+      for (let i = 0; i < gSubjectsList.length; i++) {
+        if (paramObject.subject == gSubjectsList[i].id) {
+          vSubjectName = gSubjectsList[i].subjectName;
+        }
+      }
+
+      for (let i = 0; i < gStudentsList.length; i++) {
+        if (paramObject.student == gStudentsList[i].id) {
+          vStudentFullName =
+            gStudentsList[i].firstname + " " + gStudentsList[i].lastname;
+        }
+      }
+      return { vStudentFullName, vSubjectName };
+    }
+  </script>
+</html>

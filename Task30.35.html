@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      a {
+        color: rgb(61, 174, 211) !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-sm-4 mx-auto jumbotron mt-5">
+          <h2>Sign Up</h2>
+          <p>Please fill in this form to create an account!</p>
+          <hr />
+          <div class="row">
+            <div class="col-6">
+              <input
+                type="text"
+                id="input-firstname"
+                placeholder="First Name"
+              />
+            </div>
+            <div class="col-6">
+              <input type="text" id="input-lastname" placeholder="Last Name" />
+            </div>
+          </div>
+          <input id="email" type="email" placeholder="Email" />
+          <input id="password" type="password" placeholder="Password" />
+          <input
+            id="confirm-password"
+            type="password"
+            placeholder="Confirm Password"
+          />
+
+          <p class="mt-2">
+            <input type="checkbox" name="rememberusername" id="accept" />
+            I accept the <a>Term of Use</a> & <a>Privacy Policy</a>
+          </p>
+          <button id="signupBtn" class="btn btn-info mt-2">Sign Up</button>
+        </div>
+      </div>
+    </div>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      $("input").addClass("form-control mt-3");
+      $("[type=checkbox]").removeClass("form-control");
+
+      var gSignup = {
+        firstname: "",
+        lastname: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        accept: false,
+      };
+
+      $("#signupBtn").on("click", function () {
+        getData();
+        var vIsValid = validateData();
+        if (vIsValid) {
+          console.log(gSignup.firstname);
+          console.log(gSignup.lastname);
+          console.log(gSignup.email);
+          console.log(gSignup.password);
+          console.log(gSignup.confirmPassword);
+          console.log(gSignup.accept);
+        }
+      });
+
+      function getData() {
+        gSignup.firstname = $("#input-firstname").val();
+        gSignup.lastname = $("#input-lastname").val();
+        gSignup.email = $("#email").val();
+        gSignup.password = $("#password").val();
+        gSignup.confirmPassword = $("#confirm-password").val();
+        var vAccept = $("#accept");
+
+        if (vAccept.is(":checked")) {
+          gSignup.accept = true;
+        } else {
+          gSignup.accept = false;
+        }
+      }
+
+      function validateData() {
+        if (gSignup.firstname.trim() == "") {
+          alert("Provide First Name!");
+          return false;
+        }
+        if (gSignup.lastname.trim() == "") {
+          alert("Provide Last Name!");
+          return false;
+        }
+        if (gSignup.email.trim() == "") {
+          alert("Provide Email!");
+          return false;
+        }
+        if (!gSignup.email.includes("@")) {
+          alert("Wrong Email Format!");
+          return false;
+        }
+        if (gSignup.password == "") {
+          alert("Provide Password!");
+          return false;
+        }
+        if (gSignup.confirmPassword == "") {
+          alert("Confirm Password!");
+          return false;
+        }
+        if (gSignup.password !== gSignup.confirmPassword) {
+          alert("Confirm Password Again!");
+          return false;
+        }
+        if (!gSignup.accept) {
+          alert("Accept the Term of Use & Privacy Policy!");
+          return false;
+        }
+        return true;
+      }
+    </script>
+  </body>
+</html>

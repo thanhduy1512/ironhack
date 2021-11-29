@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+  </head>
+
+  <body>
+    <div class="container jumbotron">
+      <p>
+        Đây là form thử code; Nút Increment Value sẽ nâng giá trị trong ô input
+        01 đơn vị
+      </p>
+      <form>
+        <input
+          class="form-control w-25 m-md-2"
+          type="number"
+          id="number"
+          value="0"
+        />
+        <input
+          class="btn btn-success m-md-2"
+          type="button"
+          onclick="incrementValue()"
+          value="Increment Value"
+        />
+      </form>
+    </div>
+  </body>
+  <script>
+    "use strict";
+    /*** REGION 1 - Global variables - Vùng khai báo biến, hằng số, tham số TOÀN CỤC */
+
+    /*** REGION 2 - Vùng gán / gọi hàm xử lý sự kiện cho các elements */
+
+    /*** REGION 3 - Event handlers - Vùng khai báo các hàm xử lý sự kiện */
+    function incrementValue() {
+      var valueToIncrement = parseInt(
+        document.getElementById("number").value,
+        10
+      );
+      valueToIncrement = isNaN(valueToIncrement) ? 0 : valueToIncrement;
+      const incrementUnit = 1;
+      var newValue = valueToIncrement + incrementUnit;
+      document.getElementById("number").value = newValue;
+    }
+
+    /*** REGION 4 - Common funtions - Vùng khai báo hàm dùng chung trong toàn bộ chương trình*/
+  </script>
+</html>

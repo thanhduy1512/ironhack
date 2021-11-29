@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>User data crud</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <!-- Data Table-->
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css"
+    />
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+  </head>
+
+  <body>
+    <!-- Vùng header -->
+    <div class="container">
+      <div class="text-center">
+        <h2>F100 - Quản trị USER</h2>
+      </div>
+      <div class="container jumbotron">
+        <div class="row">
+          <div class="col-3 text-center">
+            <label> Role </label>
+          </div>
+          <div class="col-6">
+            <select class="form-control" id="filter-select">
+              <option value="">Choose Role</option>
+            </select>
+          </div>
+          <div class="col-3">
+            <button class="btn btn-success" id="btn-filter-data">
+              Filter Data
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <button class="btn btn-success" id="btn-add-user">
+          <i class="fa fa-plus"></i>&nbsp; New User
+        </button>
+      </div>
+    </div>
+    <!-- Vouche Data Table -->
+    <div class="container">
+      <table
+        class="table table-bordered table-striped table-hover"
+        id="user-table"
+      >
+        <thead>
+          <tr>
+            <th>STT</th>
+            <th>Username</th>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Email</th>
+            <th>Age</th>
+            <th>Role</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+    <div
+      id="div-form-mod"
+      class="text-primary position-fixed"
+      style="bottom: 0px; right: 0px"
+    >
+      ...
+    </div>
+    <!-- Vùng Modal -->
+
+    <!-- Add/edit user modal -->
+    <div>
+      <div id="user-modal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="h5-modal-title">User information</h5>
+              <button class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="row form-group">
+                  <div class="col-sm-2">
+                    <label>Username</label>
+                  </div>
+                  <div class="col-sm-4">
+                    <input
+                      type="text"
+                      id="input-username"
+                      name="username"
+                      placeholder="Username"
+                      class="form-control"
+                    />
+                  </div>
+                  <div class="col-sm-2">
+                    <label for="input-discount">Firstname</label>
+                  </div>
+                  <div class="col-sm-4">
+                    <input
+                      type="text"
+                      id="input-firstname"
+                      name="firstname"
+                      placeholder="Firstname"
+                      class="form-control"
+                    />
+                  </div>
+                </div>
+                <div class="row form-group">
+                  <div class="col-sm-2">
+                    <label>Lastname</label>
+                  </div>
+                  <div class="col-sm-4">
+                    <input
+                      type="text"
+                      id="input-lastname"
+                      name="lastname"
+                      placeholder="Lastname"
+                      class="form-control"
+                    />
+                  </div>
+                  <div class="col-sm-2">
+                    <label for="input-discount">Email</label>
+                  </div>
+                  <div class="col-sm-4">
+                    <input
+                      type="text"
+                      id="input-email"
+                      name="email"
+                      placeholder="Email"
+                      class="form-control"
+                    />
+                  </div>
+                </div>
+                <div class="row form-group">
+                  <div class="col-sm-2">
+                    <label>Age</label>
+                  </div>
+                  <div class="col-sm-4">
+                    <input
+                      type="nmber"
+                      id="input-age"
+                      name="age"
+                      placeholder="Age"
+                      class="form-control"
+                    />
+                  </div>
+                  <div class="col-sm-2">
+                    <label for="input-discount">Role</label>
+                  </div>
+                  <div class="col-sm-4">
+                    <select id="input-role" class="form-control" name="role">
+                      <option value="">Choose Role</option>
+                    </select>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button
+                class="btn btn-secondary"
+                id="btn-cancel"
+                data-dismiss="modal"
+              >
+                Cancel
+              </button>
+              <button class="btn btn-primary" id="btn-save-user">
+                Save Data
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete confirm modal -->
+    <div>
+      <div class="modal fade" tabindex="-1" id="delete-confirm-modal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="h5-modal-title">
+                User Delete Confirmation
+              </h5>
+              <button class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+              <label>Bạn có chắc chắn muốn xóa User này không?</label>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" data-dismiss="modal">
+                Cancel
+              </button>
+              <button class="btn btn-danger" id="btn-confirm-delete-user">
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    ​
+    <script>
+      /*** REGION 1 - Global variables - Vùng khai báo biến, hằng số, tham số TOÀN CỤC */
+      /* Mảng userObjects là mảng chứa dữ liệu user. Từng phần tử là object
+       * id: tự tăng lên 1. Ví dụ, hiện id lớn nhất là 6, thì khi thêm user mới, id sẽ là 7
+       */
+      var gFORM_MODE_NORMAL = "Normal";
+      var gFORM_MODE_INSERT = "Insert";
+      var gFORM_MODE_UPDATE = "Update";
+      var gFORM_MODE_DELETE = "Delete";
+
+      // biến toàn cục cho trạng thái của form: mặc định ban đầu là trạng thái Normal
+      var gFormMode = gFORM_MODE_NORMAL;
+
+      // Biến toàn cục để lưu trữ id voucher đang đc update or delete. Mặc định = 0;
+      var gUserId = 0;
+
+      var gUserObjects = [
+        {
+          id: 2,
+          username: "quannv",
+          firstname: "Ngo Van",
+          lastname: "Quan",
+          age: 18,
+          email: "quan@gmail.com",
+          roleId: 5,
+        },
+        {
+          id: 3,
+          username: "longdh",
+          firstname: "Do Hoang",
+          lastname: "Long",
+          age: 19,
+          email: "long@gmail.com",
+          roleId: 8,
+        },
+        {
+          id: 4,
+          username: "hiendt",
+          firstname: "Do Thi",
+          lastname: "Hien",
+          age: 29,
+          email: "hien@gmail.com",
+          roleId: 11,
+        },
+        {
+          id: 6,
+          username: "lanht",
+          firstname: "Ho Thi",
+          lastname: "Lan",
+          age: 27,
+          email: "lan@gmail.com",
+          roleId: 13,
+        },
+      ];
+
+      // TODO: Điền tiếp các phần tử tiếp theo của mảng Role (xem trong slide task specification)
+      var gRoleObjects = [
+        {
+          roleId: 5,
+          roleName: "Admin",
+        },
+        {
+          roleId: 8,
+          roleName: "Manager",
+        },
+        {
+          roleId: 11,
+          roleName: "Teacher",
+        },
+        {
+          roleId: 13,
+          roleName: "Staff",
+        },
+      ];
+
+      // Biến mảng hằng số chứa danh sách tên các thuộc tính
+      const gUSER_COLS = [
+        "stt",
+        "username",
+        "firstname",
+        "lastname",
+        "age",
+        "email",
+        "roleId",
+      ];
+
+      // Biến mảng toàn cục định nghĩa chỉ số các cột tương ứng
+      const gUSER_STT_COL = 0;
+      const gUSER_USERNAME_COL = 1;
+      const gUSER_FIRSTNAME_COL = 2;
+      const gUSER_LASTNAME_COL = 3;
+      const gUSER_AGE_COL = 4;
+      const gUSER_EMAIL_COL = 5;
+      const gUSER_ROLE_ID_COL = 6;
+      const gUSER_ACTION_COL = 7;
+
+      // Biến toàn cục để hiển lưu STT
+      var gSTT = 1;
+
+      var gUserTable = $("#user-table").DataTable({
+        columns: [
+          { data: gUSER_COLS[gUSER_STT_COL] },
+          { data: gUSER_COLS[gUSER_USERNAME_COL] },
+          { data: gUSER_COLS[gUSER_FIRSTNAME_COL] },
+          { data: gUSER_COLS[gUSER_LASTNAME_COL] },
+          { data: gUSER_COLS[gUSER_AGE_COL] },
+          { data: gUSER_COLS[gUSER_EMAIL_COL] },
+          {
+            data: gUSER_COLS[gUSER_ROLE_ID_COL],
+            render: function (data, type) {
+              if (type === "display") {
+                let bRoleName = getRoleNameByRoleId(data);
+                return "<span>" + bRoleName + "<span>";
+              } else {
+                return data;
+              }
+            },
+          },
+          { data: gUSER_COLS[gUSER_ACTION_COL] },
+        ],
+        columnDefs: [
+          {
+            // định nghĩa lại cột STT
+            targets: gUSER_STT_COL,
+            render: function () {
+              return gSTT++;
+            },
+          },
+          {
+            // định nghĩa lại cột action
+            targets: gUSER_ACTION_COL,
+            defaultContent: `
+          <img class="edit-user" src="https://cdn0.iconfinder.com/data/icons/glyphpack/45/edit-alt-512.png" style="width: 20px;cursor:pointer;">
+          <img class="delete-user" src="https://cdn4.iconfinder.com/data/icons/complete-common-version-6-4/1024/trash-512.png" style="width: 20px;cursor:pointer;">
+        `,
+          },
+        ],
+      });
+      /*** REGION 2 - Vùng gán / thực thi sự kiện cho các elements */
+      onPageLoading();
+
+      $("#btn-add-user").on("click", function () {
+        onBtnAddUser();
+      });
+
+      $("#user-table").on("click", ".edit-user", function () {
+        onBtnEditUser(this);
+      });
+
+      $("#btn-save-user").on("click", function () {
+        onBtnSaveUser();
+      });
+
+      $("#btn-filter-data").on("click", function () {
+        onBtnFilterClick();
+      });
+
+      $("#user-table").on("click", ".delete-user", function () {
+        onBtnDeleteUser(this);
+      });
+
+      $("#btn-confirm-delete-user").on("click", function () {
+        onBtnConfirmDeleteUser();
+      });
+
+      /*** REGION 3 - Event handlers - Vùng khai báo các hàm xử lý sự kiện */
+      function onPageLoading() {
+        loadRoleToSelectOption();
+        loadDataToUserTable(gUserObjects);
+        $("#div-form-mod").html(gFormMode);
+      }
+
+      function onBtnFilterClick() {
+        var vRoleIdFilter = $("#filter-select").val();
+        if (vRoleIdFilter == "") {
+          loadDataToUserTable(gUserObjects);
+          return alert("Choose Role!");
+        } else {
+          var vUpdatedUserArr = gUserObjects.filter((user) => {
+            return user.roleId == vRoleIdFilter;
+          });
+          loadDataToUserTable(vUpdatedUserArr);
+        }
+      }
+
+      function onBtnAddUser() {
+        // chuyển đổi trạng thái form về insert
+        gFormMode = gFORM_MODE_INSERT;
+        $("#div-form-mod").html(gFormMode);
+        // hiển thị modal trắng lên
+        $("#user-modal").modal("show");
+      }
+
+      function onBtnEditUser(paramIcon) {
+        // chuyển đổi trạng thái form về insert
+        gFormMode = gFORM_MODE_UPDATE;
+        $("#div-form-mod").html(gFormMode);
+        gUserId = getIdDataFromButton(paramIcon);
+        showDataToModalUpdate(gUserId);
+        // hiển thị modal trắng lên
+        $("#user-modal").modal("show");
+      }
+
+      function onBtnDeleteUser(paramIcon) {
+        // chuyển đổi trạng thái form về insert
+        gFormMode = gFORM_MODE_DELETE;
+        $("#div-form-mod").html(gFormMode);
+        gUserId = getIdDataFromButton(paramIcon);
+        // hiển thị modal trắng lên
+        $("#delete-confirm-modal").modal("show");
+      }
+
+      function onBtnSaveUser() {
+        var vUser = {
+          id: 0,
+          username: "",
+          firstname: "",
+          lastname: "",
+          age: 0,
+          email: "",
+          roleId: 0,
+        };
+
+        getUserFromData(vUser);
+
+        var vValidate = validateData(vUser);
+        if (vValidate) {
+          //process data
+          saveUserData(vUser);
+          //show data
+          loadDataToUserTable(gUserObjects);
+          //notice
+          alert("Update Success!");
+          $("#user-modal").modal("hide");
+          //reset data
+          resetUserData();
+        }
+      }
+
+      function onBtnConfirmDeleteUser() {
+        //get index then delete in array
+        var vUserIndex = getUserIndexById(gUserId);
+        gUserObjects.splice(vUserIndex, 1);
+
+        //load table and notice
+        loadDataToUserTable(gUserObjects);
+        alert("Delete Success!");
+        $("#delete-confirm-modal").modal("hide");
+
+        //reset
+        resetUserData();
+      }
+
+      function loadDataToUserTable(paramUserArr) {
+        gSTT = 1;
+        gUserTable.clear();
+        gUserTable.rows.add(paramUserArr);
+        gUserTable.draw();
+      }
+      /*** REGION 4 - Common funtions - Vùng khai báo hàm dùng chung trong toàn bộ chương trình*/
+
+      function getUserFromData(paramUser) {
+        //id
+        if (gFormMode == gFORM_MODE_INSERT) {
+          paramUser.id = getNextId();
+        } else {
+          paramUser.id = gUserId;
+        }
+        //data
+        paramUser.username = $("#input-username").val().trim();
+        paramUser.firstname = $("#input-firstname").val();
+        paramUser.lastname = $("#input-lastname").val();
+        paramUser.age = parseInt($("#input-age").val());
+        console.log(paramUser.age);
+        paramUser.email = $("#input-email").val();
+        paramUser.roleId = $("#input-role").val();
+      }
+
+      function validateData(paramUser) {
+        if (paramUser.username == "") {
+          alert("Provide Username!");
+          return false;
+        }
+        if (isDataExist("username", paramUser.username)) {
+          alert("Username Already Exist!");
+          return false;
+        }
+        if (paramUser.firstname.trim() == "") {
+          alert("Provide Firstname!");
+          return false;
+        }
+        if (paramUser.lastname.trim() == "") {
+          alert("Provide Lastname!");
+          return false;
+        }
+        if (paramUser.email.trim() == "") {
+          alert("Provide Email!");
+          return false;
+        }
+        if (!paramUser.email.includes("@") || !paramUser.email.includes(".")) {
+          alert("Invalid Email!");
+          return false;
+        }
+        if (isDataExist("email", paramUser.email)) {
+          alert("Email Already Exist!");
+          return false;
+        }
+        if (paramUser.roleId == "") {
+          alert("Provide Role!");
+          return false;
+        }
+        if (paramUser.age < 10 || paramUser.age > 180 || isNaN(paramUser.age)) {
+          alert("Invalid Age!");
+          return false;
+        }
+        return true;
+      }
+
+      function saveUserData(paramUser) {
+        if (gFormMode === gFORM_MODE_INSERT) {
+          gUserObjects.push(paramUser);
+        } else {
+          vUserIndex = getUserIndexById(gUserId);
+          gUserObjects.splice(vUserIndex, 1, paramUser);
+        }
+      }
+
+      function isDataExist(paramData, paramValue) {
+        var vFound = false;
+        var vIndex = 0;
+
+        if (gFormMode == gFORM_MODE_INSERT) {
+          while (!vFound && vIndex < gUserObjects.length) {
+            if (gUserObjects[vIndex][paramData] == paramValue) {
+              vFound = true;
+            } else {
+              vIndex++;
+            }
+          }
+        } else {
+          while (!vFound && vIndex < gUserObjects.length) {
+            if (
+              gUserObjects[vIndex][paramData] == paramValue &&
+              gUserObjects[vIndex].id !== gUserId
+            ) {
+              vFound = true;
+            } else {
+              vIndex++;
+            }
+          }
+        }
+        return vFound;
+      }
+
+      function getRoleNameByRoleId(paramRoleId) {
+        for (let role of gRoleObjects) {
+          if (role.roleId === parseInt(paramRoleId)) {
+            return role.roleName;
+          }
+        }
+      }
+
+      function loadRoleToSelectOption() {
+        for (let i = 0; i < gRoleObjects.length; i++) {
+          $("select").append(
+            "<option value=" +
+              gRoleObjects[i].roleId +
+              ">" +
+              gRoleObjects[i].roleName +
+              "</option>"
+          );
+        }
+      }
+
+      function getIdDataFromButton(paramIcon) {
+        var vTableRow = $(paramIcon).parents("tr");
+        var vUserRowData = gUserTable.row(vTableRow).data();
+        return vUserRowData.id;
+      }
+
+      function getUserIndexById(paramUserId) {
+        var vUserIndex = -1;
+        var vFound = false;
+        var index = 0;
+        while (!vFound && index < gUserObjects.length) {
+          if (gUserObjects[index].id == paramUserId) {
+            vUserIndex = index;
+            vFound = true;
+          } else {
+            index++;
+          }
+        }
+        return vUserIndex;
+      }
+
+      function showDataToModalUpdate(paramUserId) {
+        var vUserIndex = getUserIndexById(paramUserId);
+        $("#input-username").val(gUserObjects[vUserIndex].username);
+        $("#input-firstname").val(gUserObjects[vUserIndex].firstname);
+        $("#input-lastname").val(gUserObjects[vUserIndex].lastname);
+        $("#input-email").val(gUserObjects[vUserIndex].email);
+        $("#input-age").val(gUserObjects[vUserIndex].age);
+        $("#input-role").val(gUserObjects[vUserIndex].roleId);
+      }
+
+      function getNextId() {
+        var vNextId = 0;
+        // nếu mảng chưa có phần tử nào, thì id sẽ bắt đầu từ 1
+        if (gUserObjects.length == 0) {
+          vNextId = 1;
+        } else {
+          // id tiếp theo bằng id của phần tử cuối cùng cộng thêm 1
+          vNextId = gUserObjects[gUserObjects.length - 1].id + 1;
+        }
+        return vNextId;
+      }
+
+      function resetUserData() {
+        //status
+        gFormMode = gFORM_MODE_NORMAL;
+        $("#div-form-mod").html(gFormMode);
+
+        //id
+        gUserId = 0;
+
+        //modal input
+        $("#input-username").val("");
+        $("#input-firstname").val("");
+        $("#input-lastname").val("");
+        $("#input-age").val("");
+        $("#input-email").val("");
+        $("#input-role").val("");
+      }
+    </script>
+  </body>
+</html>

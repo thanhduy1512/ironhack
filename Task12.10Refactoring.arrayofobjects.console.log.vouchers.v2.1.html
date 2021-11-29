@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+  </head>
+
+  <body class="bg bg-light">
+    <div class="container jumbotron">
+      <h1>Test Page for Devcamp Javascrip Tasks</h1>
+      <p>
+        Press F5 to run code. Don't forget to Save your code before running.
+        (Ctrl+S).
+      </p>
+    </div>
+  </body>
+  <script>
+    "use strict";
+    /*** REGION 1 - Global variables - Vùng khai báo biến, hằng số, tham số TOÀN CỤC */
+    // vouchersdb: database of vouchers
+    // voucherid: vehicle identification number
+    const gVOUCHER_DB = [
+      { campaign: "NewYear2021", percentageDiscount: 10, voucherId: "ABC10X" },
+      { campaign: "CovidSupport", percentageDiscount: 20, voucherId: "DNE20N" },
+      { campaign: "NewYear2021", percentageDiscount: 20, voucherId: "ABC20D" },
+      { campaign: "CovidSupport", percentageDiscount: 30, voucherId: "DNE30E" },
+      { campaign: "CovidSupport", percentageDiscount: 50, voucherId: "DNE50M" },
+    ];
+    /*** REGION 2 - Vùng gán / thực thi sự kiện cho các elements */
+    onPageLoading();
+    /*** REGION 3 - Event handlers - Vùng khai báo các hàm xử lý sự kiện */
+    function onPageLoading() {
+      // bạn hãy tham khảo code để test getVoucherByIndex
+      var vVoucherA = getVoucherByIndex(1);
+      console.log("voucher found by GetVoucherByIndex, index = " + 1);
+      console.log(vVoucherA.percentageDiscount);
+      console.log(vVoucherA.campaign);
+
+      //đây là code chay thử của function getvoucherByvoucherId
+      // ban hãy viết ra console.log 1 số đặc tính
+      console.log(getVoucherByVoucherId("DNE50M"));
+    }
+    /*** REGION 4 - Common funtions - Vùng khai báo hàm dùng chung trong toàn bộ chương trình*/
+    // return a voucher in the given index
+    function getVoucherByIndex(paramIndexOfVoucher) {
+      //if the input index not in the invalid range (index đưa vào không có trong array voucherdb)
+      if (
+        paramIndexOfVoucher < 0 ||
+        paramIndexOfVoucher > gVOUCHER_DB.length - 1
+      ) {
+        return null;
+      }
+      return gVOUCHER_DB[paramIndexOfVoucher];
+    }
+
+    function getVoucherByVoucherId(paramInputVoucherId) {
+      for (var i = 0; i < gVOUCHER_DB.length; i++) {
+        console.log(gVOUCHER_DB[i].voucherId);
+        if (gVOUCHER_DB[i].voucherId == paramInputVoucherId) {
+          return gVOUCHER_DB[i];
+        }
+      }
+      return null;
+    }
+  </script>
+</html>

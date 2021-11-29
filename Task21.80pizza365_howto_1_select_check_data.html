@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <title>Pizza 365 project</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+  />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <body>
+    <div class="container">
+      <form>
+        <div class="text-center pt-5">
+          <span class="h3 border-bottom-3 pt-5">Chọn đồ uống</span>
+        </div>
+        <div class="form-group">
+          <label for="drink-select">Đồ uống</label>
+          <select class="form-control" id="drink-select">
+            <option>Chọn đồ uống</option>
+          </select>
+        </div>
+        <button
+          id="show-result"
+          class="btn btn-primary mb-2"
+          style="width: 300px"
+        >
+          Hiển thị
+        </button>
+        <p id="result"></p>
+      </form>
+    </div>
+
+    <script>
+      "use strict";
+      /*** REGION 1 - Global variables - Vùng khai báo biến, hằng số, tham số TOÀN CỤC */
+      const gREQUEST_STATUS_OK = 200;
+      const gREQUEST_READY_STATUS_FINISH_AND_OK = 4;
+      const gBASE_URL = "http://42.115.221.44:8080/devcamp-pizza365/drinks";
+      var gSelectElement = document.getElementById("drink-select");
+      var gResultText = document.getElementById("result");
+
+      /*** REGION 2 - Vùng gán / thực thi sự kiện cho các elements */
+      onPageLoading();
+      /*** REGION 3 - Event handlers - Vùng khai báo các hàm xử lý sự kiện */
+      function onPageLoading() {
+        loadDrinkToSelect();
+      }
+
+      function loadDrinkToSelect() {
+        var vXmlHttp = new XMLHttpRequest();
+
+        sendRequest(vXmlHttp);
+
+        vXmlHttp.onreadystatechange = function () {
+          if (
+            this.readyState == gREQUEST_READY_STATUS_FINISH_AND_OK &&
+            this.status == gREQUEST_STATUS_OK
+          ) {
+            processResponseData(vXmlHttp);
+          }
+        };
+      }
+
+      document
+        .getElementById("show-result")
+        .addEventListener("click", function (e) {
+          e.preventDefault();
+          if (gSelectElement.value == "Chọn đồ uống") {
+            alert("Choose Drink!");
+            return;
+          }
+          gResultText.innerHTML = gSelectElement.value;
+        });
+
+      /*** REGION 4 - Common funtions - Vùng khai báo hàm dùng chung trong toàn bộ chương trình*/
+
+      function sendRequest(paramXmlHttp) {
+        paramXmlHttp.open("GET", gBASE_URL, true);
+        paramXmlHttp.send();
+      }
+
+      function processResponseData(paramXmlHttp) {
+        var vDrinkList = JSON.parse(paramXmlHttp.responseText);
+
+        for (let index = 0; index < vDrinkList.length; index++) {
+          let drink = vDrinkList[index];
+
+          let drinkOptionElement = document.createElement("option");
+          drinkOptionElement.value = drink.maNuocUong;
+          drinkOptionElement.text = drink.tenNuocUong;
+
+          gSelectElement.appendChild(drinkOptionElement);
+        }
+      }
+    </script>
+  </body>
+</html>

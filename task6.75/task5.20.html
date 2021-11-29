@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <h1 id="h1-title">Welcome</h1>
+    <img id="img-programing" src="./images-1/programing.png" />
+    <div class="row">
+      <label id="lbl-message" class="">Message to you</label>
+    </div>
+    <div class="row">
+      <input id="input-message" class="" placeholder="Message to you..." />
+    </div>
+    <div class="row">
+      <button id="btn-send" class="button col-25" onclick="sendMessage()">
+        Send
+      </button>
+    </div>
+    <div id="p-message">
+      <p id="" style="color: blue; display: none"></p>
+    </div>
+
+    <img
+      id="img-like"
+      src="./images-1/like-yellow-icon.png"
+      style="width: 10%; display: none"
+    />
+  </body>
+  <script>
+    function onPageLoading() {
+      var h1Title = document.getElementById("h1-title");
+      var imgProgram = document.getElementById("img-programing");
+      var lblMessage = document.getElementById("lbl-message");
+      var inputMessage = document.getElementById("input-message");
+      var btnSend = document.getElementById("btn-send");
+      var pMessage = document.getElementById("p-message");
+      var imgLike = document.getElementById("img-like");
+    }
+    onPageLoading();
+
+    function sendMessage() {
+      console.log("Send Message to me");
+      var inputMessage = document.getElementById("input-message").value;
+      let p = document.createElement("p");
+
+      document.getElementById("p-message").appendChild(p).innerHTML =
+        inputMessage;
+      document.getElementById("p-message").style.display = "block";
+      document.getElementById("img-like").style.display = "";
+    }
+  </script>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Task 12.30</title>
+    <meta charset="UTF-8" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+  </head>
+
+  <body>
+    <!-- Bắt đầu vùng form màu xám -->
+    <div class="container jumbotron p-4 my-3">
+      <div class="row form-group">
+        <label id="label-ma-mon" class="col-md-2 col-form-label"
+          >Mã môn học <span class="text-danger">(*)</span></label
+        >
+        <div class="col-md-4">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Nhập mã môn ..."
+            id="input-ma-mon"
+          />
+        </div>
+      </div>
+      <div class="row form-group">
+        <label id="label-ten-mon" class="col-md-2 col-form-label"
+          >Tên môn <span class="text-danger">(*)</span></label
+        >
+        <div class="col-md-4">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Nhập tên môn ..."
+            id="input-ten-mon"
+          />
+        </div>
+      </div>
+      <div class="row form-group">
+        <label id="label-so-tin-chi" class="col-md-2 col-form-label"
+          >Số tín chỉ <span class="text-danger">(*)</span></label
+        >
+        <div class="col-md-4">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Nhập số tín chỉ ..."
+            id="input-tin-chi"
+          />
+        </div>
+        <div class="col-sm-2">
+          <button
+            type="button"
+            class="btn btn-info"
+            id="btn-save-data"
+            onclick="onBtnSaveDataClick()"
+          >
+            Save data
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Kết thúc vùng form màu xám -->
+
+    <!-- vùng hiển thị thông tin môn học -->
+    <div
+      id="div-container-subject"
+      class="container bg-info"
+      style="display: none"
+    >
+      <div id="div-subject-infor" class="text-white p-3">...</div>
+    </div>
+
+    <script>
+      "use strict";
+      /*** REGION 1 - Global variables - Vùng khai báo biến, hằng số, tham số TOÀN CỤC */
+
+      /*** REGION 2 - Vùng gán / thực thi sự kiện cho các elements */
+      onPageLoading();
+      /*** REGION 3 - Event handlers - Vùng khai báo các hàm xử lý sự kiện */
+      function onPageLoading() {
+        //debugger;
+        var vInputMaMon = document.getElementById("input-ma-mon");
+        var vInputTenMon = document.getElementById("input-ten-mon");
+        var vInputTinChi = document.getElementById("input-tin-chi");
+        var vBtnSaveData = document.getElementById("btn-save-data");
+      }
+
+      function onBtnSaveDataClick() {
+        // khai báo đối tượng môn học chứa dữ liệu
+        var vMonHoc = {
+          maMon: "",
+          tenMon: "",
+          soTinChi: 0,
+        };
+        console.log("luu du lieu mon hoc");
+        // B1: thu thập dữ liệu
+        getFormData(vMonHoc);
+        // B2: kiểm tra dữ liệu
+        var isValidData = validateData(vMonHoc);
+        if (isValidData) {
+          // B3: ghi dữ liệu vào vùng màu vàng
+          showData(vMonHoc);
+        }
+      }
+
+      /*** REGION 4 - Common funtions - Vùng khai báo hàm dùng chung trong toàn bộ chương trình*/
+      function getFormData(paramMonHoc) {
+        var vInputMaMon = document.getElementById("input-ma-mon");
+        var vInputTenMon = document.getElementById("input-ten-mon");
+        var vInputTinChi = document.getElementById("input-tin-chi");
+
+        paramMonHoc.maMon = vInputMaMon.value.trim();
+        paramMonHoc.tenMon = vInputTenMon.value.trim();
+        paramMonHoc.soTinChi = parseInt(vInputTinChi.value.trim());
+      }
+
+      function validateData(paramMonHoc) {
+        if (paramMonHoc.maMon === "") {
+          alert("Phai Nhap Ma Mon Hoc");
+          return false;
+        }
+        if (paramMonHoc.tenMon === "") {
+          alert("Phai Nhap Ten Mon Hoc");
+          return false;
+        }
+        if (paramMonHoc.soTinChi == 0) {
+          alert("Phai Nhap So Tin Chi");
+          return false;
+        }
+        return true;
+      }
+
+      function showData(paramMonHoc) {
+        var vDivContainerSubject = document.getElementById(
+          "div-container-subject"
+        );
+        var vDivSubjectInfo = document.getElementById("div-subject-infor");
+
+        vDivContainerSubject.style.display = "block";
+
+        vDivSubjectInfo.innerHTML = "Mã môn học: " + paramMonHoc.maMon;
+        vDivSubjectInfo.innerHTML += "<br/>Tên môn học: " + paramMonHoc.tenMon;
+        vDivSubjectInfo.innerHTML += "<br/>Số tín chỉ: " + paramMonHoc.soTinChi;
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div class="container jumbotron">
+      <div class="col-12">
+        <div class="text-center mb-5"><h1>Detail Order</h1></div>
+        <form>
+          <div class="form-group row">
+            <label for="" class="col-sm-2 col-form-label">ID</label>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" placeholder="ID" />
+            </div>
+            <label for="" class="col-sm-2 col-form-label">Order ID</label>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" placeholder="Order ID" />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-2 col-form-label">Kích Cỡ</label>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" placeholder="Kích Cỡ" />
+            </div>
+            <label for="" class="col-sm-2 col-form-label">Đường Kính</label>
+            <div class="col-sm-4">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Đường Kính"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-2 col-form-label">Sườn</label>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" placeholder="Sườn" />
+            </div>
+            <label for="" class="col-sm-2 col-form-label">Salad</label>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" placeholder="Salad" />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-2 col-form-label">Số lượng nước</label>
+            <div class="col-sm-4">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Số lượng nước"
+              />
+            </div>
+            <label for="" class="col-sm-2 col-form-label">Thành Tiền</label>
+            <div class="col-sm-4">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Thành Tiền"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-2 col-form-label">Cỡ Combo</label>
+            <div class="col-sm-4">
+              <select id="select-combo-size" class="form-control">
+                <option value="">Chọn cỡ Combo (Combo size)</option>
+                <option value="S">Nhỏ</option>
+                <option value="M">Vừa</option>
+                <option value="L">Lớn</option>
+              </select>
+            </div>
+            <label for="" class="col-sm-2 col-form-label">Đồ uống</label>
+            <div class="col-sm-4">
+              <select class="form-control" id="select-drink">
+                <option value="">Chọn đồ uống</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Mã voucher</label>
+            <div class="col-sm-4">
+              <input
+                id="inp-voucher"
+                type="text"
+                class="form-control"
+                placeholder="Voucher ID (mã voucher)"
+              />
+            </div>
+            <!-- làm thêm select nữa vào đây -->
+            <label for="" class="col-sm-2 col-form-label">Pizza</label>
+            <div class="col-sm-4">
+              <select class="form-control" id="select-pizza">
+                <option value="">Chọn pizza</option>
+                <option value="SEAFOOD">Seafood</option>
+                <option value="HAWAII">Hawaii</option>
+                <option value="BACON">Bacon</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="">Họ và tên</label>
+            <div class="col-sm-4">
+              <input
+                id="inp-fullname"
+                type="email"
+                class="form-control"
+                placeholder="Họ và tên"
+              />
+            </div>
+            <label for="" class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-4">
+              <input
+                id="inp-email"
+                type="email"
+                class="form-control"
+                placeholder="Email"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Số điện thoại</label>
+            <div class="col-sm-4">
+              <input
+                id="inp-phone"
+                type="text"
+                class="form-control"
+                placeholder="Số điện thoại"
+              />
+            </div>
+            <label class="col-sm-2 col-form-label">Địa chỉ</label>
+            <div class="col-sm-4">
+              <input
+                id="inp-address"
+                type="diaChi"
+                class="form-control"
+                placeholder="Địa chỉ"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Lời nhắn</label>
+            <textarea
+              id="inp-message"
+              class="form-control h-75"
+              placeholder="Lời nhắn"
+            ></textarea>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      "use strict";
+      const gREQUEST_STATUS_OK = 200;
+      const gREQUEST_READY_STATUS_FINISH_AND_OK = 4;
+      onPageLoading();
+
+      function onPageLoading() {
+        var vQueryString = window.location.search;
+        var vParam = new URLSearchParams(vQueryString);
+        var vOrderId = vParam.get("orderid");
+        console.log(vOrderId);
+
+        getOrderDetailByOrderId(vOrderId);
+      }
+
+      function getOrderDetailByOrderId(paramOrderId) {
+        "use strict";
+        //base url
+        const baseUrl = "http://42.115.221.44:8080/devcamp-pizza365/orders";
+
+        var xmlHttpGetOrderById = new XMLHttpRequest();
+        xmlHttpGetOrderById.open("GET", baseUrl + "/" + paramOrderId, true);
+        xmlHttpGetOrderById.send();
+        xmlHttpGetOrderById.onreadystatechange = function () {
+          if (
+            this.readyState == gREQUEST_READY_STATUS_FINISH_AND_OK &&
+            this.status == gREQUEST_STATUS_OK
+          ) {
+            console.log(xmlHttpGetOrderById.responseText);
+          }
+        };
+      }
+    </script>
+  </body>
+</html>

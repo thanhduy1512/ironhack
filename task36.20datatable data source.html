@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Import Datatable sau jquery -->
+    <!-- Import them style bootstrap cho datatable -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css"
+    />
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h2 style="text-align: center">Danh sách người dùng</h2>
+
+      <table
+        id="user-table"
+        class="table table-bordered table-striped table-hover"
+      >
+        <thead>
+          <tr>
+            <th>Mã người dùng</th>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Age</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    ​
+    <script>
+      $(document).ready(function () {
+        /*** REGION 1 - Global variables - Vùng khai báo biến, hằng số, tham số TOÀN CỤC */
+        var gJsonUsers = `{
+      "description": "Data user",
+      "users": [
+        {
+          "userId": 1,
+          "firstname": "Test1",
+          "lastname": "User1",
+          "age": 18
+        },
+        {
+          "userId": 2,
+          "firstname": "Test2",
+          "lastname": "User2",
+          "age": 19
+        },
+        {
+          "userId": 3,
+          "firstname": "Test3",
+          "lastname": "User3",
+          "age": 18
+        },
+        {
+          "userId": 4,
+          "firstname": "Test4",
+          "lastname": "User4",
+          "age": 20
+        },
+        {
+          "userId": 5,
+          "firstname": "Test5",
+          "lastname": "User5",
+          "age": 21
+        },
+        {
+          "userId": 6,
+          "firstname": "Test6",
+          "lastname": "User6",
+          "age": 20
+        }
+      ]
+    }`;
+
+        var gUserObject = JSON.parse(gJsonUsers);
+        var gListUserObject = gUserObject.users;
+        console.log(gListUserObject);
+        var gNameCol = ["userId", "firstname", "lastname", "age", "action"];
+        const gUSER_ID_COL = 0;
+        const gFIRSTNAME_COL = 1;
+        const gLASTNAME_COL = 2;
+        const gAGE_COL = 3;
+        const gACTION_COL = 4;
+
+        /*** REGION 2 - Vùng gán / thực thi hàm xử lý sự kiện cho các elements */
+        onPageLoading();
+        $(document).on("click", ".detail_user", function () {
+          onBtnDetailUserClick(this);
+        });
+        /*** REGION 3 - Event handlers - Vùng khai báo các hàm xử lý sự kiện */
+        function onPageLoading() {
+          /* Hãy đổ dữ liệu vào table và thực hiện nút information (chi tiết)
+           * dùng cách khai báo data source ngay từ đầu */
+          $("#user-table").DataTable({
+            data: gListUserObject,
+            columns: [
+              { data: gNameCol[gUSER_ID_COL] },
+              { data: gNameCol[gFIRSTNAME_COL] },
+              { data: gNameCol[gLASTNAME_COL] },
+              { data: gNameCol[gAGE_COL] },
+              { data: gNameCol[gACTION_COL] },
+            ],
+            columnDefs: [
+              { targets: gUSER_ID_COL, className: "text-center text-primary" },
+              { targets: gAGE_COL, className: "text-right" },
+              {
+                targets: gACTION_COL,
+                className: "text-center",
+                defaultContent:
+                  "<button class='btn btn-primary detail_user'>Details</button>",
+              },
+            ],
+          });
+        }
+
+        function onBtnDetailUserClick(paramElement) {
+          var vRowSelected = $(paramElement).closest("tr");
+          var vTable = $("#user-table").DataTable();
+          var vRowValue = vTable.row(vRowSelected).data();
+          console.log(vRowValue);
+        }
+        /*** REGION 4 - Common funtions - Vùng khai báo hàm dùng chung trong toàn bộ chương trình*/
+      });
+    </script>
+  </body>
+</html>
+​

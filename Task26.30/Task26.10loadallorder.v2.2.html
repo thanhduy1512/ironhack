@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>task 26.10 Load all orders - Danh sách đơn hàng</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+      * {
+        font-size: small;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <h2 class="text-center">Danh sách đơn hàng</h2>
+          <table class="table text-center table-striped" id="table-order">
+            <thead>
+              <tr>
+                <th scope="col">Order ID</th>
+                <th scope="col">Kích cỡ combo</th>
+                <th scope="col">Loại pizza</th>
+                <th scope="col">Nước uống</th>
+                <th scope="col">Thành tiền</th>
+                <th scope="col">Họ và tên</th>
+                <th scope="col">Số điện thoại</th>
+                <th scope="col">Trạng thái</th>
+                <th scope="col">Chi tiết</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      "use strict";
+      /*** REGION 1 - Global variables - Vùng khai báo biến, hằng số, tham số TOÀN CỤC */
+      const gREQUEST_STATUS_OK = 200;
+      const gREQUEST_READY_STATUS_FINISH_AND_OK = 4;
+
+      const gEND_OF_ROW = -1;
+      const gEND_OF_CELL = -1;
+
+      const gDETAIL_PAGE = "Task26.20.orderDetail.html";
+
+      /*** REGION 2 - Vùng gán / thực thi sự kiện cho các elements */
+      onPageLoading();
+
+      /*** REGION 3 - Event handlers - Vùng khai báo các hàm xử lý sự kiện */
+      // Hàm thực hiện khi load trang
+      function onPageLoading() {
+        getAllOrders();
+      }
+      /*** REGION 4 - Common funtions - Vùng khai báo hàm dùng chung trong toàn bộ chương trình*/
+      // Hàm thực hiện việc load all orders từ server và load vào table
+      function getAllOrders() {
+        /**
+         * Chia để trị - 04 bước cố gắng thành 04 functions riêng biệt
+         */
+        // B1: Thu thập dữ liệu (trong bài này bước này ko cần)
+        // B2: Validate dữ liệu (trong bài này bước này ko cần)
+        // B3: Thực hiện việc gọi API từ server Server
+        var vXmlHttpGetAllOrders = new XMLHttpRequest();
+        callApiToGetAllOrders(vXmlHttpGetAllOrders);
+
+        // B4: Xử lý trên front-end khi request xử lý xong và trả về response thành công
+        vXmlHttpGetAllOrders.onreadystatechange = function () {
+          if (
+            this.readyState == gREQUEST_READY_STATUS_FINISH_AND_OK &&
+            this.status == gREQUEST_STATUS_OK
+          ) {
+            loadOrderToTable(vXmlHttpGetAllOrders);
+          }
+        };
+      }
+
+      // hàm gọi api để lấy all orders
+      function callApiToGetAllOrders(paramXMLHttpGetAllOrders) {
+        const vBaseUrl = "http://42.115.221.44:8080/devcamp-pizza365/orders";
+        paramXMLHttpGetAllOrders.open("GET", vBaseUrl, true);
+        paramXMLHttpGetAllOrders.send();
+      }
+
+      // input: xml http request đã đươc trả lời
+      // ouptut/end: dữ liệu hiên thi trên bảng
+      function loadOrderToTable(paramXMLHttpAllOrder) {
+        //CODE Ở ĐÂY ĐỂ LOAD DATA VÀO TABLE
+        var vObjResponseData = JSON.parse(paramXMLHttpAllOrder.responseText);
+        //console.log(paramXMLHttpAllOrder.responseText);
+        //console.log(vObjResponseData);
+        var vTable = document.getElementById("table-order");
+        var vTBody = vTable.getElementsByTagName("tbody")[0];
+        for (var bI = 0; bI < vObjResponseData.length; bI++) {
+          var vTBodyRow = vTBody.insertRow(gEND_OF_ROW);
+          var vOrderIdCell = vTBodyRow.insertCell(gEND_OF_CELL);
+          var vComboSizeCell = vTBodyRow.insertCell(gEND_OF_CELL);
+          var vPizzaTypeCell = vTBodyRow.insertCell(gEND_OF_CELL);
+          var vDrinkCell = vTBodyRow.insertCell(gEND_OF_CELL);
+          var vPriceCell = vTBodyRow.insertCell(gEND_OF_CELL);
+          var vFullnameCell = vTBodyRow.insertCell(gEND_OF_CELL);
+          var vPhoneCell = vTBodyRow.insertCell(gEND_OF_CELL);
+          var vStatusCell = vTBodyRow.insertCell(gEND_OF_CELL);
+          var vDeatilBtnCell = vTBodyRow.insertCell(gEND_OF_CELL);
+
+          vOrderIdCell.innerHTML = vObjResponseData[bI].orderId;
+          vComboSizeCell.innerHTML = vObjResponseData[bI].kichCo;
+          vPizzaTypeCell.innerHTML = vObjResponseData[bI].loaiPizza;
+          vDrinkCell.innerHTML = vObjResponseData[bI].idLoaiNuocUong;
+          vPriceCell.innerHTML = vObjResponseData[bI].thanhTien;
+          vFullnameCell.innerHTML = vObjResponseData[bI].hoTen;
+          vPhoneCell.innerHTML = vObjResponseData[bI].soDienThoai;
+          vStatusCell.innerHTML = vObjResponseData[bI].trangThai;
+          vDeatilBtnCell.innerHTML = "Detail";
+          vDeatilBtnCell.className = "btn btn-secondary";
+          vDeatilBtnCell.setAttribute("data-id", vObjResponseData[bI].id);
+          vDeatilBtnCell.setAttribute(
+            "data-orderid",
+            vObjResponseData[bI].orderId
+          );
+
+          vDeatilBtnCell.addEventListener("click", onDetailBtnClick);
+        }
+      }
+
+      function onDetailBtnClick() {
+        //console.log(this.dataset.id);
+        //console.log(this.dataset.orderid);
+        var vUrlSiteToOpen =
+          gDETAIL_PAGE +
+          "?" +
+          "orderid=" +
+          this.dataset.orderid +
+          "&id=" +
+          this.dataset.id;
+
+        window.location.href = vUrlSiteToOpen;
+      }
+    </script>
+  </body>
+</html>

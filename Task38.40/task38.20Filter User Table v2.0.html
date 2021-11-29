@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Import DataTable Library -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css"
+    />
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js"></script>
+    <style>
+      .pointer {
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- FILTER DIV -->
+    <div class="container">
+      <div class="text-center">
+        <h2>F100 - Quản trị USER</h2>
+      </div>
+      <div class="container jumbotron">
+        <div class="row">
+          <div class="col-3 text-center">
+            <label> Role </label>
+          </div>
+          <div class="col-6">
+            <select class="form-control" id="filter-select">
+              <option value="">Choose Role</option>
+            </select>
+          </div>
+          <div class="col-3">
+            <button class="btn btn-success" id="btn-filter-data">
+              Filter Data
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABLE DIV -->
+    <div class="container">
+      <table
+        class="table table-bordered table-striped table-hover"
+        id="user-table"
+      >
+        <thead>
+          <tr>
+            <th>STT</th>
+            <th>Username</th>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Email</th>
+            <th>Age</th>
+            <th>Role</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+    ​
+    <script>
+      /*** REGION 1 - Global variables - Vùng khai báo biến, hằng số, tham số TOÀN CỤC */
+      // Mảng gUserObjects là mảng chứa dữ liệu users
+      var gUserObjects = [
+        {
+          id: 2,
+          username: "quannv",
+          firstname: "Ngo Van",
+          lastname: "Quan",
+          age: 18,
+          email: "quan@gmail.com",
+          roleId: 5,
+        },
+        {
+          id: 3,
+          username: "longdh",
+          firstname: "Do Hoang",
+          lastname: "Long",
+          age: 19,
+          email: "long@gmail.com",
+          roleId: 8,
+        },
+        {
+          id: 4,
+          username: "hiendt",
+          firstname: "Do Thi",
+          lastname: "Hien",
+          age: 29,
+          email: "hien@gmail.com",
+          roleId: 11,
+        },
+        {
+          id: 6,
+          username: "lanht",
+          firstname: "Ho Thi",
+          lastname: "Lan",
+          age: 27,
+          email: "lan@gmail.com",
+          roleId: 13,
+        },
+      ];
+      // Mảng gRoleObjects là mảng chứa dữ liệu các roles
+      var gRoleObjects = [
+        {
+          roleId: 5,
+          roleName: "Admin",
+        },
+        {
+          roleId: 8,
+          roleName: "Manager",
+        },
+        {
+          roleId: 11,
+          roleName: "Teacher",
+        },
+        {
+          roleId: 13,
+          roleName: "Staff",
+        },
+      ];
+
+      const gUSER_COLS = [
+        "stt",
+        "username",
+        "firstname",
+        "lastname",
+        "age",
+        "email",
+        "roleId",
+      ];
+
+      // Biến mảng toàn cục định nghĩa chỉ số các cột tương ứng
+      const gUSER_STT_COL = 0;
+      const gUSER_USERNAME_COL = 1;
+      const gUSER_FIRSTNAME_COL = 2;
+      const gUSER_LASTNAME_COL = 3;
+      const gUSER_AGE_COL = 4;
+      const gUSER_EMAIL_COL = 5;
+      const gUSER_ROLE_ID_COL = 6;
+      const gUSER_ACTION_COL = 7;
+
+      // Biến toàn cục để hiển lưu STT
+      var gSTT = 1;
+
+      var gUserTable = $("#user-table").DataTable({
+        columns: [
+          { data: gUSER_COLS[gUSER_STT_COL] },
+          { data: gUSER_COLS[gUSER_USERNAME_COL] },
+          { data: gUSER_COLS[gUSER_FIRSTNAME_COL] },
+          { data: gUSER_COLS[gUSER_LASTNAME_COL] },
+          { data: gUSER_COLS[gUSER_AGE_COL] },
+          { data: gUSER_COLS[gUSER_EMAIL_COL] },
+          {
+            data: gUSER_COLS[gUSER_ROLE_ID_COL],
+            render: function (data, type) {
+              if (type === "display") {
+                let bRoleName = getRoleNameByRoleId(data);
+                return "<span>" + bRoleName + "<span>";
+              } else {
+                return data;
+              }
+            },
+          },
+          { data: gUSER_COLS[gUSER_ACTION_COL] },
+        ],
+        columnDefs: [
+          {
+            // định nghĩa lại cột STT
+            targets: gUSER_STT_COL,
+            render: function () {
+              return gSTT++;
+            },
+          },
+          {
+            // định nghĩa lại cột action
+            targets: gUSER_ACTION_COL,
+            defaultContent: `
+            <i class="fas fa-dice pointer" data-toggle="tooltip" data-placement="top" title="Dice History"></i>
+            <i class="fas fa-award pointer" data-toggle="tooltip" data-placement="top" title="Voucher History"></i>
+        `,
+          },
+        ],
+      });
+
+      /*** REGION 2 - Vùng gán / thực thi hàm xử lý sự kiện cho các elements */
+      onPageLoading();
+
+      $("#btn-filter-data").on("click", function () {
+        onBtnFilterClick();
+      });
+
+      $("#user-table").on("click", ".fa-dice", function () {
+        onBtnDiceHistorylClick(this);
+      });
+      $("#user-table").on("click", ".fa-award", function () {
+        onBtnVoucherHistorylClick(this);
+      });
+
+      /*** REGION 3 - Event handlers - Vùng khai báo các hàm xử lý sự kiện */
+      function onPageLoading() {
+        loadRoleToSelectOption();
+        loadDataToUserTable(gUserObjects);
+      }
+
+      function onBtnFilterClick() {
+        var vFilterByRole = $("#filter-select").val();
+        if (vFilterByRole !== "") {
+          var vFilteredUsers = gUserObjects.filter((user) => {
+            return user.roleId == vFilterByRole;
+          });
+          return loadDataToUserTable(vFilteredUsers);
+        }
+        loadDataToUserTable(gUserObjects);
+        alert("Choose Role!");
+      }
+
+      function onBtnDiceHistorylClick(paramElement) {
+        var vRowSelected = $(paramElement).closest("tr");
+        var vTable = $("#user-table").DataTable();
+        var vRowValue = vTable.row(vRowSelected).data();
+        console.log(vRowValue.username);
+        window.location.href =
+          "diceHistory.html" +
+          "?username=" +
+          vRowValue.username +
+          "&firstname=" +
+          vRowValue.firstname +
+          "&lastname=" +
+          vRowValue.lastname;
+      }
+
+      function onBtnVoucherHistorylClick(paramElement) {
+        var vRowSelected = $(paramElement).closest("tr");
+        var vTable = $("#user-table").DataTable();
+        var vRowValue = vTable.row(vRowSelected).data();
+        console.log(vRowValue.username);
+        window.location.href =
+          "voucherHistory.html" +
+          "?username=" +
+          vRowValue.username +
+          "&firstname=" +
+          vRowValue.firstname +
+          "&lastname=" +
+          vRowValue.lastname;
+      }
+
+      /*** REGION 4 - Common funtions - Vùng khai báo hàm dùng chung trong toàn bộ chương trình*/
+      function loadDataToUserTable(paramUserArr) {
+        gSTT = 1;
+        gUserTable.clear();
+        gUserTable.rows.add(paramUserArr);
+        gUserTable.draw();
+      }
+
+      function getRoleNameByRoleId(paramRoleId) {
+        for (let role of gRoleObjects) {
+          if (role.roleId === parseInt(paramRoleId)) {
+            return role.roleName;
+          }
+        }
+      }
+      function loadRoleToSelectOption() {
+        for (let i = 0; i < gRoleObjects.length; i++) {
+          $("select").append(
+            "<option value=" +
+              gRoleObjects[i].roleId +
+              ">" +
+              gRoleObjects[i].roleName +
+              "</option>"
+          );
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="text-center my-4">
+        <h2>Danh sách người dùng</h2>
+      </div>
+
+      <table class="table table-bordered table-striped table-hover">
+        <thead>
+          <tr>
+            <th>Mã người dùng</th>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Age</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          <tr>
+            <td>13528</td>
+            <td>John</td>
+            <td>Doe</td>
+            <td>23</td>
+            <td>...</td>
+          </tr>
+          <tr>
+            <td>23528</td>
+            <td>Mary</td>
+            <td>Moe</td>
+            <td>42</td>
+            <td>...</td>
+          </tr>
+          <tr>
+            <td>13348</td>
+            <td>July</td>
+            <td>Dooley</td>
+            <td>54</td>
+            <td>...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    ​
+    <script>
+      "use strict";
+      /*** REGION 1 - Global variables - Vùng khai báo biến, hằng số, tham số TOÀN CỤC */
+      var gJsonUser = `{
+        "description": "Data user",
+        "users": [
+          {
+            "userId": 1,
+            "firstname": "Test1",
+            "lastname": "User1",
+            "age": 18
+          },
+          {
+            "userId": 2,
+            "firstname": "Test2",
+            "lastname": "User2",
+            "age": 19
+          },
+          {
+            "userId": 3,
+            "firstname": "Test3",
+            "lastname": "User3",
+            "age": 18
+          },
+          {
+            "userId": 4,
+            "firstname": "Test4",
+            "lastname": "User4",
+            "age": 20
+          },
+          {
+            "userId": 5,
+            "firstname": "Test5",
+            "lastname": "User5",
+            "age": 21
+          },
+          {
+            "userId": 6,
+            "firstname": "Test6",
+            "lastname": "User6",
+            "age": 20
+          }
+        ]
+      }`;
+      var gObjUsers = JSON.parse(gJsonUser);
+      var gTableBody = $("tbody");
+
+      /*** REGION 2 - Vùng gán / thực thi sự kiện cho các elements */
+      onPageloading();
+      $("tbody").on("click", ".details", function () {
+        console.log("Detail clicked");
+        onBtnDetailClick(this);
+      });
+      /*** REGION 3 - Event handlers - Vùng khai báo các hàm xử lý sự kiện */
+      function onPageloading() {
+        gTableBody.html("");
+        for (let i = 0; i < gObjUsers.users.length; i++) {
+          var vTableRow =
+            "<tr>" +
+            "<td>" +
+            gObjUsers.users[i].userId +
+            "</td>" +
+            "<td>" +
+            gObjUsers.users[i].firstname +
+            "</td>" +
+            "<td>" +
+            gObjUsers.users[i].lastname +
+            "</td>" +
+            "<td>" +
+            gObjUsers.users[i].age +
+            "</td>" +
+            "<td><button class='btn btn-primary details' data-userid='" +
+            gObjUsers.users[i].userId +
+            "' data-firstname='" +
+            gObjUsers.users[i].firstname +
+            "' data-lastname='" +
+            gObjUsers.users[i].lastname +
+            "' data-age='" +
+            gObjUsers.users[i].age +
+            "'> Detail </button></td>";
+          ("</tr>");
+
+          gTableBody.append(vTableRow);
+        }
+      }
+      /*** REGION 4 - Common funtions - Vùng khai báo hàm dùng chung trong toàn bộ chương trình*/
+      function onBtnDetailClick(paramElement) {
+        var vUserId = $(paramElement).data("userid");
+        var vFirstname = $(paramElement).data("firstname");
+        var vLastname = $(paramElement).data("lastname");
+        var vAge = $(paramElement).data("age");
+        console.log("User ID: " + vUserId);
+        console.log("First Name: " + vFirstname);
+        console.log("Last Name: " + vLastname);
+        console.log("Age: " + vAge);
+      }
+    </script>
+  </body>
+</html>
+​

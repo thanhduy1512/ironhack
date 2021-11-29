@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <div class="container jumbotron">
+      <button id="btnBack" class="btn btn-warning">Back</button>
+      <div class="col-12">
+        <div class="text-center mb-5"><h1>User Detail</h1></div>
+        <form>
+          <div class="form-group row">
+            <label for="" class="col-sm-2 col-form-label">ID</label>
+            <div class="col-sm-4">
+              <input
+                id="inp-id"
+                type="text"
+                class="form-control"
+                placeholder="ID"
+                disabled
+              />
+            </div>
+            <label for="" class="col-sm-2 col-form-label">First Name</label>
+            <div class="col-sm-4">
+              <input
+                id="inp-firstname"
+                type="text"
+                class="form-control"
+                placeholder="First Name"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-2 col-form-label">Last Name</label>
+            <div class="col-sm-4">
+              <input
+                id="inp-lastname"
+                type="text"
+                class="form-control"
+                placeholder="Last Name"
+              />
+            </div>
+            <label for="" class="col-sm-2 col-form-label">Country</label>
+            <div class="col-sm-4">
+              <input
+                id="inp-country"
+                type="text"
+                class="form-control"
+                placeholder="Country"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-2 col-form-label">Subject</label>
+            <div class="col-sm-4">
+              <input
+                id="inp-subject"
+                type="text"
+                class="form-control"
+                placeholder="Subject"
+              />
+            </div>
+            <label for="" class="col-sm-2 col-form-label">Customer Type</label>
+            <div class="col-sm-4">
+              <input
+                id="inp-customer-type"
+                type="text"
+                class="form-control"
+                placeholder="Customer Type"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-2 col-form-label"
+              >Register Status</label
+            >
+            <div class="col-sm-4">
+              <input
+                id="inp-register-status"
+                type="text"
+                class="form-control"
+                placeholder="Register Status"
+              />
+            </div>
+          </div>
+        </form>
+        <div class="text-right mt-3">
+          <button id="btnUpdate" class="btn btn-success">Update</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      const gHOME_PAGE = "Task32.50.html";
+      var gQueryString = window.location.search;
+      var gParam = new URLSearchParams(gQueryString);
+      var gID = gParam.get("id");
+
+      var gInputID = $("#inp-id");
+      var gInputFirstname = $("#inp-firstname");
+      var gInputLastname = $("#inp-lastname");
+      var gInputCountry = $("#inp-country");
+      var gInputSubject = $("#inp-subject");
+      var gInputCustomerType = $("#inp-customer-type");
+      var gInputRegisterStatus = $("#inp-register-status");
+
+      onPageLoading();
+
+      function onPageLoading() {
+        getAjaxUserDataById();
+      }
+
+      $("#btnUpdate").on("click", function () {
+        console.log("update");
+        onBtnUpdateClick();
+      });
+
+      $("#btnBack").on("click", function () {
+        console.log("back");
+        var vUrlSiteToOpen = gHOME_PAGE;
+        window.location.href = vUrlSiteToOpen;
+      });
+
+      function getAjaxUserDataById() {
+        "use strict";
+
+        $.ajax({
+          url:
+            "http://42.115.221.44:8080/devcamp-register-java-api/users/" + gID,
+          type: "GET",
+          dataType: "json", // added data type
+          success: function (res) {
+            console.log(res);
+            loadDataToInput(res);
+          },
+          error: function (ajaxContext) {
+            alert(ajaxContext.responseText);
+          },
+        });
+      }
+
+      function loadDataToInput(paramRes) {
+        gInputID.val(paramRes.id);
+        gInputFirstname.val(paramRes.firstname);
+        gInputLastname.val(paramRes.lastname);
+        gInputCountry.val(paramRes.country);
+        gInputSubject.val(paramRes.subject);
+        gInputCustomerType.val(paramRes.customerType);
+        gInputRegisterStatus.val(paramRes.registerStatus);
+      }
+
+      function onBtnUpdateClick() {
+        var vUserObj = {
+          id: "",
+          firstname: "",
+          lastname: "",
+          country: "",
+          subject: "",
+          customerType: "",
+          registerStatus: "",
+        };
+        getData(vUserObj);
+        var vIsValid = validateData(vUserObj);
+        if (vIsValid) {
+          callAjaxRestApiUpdate(vUserObj);
+        }
+      }
+
+      function getData(paramUserObj) {
+        paramUserObj.id = gInputID.val();
+        paramUserObj.firstname = gInputFirstname.val();
+        paramUserObj.lastname = gInputLastname.val();
+        paramUserObj.country = gInputCountry.val();
+        paramUserObj.subject = gInputSubject.val();
+        paramUserObj.customerType = gInputCustomerType.val();
+        paramUserObj.registerStatus = gInputRegisterStatus.val();
+      }
+
+      function validateData(paramUserObj) {
+        if (paramUserObj.firstname.trim() == "") {
+          alert("Provide First Name!");
+          return false;
+        }
+        if (paramUserObj.lastname.trim() == "") {
+          alert("Provide Last Name!");
+          return false;
+        }
+        if (paramUserObj.country.trim() == "") {
+          alert("Provide Country!");
+          return false;
+        }
+        if (paramUserObj.subject.trim() == "") {
+          alert("Provide Subject!");
+          return false;
+        }
+        if (paramUserObj.customerType.trim() == "") {
+          alert("Provide Customer Type!");
+          return false;
+        }
+        if (paramUserObj.registerStatus.trim() == "") {
+          alert("Provide Register Status!");
+          return false;
+        }
+        return true;
+      }
+
+      function callAjaxRestApiUpdate(paramUserObj) {
+        "use strict";
+        $.ajax({
+          url:
+            "http://42.115.221.44:8080/devcamp-register-java-api/users/" + gID,
+          type: "PUT",
+          contentType: "application/json;charset=UTF-8",
+          data: JSON.stringify(paramUserObj),
+          success: function (res) {
+            console.log(res);
+            var vUrlSiteToOpen = gHOME_PAGE;
+            window.location.href = vUrlSiteToOpen;
+          },
+          error: function (ajaxContext) {
+            alert(ajaxContext.responseText);
+          },
+        });
+      }
+    </script>
+  </body>
+</html>

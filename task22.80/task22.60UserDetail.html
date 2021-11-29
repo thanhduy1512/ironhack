@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      .col-2,
+      .col-4,
+      .col-10 {
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="task22.60.UserList.html" class="btn btn-danger mt-3 mb-3 ml-3">
+      Back To User List
+    </a>
+    <div class="container bg-light">
+      <h2 class="text-center">User Detail</h2>
+      <div class="row">
+        <div class="col-2">
+          <label>User ID</label>
+        </div>
+        <div class="col-4">
+          <input id="input-id" class="form-control" />
+        </div>
+
+        <div class="col-2">
+          <label>Country</label>
+        </div>
+        <div class="col-4">
+          <input id="input-country" class="form-control" />
+        </div>
+
+        <div class="col-2">
+          <label>First Name</label>
+        </div>
+        <div class="col-4">
+          <input id="input-firstname" class="form-control" />
+        </div>
+
+        <div class="col-2">
+          <label>Last Name</label>
+        </div>
+        <div class="col-4">
+          <input id="input-lastname" class="form-control" />
+        </div>
+
+        <div class="col-2">
+          <label>Subject</label>
+        </div>
+        <div class="col-10">
+          <textarea id="input-subject" cols="5" style="width: 100%"> </textarea>
+        </div>
+      </div>
+      <div class="text-center mt-2">
+        <button onclick="onCLickUpdateBtn()" class="btn btn-success mb-4">
+          Update
+        </button>
+      </div>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      const gREQUEST_STATUS_OK = 200;
+      const gREQUEST_READY_STATUS_FINISH_AND_OK = 4;
+      const gBASE_URL =
+        "http://42.115.221.44:8080/devcamp-register-java-api/users";
+
+      var gInpId = document.getElementById("input-id");
+      var gInpFirstname = document.getElementById("input-firstname");
+      var gInpLastname = document.getElementById("input-lastname");
+      var gInpCountry = document.getElementById("input-country");
+      var gInpSubject = document.getElementById("input-subject");
+
+      onPageLoading();
+
+      function onPageLoading() {
+        var vURLString = window.location.href;
+        console.log(vURLString);
+        var vURL = new URL(vURLString);
+
+        var vId = vURL.searchParams.get("id");
+        var vFirstname = vURL.searchParams.get("firstname");
+        var vLastname = vURL.searchParams.get("lastname");
+        var vCountry = vURL.searchParams.get("country");
+        var vSubject = vURL.searchParams.get("subject");
+
+        gInpId.value = vId;
+        gInpFirstname.value = vFirstname;
+        gInpLastname.value = vLastname;
+        gInpCountry.value = vCountry;
+        gInpSubject.value = vSubject;
+      }
+
+      function onCLickUpdateBtn() {
+        var vUserUpdatedDetail = {
+          uid: 0,
+          firstname: "",
+          lastname: "",
+          country: "",
+          subject: "",
+        };
+
+        getUpdatedData(vUserUpdatedDetail);
+
+        var vIsValid = validateUpdatedData(vUserUpdatedDetail);
+
+        var vXMLHttp = new XMLHttpRequest();
+        if (vIsValid) {
+          sendRequestUpdateData(vXMLHttp, vUserUpdatedDetail);
+          vXMLHttp.onreadystatechange = function () {
+            if (
+              this.readyState == gREQUEST_READY_STATUS_FINISH_AND_OK &&
+              this.status == gREQUEST_STATUS_OK
+            ) {
+              processResponseData(vXMLHttp);
+            }
+          };
+        }
+      }
+
+      function getUpdatedData(paramUser) {
+        paramUser.uid = gInpId.value;
+        paramUser.firstname = gInpFirstname.value;
+        paramUser.lastname = gInpLastname.value;
+        paramUser.country = gInpCountry.value;
+        paramUser.subject = gInpSubject.value;
+      }
+
+      function validateUpdatedData(paramUser) {
+        if (paramUser.uid.trim() == "") {
+          alert("Invalid User ID");
+          return false;
+        }
+        if (paramUser.firstname.trim() == "") {
+          alert("Invalid First Name");
+          return false;
+        }
+        if (paramUser.lastname.trim() == "") {
+          alert("Invalid Last Name");
+          return false;
+        }
+        if (paramUser.country.trim() == "") {
+          alert("Invalid Country");
+          return false;
+        }
+        if (paramUser.subject.trim() == "") {
+          alert("Invalid Subject");
+          return false;
+        }
+
+        return true;
+      }
+
+      function sendRequestUpdateData(paramXmlHttp, paramUser) {
+        var vUrlUpdateInfo = gBASE_URL + "/" + paramUser.uid;
+        paramXmlHttp.open("PUT", vUrlUpdateInfo);
+        paramXmlHttp.setRequestHeader(
+          "Content-type",
+          "application/json;charset=UTF-8"
+        );
+        paramXmlHttp.send(JSON.stringify(paramUser));
+      }
+
+      function processResponseData(paramXmlHttp) {
+        alert("User Detail Updated!");
+        var vUrlSiteToOpen = "task22.60.UserList.html";
+        window.location.href = vUrlSiteToOpen;
+      }
+    </script>
+  </body>
+</html>

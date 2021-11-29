@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Import DataTable Library -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css"
+    />
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js"></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="form-group">
+        <pre>
+        - Định nghĩa 03 đối tượng students (sinh viên), subjects (môn học) và grades (bảng điểm)
+        - Điền dữ liệu mẫu cho 03 đối tượng trên. 
+            + Student điền 5 sinh viên
+            + Subject điền 5 môn học
+            + Grades: điền 10 kết quả học tập cho các sinh viên và môn học ở trên
+        - Thực hiện load dữ liệu bảng điểm (grades)
+        - Thêm bộ lọc theo 2 ô select: Student và Subject
+      </pre
+        >
+      </div>
+      <div class="text-center">
+        <h3>F200 STUDYING HISTORY</h3>
+      </div>
+      <!-- FILTER TABLE -->
+      <div class="jumbotron">
+        <h5>Student Info:</h5>
+        <div class="row">
+          <div class="col-2">
+            <label>Student</label>
+          </div>
+          <div class="col-3">
+            <select id="student-select" class="form-control">
+              <option>Choose Student</option>
+            </select>
+          </div>
+          <div class="col-2">
+            <label>Subject</label>
+          </div>
+          <div class="col-3">
+            <select id="subject-select" class="form-control">
+              <option>Choose Subject</option>
+            </select>
+          </div>
+          <div class="col-2 text-center">
+            <button id="btn-filter" class="btn btn-success">Filter Data</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    ​
+    <!-- STUDENT TABLE -->
+    <div class="container">
+      <table
+        class="table table-bordered table-striped table-hover"
+        id="student-table"
+      >
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Student</th>
+            <th>Subject</th>
+            <th>Grade</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <script>
+      /* Mảng userObjects là mảng chứa dữ liệu user. Từng phần tử là object
+       */
+      var gStudents = [
+        {
+          id: 2, // tự tăng
+          studentCode: "213",
+          firstname: "Ngo Van",
+          lastname: "Quan",
+          age: 18,
+          email: "quan@gmail.com",
+          studyYear: 2015,
+        },
+        {
+          id: 3, // tự tăng
+          studentCode: "123",
+          firstname: "Duong Thanh",
+          lastname: "Duy",
+          age: 21,
+          email: "duy@gmail.com",
+          studyYear: 2015,
+        },
+        {
+          id: 4, // tự tăng
+          studentCode: "456",
+          firstname: "Le Van",
+          lastname: "B",
+          age: 21,
+          email: "B@gmail.com",
+          studyYear: 2015,
+        },
+        {
+          id: 5, // tự tăng
+          studentCode: "789",
+          firstname: "Nguyen Van",
+          lastname: "A",
+          age: 21,
+          email: "A@gmail.com",
+          studyYear: 2015,
+        },
+        {
+          id: 6, // tự tăng
+          studentCode: "789",
+          firstname: "Luong Van",
+          lastname: "C",
+          age: 21,
+          email: "C@gmail.com",
+          studyYear: 2015,
+        },
+      ];
+
+      var gSubjects = [
+        {
+          id: 1, // tự tăng
+          subjectCode: "MATH",
+          subjectName: "Toán cao cấp 1",
+        },
+        {
+          id: 2, // tự tăng
+          subjectCode: "ENG",
+          subjectName: "Anh Văn",
+        },
+        {
+          id: 3, // tự tăng
+          subjectCode: "CHEM",
+          subjectName: "Hóa Học",
+        },
+        {
+          id: 4, // tự tăng
+          subjectCode: "PHYSICS",
+          subjectName: "Vật Lý",
+        },
+        {
+          id: 5, // tự tăng
+          subjectCode: "HISTORY",
+          subjectName: "Lịch Sử",
+        },
+        // điền thêm 04 môn học nữa
+      ];
+
+      var gGrades = [
+        {
+          id: 1, // tự tăng
+          studentId: 2,
+          subjectId: 1,
+          grade: 10,
+          examDate: "13/04/2021",
+        },
+        {
+          id: 2, // tự tăng
+          studentId: 2,
+          subjectId: 2,
+          grade: 8,
+          examDate: "13/04/2021",
+        },
+        {
+          id: 3, // tự tăng
+          studentId: 3,
+          subjectId: 2,
+          grade: 7,
+          examDate: "13/04/2021",
+        },
+        {
+          id: 4, // tự tăng
+          studentId: 3,
+          subjectId: 3,
+          grade: 6,
+          examDate: "13/04/2021",
+        },
+        {
+          id: 5, // tự tăng
+          studentId: 4,
+          subjectId: 3,
+          grade: 5,
+          examDate: "13/04/2021",
+        },
+        {
+          id: 6, // tự tăng
+          studentId: 4,
+          subjectId: 4,
+          grade: 4,
+          examDate: "13/04/2021",
+        },
+        {
+          id: 7, // tự tăng
+          studentId: 5,
+          subjectId: 4,
+          grade: 3,
+          examDate: "13/04/2021",
+        },
+        {
+          id: 8, // tự tăng
+          studentId: 5,
+          subjectId: 5,
+          grade: 2,
+          examDate: "13/04/2021",
+        },
+        {
+          id: 9, // tự tăng
+          studentId: 6,
+          subjectId: 1,
+          grade: 1,
+          examDate: "13/04/2021",
+        },
+        {
+          id: 10, // tự tăng
+          studentId: 6,
+          subjectId: 2,
+          grade: 9,
+          examDate: "13/04/2021",
+        },
+
+        // điền thêm 9 kết quả thi nữa
+      ];
+
+      const gStudent_COLS = ["stt", "fullname", "id", "grade", "date"];
+
+      const gSTT_COL = 0;
+      const gFULLNAME_COL = 1;
+      const gSUBJECT_COL = 2;
+      const gGRADE_COL = 3;
+      const gDATE_COL = 4;
+
+      var gSTT = 1;
+
+      var gStudentId = 0;
+
+      var gStudentTable = $("#student-table").DataTable({
+        columns: [
+          { data: gStudent_COLS[gSTT_COL] },
+          {
+            mData: gStudent_COLS[gFULLNAME_COL],
+            mRender: function (data, type, full) {
+              return full["firstname"] + " " + full["lastname"];
+            },
+          },
+          {
+            data: gStudent_COLS[gSUBJECT_COL],
+            render: function (data, type) {
+              if (type == "display") {
+                var vSubject = getSubjectByStudentId(data);
+                return vSubject;
+              } else {
+                return data;
+              }
+            },
+          },
+          { data: gStudent_COLS[gGRADE_COL] },
+          { data: gStudent_COLS[gDATE_COL] },
+        ],
+        columnDefs: [
+          {
+            targets: gSTT_COL,
+            render: function () {
+              return gSTT++;
+            },
+          },
+        ],
+      });
+
+      onPageLoading();
+
+      function onPageLoading() {
+        loadDataToTable(gStudents);
+        loadDataToSelect();
+      }
+
+      function loadDataToSelect() {
+        var vStudentSelect = $("#student-select");
+        var vSubjectSelect = $("#subject-select");
+        var vMarkUpStudent = "";
+        for (let i = 0; i < gStudents.length; i++) {
+          vMarkUpStudent +=
+            "<option value=" +
+            gStudents[i].id +
+            ">" +
+            gStudents[i].firstname +
+            " ";
+          gStudents[i].lastname + "</option>";
+        }
+        vStudentSelect.append(vMarkUpStudent);
+        var vMarkUpSubject = "";
+        for (let i = 0; i < gSubjects.length; i++) {
+          vMarkUpSubject +=
+            "<option value=" +
+            gSubjects[i].id +
+            ">" +
+            gSubjects[i].subjectName +
+            "</option>";
+        }
+        vSubjectSelect.append(vMarkUpSubject);
+      }
+
+      function loadDataToTable(paramStudentArr) {
+        gSTT = 1;
+        gStudentTable.clear();
+        gStudentTable.rows.add(paramStudentArr);
+        gStudentTable.draw();
+      }
+
+      function getSubjectByStudentId(paramId) {
+        var vSubjectIds = [];
+        for (let grade of gGrades) {
+          if (grade.studentId == paramId) {
+            vSubjectIds.push(grade.subjectId);
+          }
+        }
+        var vSubjectNames = [];
+        for (let subject of gSubjects) {
+          if (vSubjectIds.includes(subject.id)) {
+            vSubjectNames.push(subject.subjectName);
+          }
+        }
+        return vSubjectNames;
+      }
+    </script>
+  </body>
+</html>

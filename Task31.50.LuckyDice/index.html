@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <img
+        style="width: 100%; height: 125px"
+        src="./LuckyDiceImages/cover.jpg"
+      />
+
+      <div class="row">
+        <div class="col-5">
+          <h3>Your Information</h3>
+          <form class="row">
+            <label class="col-4">User Name</label>
+            <input class="col-8" id="username" />
+            <label class="col-4">First Name</label>
+            <input class="col-8" id="firstname" />
+            <label class="col-4">Last Name</label>
+            <input class="col-8" id="lastname" />
+          </form>
+        </div>
+        <div class="col-4 text-center">
+          <button id="dice-btn" class="btn btn-success mt-3 mb-3">Dice!</button>
+          <br />
+          <img
+            id="img-dice"
+            class="mb-3"
+            style="width: 100px; height: 100px"
+            src="./LuckyDiceImages/dice.png"
+          />
+          <p>Congratulations!</p>
+        </div>
+        <div class="col-3">
+          <div class="text-center">
+            <p>Voucher</p>
+            <p id="voucher-id">None</p>
+            <p id="voucher-percent">0%</p>
+          </div>
+          <div>
+            <img
+              id="img-prize"
+              style="width: 80%"
+              src="./LuckyDiceImages/motobike.jpg"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="text-center pt-2 pb-2">
+        <button id="btnDiceHistory" class="btn btn-success">
+          Dice History
+        </button>
+        <button class="btn btn-info">Voucher History</button>
+        <button class="btn btn-info">Prize History</button>
+      </div>
+      <div>
+        <table class="table table-striped table-hover border">
+          <thead>
+            <tr>
+              <th>Game</th>
+              <th>Dice</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      $("input").addClass("form-control mt-2");
+      $("label").addClass("mt-2");
+
+      $(document).ready(function () {
+        const gREQUEST_READYSTATE_FINISH_RESPONSE_READY = 4;
+        const gREQUEST_STATUS_OK = 200;
+
+        const g_BASE_URL = "http://42.115.221.44:8080/devcamp-lucky-dice";
+        const gUtf8TextApplicationHeader = "application/json;charset=UTF-8";
+
+        //user info
+        var gUsername = $("#username");
+        var gFirstname = $("#firstname");
+        var gLastname = $("#lastname");
+
+        //dice result
+        var gDiceImg = $("#img-dice");
+
+        //voucher and prize result
+        var gVoucherId = $("#voucher-id");
+        var gVoucherPercent = $("#voucher-percent");
+        var gPrizeImg = $("#img-prize");
+
+        var gPersonObj = {
+          username: "",
+          firstname: "",
+          lastname: "",
+        };
+
+        $("#dice-btn").on("click", function () {
+          getData();
+
+          var vIsValid = validateData();
+
+          if (vIsValid) {
+            var vXmlHttpDice = new XMLHttpRequest();
+            sendRequestGetNewDice(vXmlHttpDice);
+            vXmlHttpDice.onreadystatechange = function () {
+              if (
+                vXmlHttpDice.status == gREQUEST_STATUS_OK &&
+                vXmlHttpDice.readyState ==
+                  gREQUEST_READYSTATE_FINISH_RESPONSE_READY
+              ) {
+                processResponseDataNewDice(vXmlHttpDice);
+              }
+            };
+          }
+        });
+
+        function getData() {
+          gPersonObj.username = gUsername.val();
+          gPersonObj.firstname = gFirstname.val();
+          gPersonObj.lastname = gLastname.val();
+        }
+
+        function validateData() {
+          if (gPersonObj.username.trim() == "") {
+            alert("Invalid User Name!");
+            return false;
+          }
+          if (gPersonObj.firstname.trim() == "") {
+            alert("Invalid First Name!");
+            return false;
+          }
+          if (gPersonObj.lastname.trim() == "") {
+            alert("Invalid Last Name!");
+            return false;
+          }
+
+          return true;
+        }
+
+        function sendRequestGetNewDice(paramXmlHttp) {
+          paramXmlHttp.open("POST", g_BASE_URL + "/dice", true);
+          paramXmlHttp.setRequestHeader(
+            "Content-Type",
+            gUtf8TextApplicationHeader
+          );
+          paramXmlHttp.send(JSON.stringify(gPersonObj));
+        }
+
+        function processResponseDataNewDice(paramXmlHttp) {
+          //console.log(paramXmlHttp.responseText);
+          var vDiceResultObj = JSON.parse(paramXmlHttp.responseText);
+          console.log(vDiceResultObj);
+
+          //change dice img
+          var vImgDiceResult =
+            "./LuckyDiceImages/" + vDiceResultObj.dice + ".png";
+          gDiceImg.prop("src", vImgDiceResult);
+
+          //change voucher result
+          if (vDiceResultObj.voucher !== null) {
+            gVoucherId.text(vDiceResultObj.voucher.maVoucher);
+            gVoucherPercent.text(vDiceResultObj.voucher.phanTramGiamGia + "%");
+          } else {
+            gVoucherId.text("None");
+            gVoucherPercent.text("0%");
+          }
+
+          //change prize img
+          if (vDiceResultObj.prize !== null) {
+            if (vDiceResultObj.prize == "Xe máy") {
+              gPrizeImg.prop("src", "./LuckyDiceImages/motobike.jpg");
+            }
+            if (vDiceResultObj.prize == "Ô tô") {
+              gPrizeImg.prop("src", "./LuckyDiceImages/car.jpg");
+            }
+            if (vDiceResultObj.prize == "Mũ") {
+              gPrizeImg.prop("src", "./LuckyDiceImages/mu.jpg");
+            }
+            if (vDiceResultObj.prize == "Áo") {
+              gPrizeImg.prop("src", "./LuckyDiceImages/ao.jpg");
+            }
+          } else {
+            gPrizeImg.prop("src", "./LuckyDiceImages/no-present.jpg");
+          }
+        }
+
+        $("#btnDiceHistory").on("click", function () {
+          getData();
+
+          var vIsValid = validateData();
+
+          if (vIsValid) {
+            var vXmlHttpDiceHistory = new XMLHttpRequest();
+            sendRequestGetHistoryDice(vXmlHttpDiceHistory);
+            vXmlHttpDiceHistory.onreadystatechange = function () {
+              if (
+                this.readyState == gREQUEST_READYSTATE_FINISH_RESPONSE_READY &&
+                this.status == gREQUEST_STATUS_OK
+              ) {
+                processResponseDataHistoryDice(vXmlHttpDiceHistory);
+              }
+            };
+          }
+        });
+
+        function sendRequestGetHistoryDice(paramXmlHttp) {
+          paramXmlHttp.open(
+            "GET",
+            g_BASE_URL + "/dice-history?username=" + gPersonObj.username,
+            true
+          );
+          paramXmlHttp.send();
+        }
+
+        function processResponseDataHistoryDice(paramXmlHttp) {
+          var vHistoryObj = JSON.parse(paramXmlHttp.responseText);
+          console.log(vHistoryObj);
+          var vTableBody = $("tbody");
+          for (let i = 0; i < vHistoryObj.dices.length; i++) {
+            var markUpRow = `
+                <tr>
+                    <td>${i + 1}</td>    
+                    <td>${vHistoryObj.dices[i]}</td>    
+                </tr>
+            `;
+            vTableBody.append(markUpRow);
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Task 12.65</title>
+    <meta charset="UTF-8" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+  </head>
+  <script>
+    /*** REGION 1 - Global variables - Vùng khai báo biến, hằng số, tham số TOÀN CỤC */
+
+    /*** REGION 2 - Vùng gán / thực thi sự kiện cho các elements */
+
+    /*** REGION 3 - Event handlers - Vùng khai báo các hàm xử lý sự kiện */
+
+    /*** REGION 4 - Common funtions - Vùng khai báo hàm dùng chung trong toàn bộ chương trình*/
+
+    // function trả về phần thưởng, tùy giá trị input_dice (xúc xắc) từ 1 đến 6 là bao nhiêu
+
+    // các vấn bạn thấy trong code là
+    // if-else bị lồng quá nhiều, sâu
+    // nhiều return
+    // tab lùi ra vào không hợp lý
+    // một số vấn đề đặt tên
+    function GetPresentByDice(input_dice) {
+      switch (input_dice) {
+        case 1:
+          return "voucher 5%";
+        case 2:
+          return "voucher 15%";
+        case 3:
+          return "voucher 20%";
+        case 4:
+          return "voucher 30%";
+        case 5:
+          return "voucher 40%";
+        case 6:
+          return "voucher 100%";
+        default:
+          return "no present founnd";
+      }
+    }
+
+    // code test thử
+    var myPresent = GetPresentByDice(6);
+    console.log(myPresent);
+  </script>
+
+  <body class="bg bg-light">
+    <div class="container">
+      <h1>Test Page for Devcamp Javascrip Tasks</h1>
+      <p>
+        Press F5 to run code. Don't forget to Save your code before running.
+        (Ctrl+S).
+      </p>
+    </div>
+  </body>
+</html>

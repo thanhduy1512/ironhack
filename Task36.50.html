@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Import Datatable sau jquery -->
+    <!-- Import them style bootstrap cho datatable -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css"
+    />
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        font-size: x-small;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2 style="text-align: center">Danh sách người dùng</h2>
+
+      <table
+        id="user-table"
+        class="table table-bordered table-striped table-hover"
+      >
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Country</th>
+            <th>Subject</th>
+            <th>Customer Type</th>
+            <th>Register Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    ​
+    <script>
+      $(document).ready(function () {
+        /*** REGION 1 - Global variables - Vùng khai báo biến, hằng số, tham số TOÀN CỤC */
+        $.ajax({
+          url: "http://42.115.221.44:8080/devcamp-register-java-api/users",
+          type: "GET",
+          dataType: "json",
+          success: function (res) {
+            loadDataToTable(res);
+          },
+          error: function (error) {
+            console.assert(error.responseText);
+          },
+        });
+
+        var gNameCol = [
+          "id",
+          "firstname",
+          "lastname",
+          "country",
+          "subject",
+          "customerType",
+          "registerStatus",
+          "action",
+        ];
+        const gID_COL = 0;
+        const gFIRSTNAME_COL = 1;
+        const gLASTNAME_COL = 2;
+        const gCOUNTRY_COL = 3;
+        const gSUBJECT_COL = 4;
+        const gCUSTOMER_TYPE_COL = 5;
+        const gREGISTER_STATUS_COL = 6;
+        const gACTION_COL = 7;
+
+        /*** REGION 2 - Vùng gán / thực thi hàm xử lý sự kiện cho các elements */
+        $(document).on("click", ".detail_user", function () {
+          onBtnDetailUserClick(this);
+        });
+        /*** REGION 3 - Event handlers - Vùng khai báo các hàm xử lý sự kiện */
+        function loadDataToTable(paramUserObject) {
+          $("#user-table").DataTable({
+            data: paramUserObject,
+            columns: [
+              { data: gNameCol[gID_COL] },
+              { data: gNameCol[gFIRSTNAME_COL] },
+              { data: gNameCol[gLASTNAME_COL] },
+              { data: gNameCol[gCOUNTRY_COL] },
+              { data: gNameCol[gSUBJECT_COL] },
+              { data: gNameCol[gCUSTOMER_TYPE_COL] },
+              { data: gNameCol[gREGISTER_STATUS_COL] },
+              { data: gNameCol[gACTION_COL] },
+            ],
+            columnDefs: [
+              {
+                targets: gACTION_COL,
+                className: "text-center",
+                defaultContent:
+                  "<button class='btn btn-primary detail_user'>Details</button>",
+              },
+            ],
+          });
+        }
+
+        /*** REGION 4 - Common funtions - Vùng khai báo hàm dùng chung trong toàn bộ chương trình*/
+
+        function onBtnDetailUserClick(paramElement) {
+          var vRowSelected = $(paramElement).closest("tr");
+          var vTable = $("#user-table").DataTable();
+          var vRowValue = vTable.row(vRowSelected).data();
+          console.log(vRowValue);
+        }
+      });
+    </script>
+  </body>
+</html>
+​

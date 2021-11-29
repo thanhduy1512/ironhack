@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Registration Car Form</h2>
+
+      <form id="inputform01" class="jumbotron container">
+        <div class="row form-group">
+          <div class="col-sm-3">
+            <label for="input-fname">First Name</label>
+          </div>
+          <div class="col-sm-9">
+            <input
+              type="text"
+              id="input-fname"
+              name="firstname"
+              placeholder="Your first name ..."
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-sm-3">
+            <label for="input-lname">Last Name</label>
+          </div>
+          <div class="col-sm-9">
+            <input
+              type="text"
+              id="input-lname"
+              name="lastname"
+              placeholder="Your last name ..."
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-sm-3">
+            <label for="country-select">Country</label>
+          </div>
+          <div class="col-sm-3">
+            <select
+              id="country-select"
+              name="country"
+              class="form-control"
+            ></select>
+          </div>
+          <div class="col-sm-3">
+            <label for="region-type-select">Region</label>
+          </div>
+          <div class="col-sm-3">
+            <select
+              disabled
+              id="region-type-select"
+              name="region"
+              class="form-control"
+            ></select>
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-sm-3">
+            <label for="car-select">Car</label>
+          </div>
+          <div class="col-sm-3">
+            <select id="car-select" name="car" class="form-control"></select>
+          </div>
+          <div class="col-sm-3">
+            <label for="car-type-select">Car type</label>
+          </div>
+          <div class="col-sm-3">
+            <select
+              id="car-type-select"
+              name="car-type"
+              disabled
+              class="form-control"
+            ></select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12" style="text-align: right">
+            <input
+              id="btn-send"
+              type="button"
+              value="Send"
+              class="btn btn-info"
+            />
+          </div>
+        </div>
+      </form>
+    </div>
+    <script>
+      "use strict";
+      /*** REGION 1 - Global variables - Vùng khai báo biến, hằng số, tham số TOÀN CỤC */
+      // car brand information
+      var gJsonCarData = `[
+                          {"brandId": "0","brandName": "None", "brandTypes": []},
+                          {"brandId": "1","brandName": "Audi", "brandTypes": [{"typeId":"0", "typeName":"Q3"},{"typeId":"1","typeName":"Q5"},{"typeId":"2","typeName":"A4"}]},
+                          {"brandId": "2","brandName": "BMW", "brandTypes": [{"typeId":"0","typeName":"1 series"},{"typeId":"1","typeName":"X series"},{"typeId":"2","typeName":"Z series"}]},
+                          {"brandId": "3","brandName": "Citroen", "brandTypes": [{"typeId":"0","typeName":"new C3"},{"typeId":"1","typeName":"C4"},{"typeId":"2","typeName":"BERLINGO"}]}
+                        ]`;
+
+      // country information
+      var gJsonCountryData = `[
+                            {"countryId": "0","countryName": "None", "regionTypes": []},
+                            {"countryId": "1","countryName": "Việt nam", "regionTypes":
+                                                                        [
+                                                                          {"regionId":"0", "regionName":"Hà Nội"},
+                                                                          {"regionId":"1","regionName":"Hồ Chí Minh"},
+                                                                          {"regionId":"2","regionName":"Đà Nẵng"}]},
+                            {"countryId": "2","countryName": "Mỹ", "regionTypes":
+                                                                        [
+                                                                          {"regionId":"0","regionName":"Atlanta"},
+                                                                          {"regionId":"1","regionName":"New York"},
+                                                                          {"regionId":"2","regionName":"Boston"}
+                                                                        ]},
+                            {"countryId": "3","countryName": "Phần lan", "regionTypes":
+                                                                        [
+                                                                          {"regionId":"0","regionName":"Nam Phần Lan"},
+                                                                          {"regionId":"1","regionName":"Tây Phần Lan"},
+                                                                          {"regionId":"2","regionName":"Đông Phần Lan"}
+                                                                        ]}
+                          ]`;
+
+      var gObjectCarData = JSON.parse(gJsonCarData);
+      var gObjectCountryData = JSON.parse(gJsonCountryData);
+
+      /*** REGION 2 - Vùng gán / thực thi sự kiện cho các elements */
+      onPageLoading();
+
+      $("#car-select").on("change", function () {
+        onCarSelectChange(this);
+      });
+
+      $("#country-select").on("change", function () {
+        onCountrySelectChange(this);
+      });
+
+      $("#btn-send").on("click", function () {
+        onBtnSendClick();
+      });
+      /*** REGION 3 - Event handlers - Vùng khai báo các hàm xử lý sự kiện */
+      function onPageLoading() {
+        loadCarToSelect();
+        loadCountryToSelect();
+      }
+
+      function loadCarToSelect() {
+        for (let bI = 0; bI < gObjectCarData.length; bI++) {
+          $("#car-select").append(
+            $("<option>", {
+              value: gObjectCarData[bI].brandId,
+              text: gObjectCarData[bI].brandName,
+            })
+          );
+        }
+      }
+
+      function loadCountryToSelect() {
+        for (let bI = 0; bI < gObjectCountryData.length; bI++) {
+          $("#country-select").append(
+            $("<option>", {
+              value: gObjectCountryData[bI].countryId,
+              text: gObjectCountryData[bI].countryName,
+            })
+          );
+        }
+      }
+
+      function onCarSelectChange(paramSelect) {
+        var vBrandIdSelected = $(paramSelect).val();
+
+        var vListBrandsType = getBrandTypeByBrandID(vBrandIdSelected);
+        if (vListBrandsType.length > 0) {
+          $("#car-type-select").removeAttr("disabled").empty();
+          for (let bI = 0; bI < vListBrandsType.length; bI++) {
+            $("#car-type-select").append(
+              $("<option>", {
+                value: vListBrandsType[bI].typeId,
+                text: vListBrandsType[bI].typeName,
+              })
+            );
+          }
+        } else {
+          $("#car-type-select").empty().attr("disabled", "disabled");
+        }
+      }
+
+      function onCountrySelectChange(paramSelect) {
+        var vCountryIdSelected = $(paramSelect).val();
+
+        var vListRegionsType = getRegionByCountryID(vCountryIdSelected);
+        if (vListRegionsType.length > 0) {
+          $("#region-type-select").removeAttr("disabled").empty();
+          for (let bI = 0; bI < vListRegionsType.length; bI++) {
+            $("#region-type-select").append(
+              $("<option>", {
+                value: vListRegionsType[bI].regionId,
+                text: vListRegionsType[bI].regionName,
+              })
+            );
+          }
+        } else {
+          $("#region-type-select").empty().attr("disabled", "disabled");
+        }
+      }
+
+      function onBtnSendClick() {
+        var vCarSelected = $("#car-select option:selected");
+        var vCarTypeSelected = $("#car-type-select option:selected");
+
+        var vIdCarSelect = vCarSelected.val();
+        var vTextCarSelect = vCarSelected.text();
+
+        var vIdCarTypeSelect = vCarTypeSelected.val();
+        var vTextTypeCarSelect = vCarTypeSelected.text();
+
+        console.log("Brand ID: " + vIdCarSelect);
+        console.log("Brand Name: " + vTextCarSelect);
+        console.log("Car Type ID: " + vIdCarTypeSelect);
+        console.log("Car Type Name: " + vTextTypeCarSelect);
+
+        var vCountrySelected = $("#country-select option:selected");
+        var vRegionSelected = $("#region-type-select option:selected");
+
+        var vIdCountrySelect = vCountrySelected.val();
+        var vTextCountrySelect = vCountrySelected.text();
+
+        var vIdRegionSelect = vRegionSelected.val();
+        var vTextRegionSelect = vRegionSelected.text();
+
+        console.log("Country ID: " + vIdCountrySelect);
+        console.log("Country Name: " + vTextCountrySelect);
+        console.log("Region ID: " + vIdRegionSelect);
+        console.log("Region Name: " + vTextRegionSelect);
+      }
+      /*** REGION 4 - Common funtions - Vùng khai báo hàm dùng chung trong toàn bộ chương trình*/
+      /**
+       * get brandType by brandId
+       * input: brandId of a car
+       * output: brandType name of found car. If not found, it returns null
+       */
+
+      function getBrandTypeByBrandID(paramBrandId) {
+        var vBrandFound = false;
+        var vBrandTypesResult = null;
+        var vIterator = 0;
+        while (!vBrandFound && vIterator < gObjectCarData.length) {
+          if (gObjectCarData[vIterator].brandId === paramBrandId) {
+            vBrandFound = true;
+            vBrandTypesResult = gObjectCarData[vIterator].brandTypes;
+          } else {
+            vIterator++;
+          }
+        }
+        return vBrandTypesResult;
+      }
+
+      function getRegionByCountryID(paramCountryId) {
+        var vCountryFound = false;
+        var vRegionsTypeResult = null;
+        var vIterator = 0;
+        while (!vCountryFound && vIterator < gObjectCountryData.length) {
+          if (gObjectCountryData[vIterator].countryId === paramCountryId) {
+            vCountryFound = true;
+            vRegionsTypeResult = gObjectCountryData[vIterator].regionTypes;
+          } else {
+            vIterator++;
+          }
+        }
+        return vRegionsTypeResult;
+      }
+    </script>
+  </body>
+</html>

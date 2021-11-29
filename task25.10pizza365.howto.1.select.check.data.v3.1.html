@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Pizza 365 project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <p class="h3 text-center mt-5">Chọn đồ uống</p>
+      <div class="form-group col-12">
+        <hr class="mt-5 mb-5" />
+      </div>
+
+      <div class="form-group">
+        <label>Đồ uống:</label>
+        <select id="drink-select" class="form-control">
+          <option value="NONE">Chọn đồ uống</option>
+        </select>
+      </div>
+      <button
+        onclick="onBtnShowResultClick()"
+        id="show-result"
+        class="btn btn-primary w-25"
+      >
+        Hiển thị
+      </button>
+    </div>
+    <script>
+      "use strict";
+      /*** REGION 1 - Global variables - Vùng khai báo biến, hằng số, tham số TOÀN CỤC */
+      const gREQUEST_STATUS_OK = 200;
+      const gREQUEST_READY_STATUS_FINISH_AND_OK = 4;
+
+      /*** REGION 2 - Vùng gán / thực thi sự kiện cho các elements */
+      onPageLoading();
+      /*** REGION 3 - Event handlers - Vùng khai báo các hàm xử lý sự kiện */
+      function onPageLoading() {
+        loadDataToDrinkSelect();
+      }
+
+      function onBtnShowResultClick() {
+        var vDrinkObj = {
+          drinkValue: "",
+          drinkText: "",
+        };
+        getDrinkData(vDrinkObj);
+        var vIsValid = validateData(vDrinkObj);
+        if (vIsValid) {
+          console.log(vDrinkObj.drinkValue);
+          console.log(vDrinkObj.drinkText);
+        }
+      }
+
+      /*** REGION 4 - Common funtions - Vùng khai báo hàm dùng chung trong toàn bộ chương trình*/
+      function loadDataToDrinkSelect() {
+        var vXmlHttpDrinks = new XMLHttpRequest();
+        callApiToGetDrinks(vXmlHttpDrinks);
+        vXmlHttpDrinks.onreadystatechange = function () {
+          if (
+            this.readyState == gREQUEST_READY_STATUS_FINISH_AND_OK &&
+            this.status == gREQUEST_STATUS_OK
+          ) {
+            loadDrinkDataToSelect(this); //ghi response text ra console.log
+          }
+        };
+      }
+
+      function callApiToGetDrinks(paramXmlHttp) {
+        paramXmlHttp.open(
+          "GET",
+          "http://42.115.221.44:8080/devcamp-pizza365/drinks",
+          true
+        );
+        paramXmlHttp.send();
+      }
+
+      function loadDrinkDataToSelect(paramXmlHttp) {
+        var vDrinkObjs = JSON.parse(paramXmlHttp.responseText);
+        var vDrinkSelect = document.getElementById("drink-select");
+        for (let bI = 0; bI < vDrinkObjs.length; bI++) {
+          var bDrinkOption = document.createElement("option");
+          bDrinkOption.text = vDrinkObjs[bI].tenNuocUong;
+          bDrinkOption.value = vDrinkObjs[bI].maNuocUong;
+          vDrinkSelect.appendChild(bDrinkOption);
+        }
+      }
+
+      function getDrinkData(paramDrinkObj) {
+        var vDrinkSelect = document.getElementById("drink-select");
+        paramDrinkObj.drinkValue = vDrinkSelect.value;
+        paramDrinkObj.drinkText =
+          vDrinkSelect.options[vDrinkSelect.selectedIndex].text;
+      }
+
+      function validateData(paramDrinkObj) {
+        if (paramDrinkObj.drinkValue == "NONE") {
+          alert("Choose Drink!");
+          return false;
+        }
+        return true;
+      }
+    </script>
+  </body>
+</html>

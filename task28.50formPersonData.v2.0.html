@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <h2 style="text-align: center">Personal Data Submit Form</h2>
+
+      <div class="jumbotron container">
+        <div class="row form-group">
+          <div class="col-sm-3">
+            <label for="input-first-name">First Name</label>
+          </div>
+          <div class="col-sm-9">
+            <input
+              type="text"
+              id="inp-first-name"
+              name="firstname"
+              placeholder="Your first name ..."
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-sm-3">
+            <label for="inp-last-name">Last Name</label>
+          </div>
+          <div class="col-sm-9">
+            <input
+              type="text"
+              id="inp-last-name"
+              name="lastname"
+              placeholder="Your last name.."
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-sm-3">
+            <label for="age">Age</label>
+          </div>
+          <div class="col-sm-9">
+            <input
+              type="number"
+              id="inp-age"
+              name="age"
+              placeholder="Your age ..."
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12" style="text-align: right">
+            <button type="button" id="btn-submit-data" class="btn btn-info">
+              Submit Data
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- HTML Log -->
+      <hr />
+      <div style="text-align: right">
+        <button type="button" id="btn-clear-log" class="btn btn-info">
+          Clear HTML Log
+        </button>
+      </div>
+      <p id="p-html-log"></p>
+    </div>
+    <script>
+      $("#btn-submit-data").on("click", function () {
+        var vInputFirstname = $("#inp-first-name").val().trim();
+        var vInputLastname = $("#inp-last-name").val().trim();
+        var vInputAge = $("#inp-age").val();
+        //get data
+        var vPersonObj = {
+          firstname: vInputFirstname,
+          lastname: vInputLastname,
+          age: vInputAge,
+        };
+
+        validateData(vPersonObj);
+
+        showData(vPersonObj);
+      });
+
+      function validateData(paramPerson) {
+        if (paramPerson.firstname == "") {
+          alert("Provide First Name!");
+        } else if (paramPerson.lastname == "") {
+          alert("Provide Last Name!");
+        } else if (paramPerson.age == "") {
+          alert("Provide Age!");
+        } else if (paramPerson.age < 1 || paramPerson > 199) {
+          alert("Invalid Age!");
+        }
+      }
+
+      function showData(paramPerson) {
+        var vDisplayText = $("#p-html-log");
+        vDisplayText.html("Firstname: " + paramPerson.firstname + "</br>");
+        vDisplayText.append("Lastname: " + paramPerson.lastname + "</br>");
+        vDisplayText.append("Age: " + paramPerson.age + "</br>");
+      }
+
+      $("#btn-clear-log").on("click", function () {
+        var vDisplayText = $("#p-html-log");
+        vDisplayText.html("");
+      });
+    </script>
+  </body>
+</html>

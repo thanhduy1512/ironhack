@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <title>Task 10.30 - Get data form and map to object</title>
+  </head>
+  <script>
+    "use strict";
+    /*** REGION 1 - Global variables - Vùng khai báo biến, hằng số, tham số TOÀN CỤC */
+
+    /*** REGION 2 - Vùng gán / thực thi sự kiện cho các elements */
+
+    /*** REGION 3 - Event handlers - Vùng khai báo các hàm xử lý sự kiện */
+    function onClickSend() {
+      var maSP = document.getElementById("input-product-code").value;
+      var tenSP = document.getElementById("input-product-name").value;
+      var nhomSP = document.getElementById("select-category").value;
+      var soLuong = document.getElementById("input-inport-number").value;
+      var xuatXu = document.getElementById("select-country").value;
+      var giaBan = document.getElementById("input-price").value;
+      var product = {
+        maSP: maSP,
+        tenSP: tenSP,
+        nhomSP: nhomSP,
+        soLuong: soLuong,
+        xuatXu: xuatXu,
+        giaBan: giaBan,
+      };
+      console.log(product);
+    }
+    /*** REGION 4 - Common funtions - Vùng khai báo hàm dùng chung trong toàn bộ chương trình*/
+  </script>
+
+  <body>
+    <div class="container jumbotron p-4">
+      <div class="text-center mb-4">
+        <h4>Quản lý sản phẩm</h4>
+      </div>
+      <form id="inputform01">
+        <div class="row form-group">
+          <div class="col-sm-3">
+            <label for="input-product-code">Mã sản phẩm</label>
+          </div>
+          <div class="col-sm-9">
+            <input
+              type="text"
+              id="input-product-code"
+              name="productcode"
+              placeholder="Product code .."
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-sm-3">
+            <label for="input-product-name">Tên sản phẩm</label>
+          </div>
+          <div class="col-sm-9">
+            <input
+              type="text"
+              id="input-product-name"
+              name="productname"
+              placeholder="Product Name .."
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-sm-3">
+            <label for="select-category">Nhóm sản phẩm</label>
+          </div>
+          <div class="col-sm-3">
+            <select id="select-category" name="category" class="form-control">
+              <option value="dientu">Điện tử</option>
+              <option value="hanggiadung">Hàng gia dụng</option>
+              <option value="dienlanh">Điện lạnh</option>
+            </select>
+          </div>
+          <div class="col-sm-3">
+            <label for="input-inport-number">Số lượng nhập</label>
+          </div>
+          <div class="col-sm-3">
+            <input
+              type="text"
+              id="input-inport-number"
+              placeholder="Number of products ..."
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-sm-3">
+            <label for="select-category">Nước sản xuất</label>
+          </div>
+          <div class="col-sm-3">
+            <select id="select-country" name="category" class="form-control">
+              <option value="usa">USA</option>
+              <option value="vietnam">Việt Nam</option>
+              <option value="australia">Australia</option>
+              <option value="china">China</option>
+            </select>
+          </div>
+          <div class="col-sm-3">
+            <label for="input-inport-number">Giá Bán</label>
+          </div>
+          <div class="col-sm-3">
+            <input
+              type="number"
+              id="input-price"
+              placeholder="Price"
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="row form-group text-right">
+          <div class="col-sm-12">
+            <input
+              type="button"
+              value="Send"
+              class="btn btn-info"
+              id="btn-send"
+              onclick="onClickSend()"
+            />
+          </div>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

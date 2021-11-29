@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 16.40</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+  </head>
+  <html>
+    <!-- file html dùng để thử tác động của javascript vào các thành phần trang web-->
+    <script>
+      "use strict";
+      /*** REGION 1 - Global variables - Vùng khai báo biến, hằng số, tham số TOÀN CỤC */
+      const gREQUEST_STATUS_OK = 200;
+      const gREQUEST_READY_STATUS_FINISH_AND_OK = 4;
+      //base url
+      const gBASE_URL = "http://42.115.221.44:8080/devcamp-lucky-dice/";
+      const gUTF8_TEXT_APPLICATON_HEADER = "application/json;charset=UTF-8";
+
+      /*** REGION 2 - Vùng gán / thực thi sự kiện cho các elements */
+
+      /*** REGION 3 - Event handlers - Vùng khai báo các hàm xử lý sự kiện */
+
+      function myOnClickFunctionPostApi() {
+        //B1: collect data
+        var vPersonDataObject = {
+          firstname: "duy",
+          lastname: "duong",
+          username: "duydt",
+        };
+
+        //B2: validate data (none)
+
+        //B3: send request
+        var vXmlHttpDice = new XMLHttpRequest();
+        sendRequestGetNewDice(vPersonDataObject, vXmlHttpDice);
+
+        vXmlHttpDice.onreadystatechange = function () {
+          //b4: process response data
+          // Khi request đã xử lý xong và thành công!
+          if (
+            this.readyState == gREQUEST_READY_STATUS_FINISH_AND_OK &&
+            this.status == gREQUEST_STATUS_OK
+          ) {
+            handleResponseNewDice(this);
+          }
+        };
+      }
+
+      /*** REGION 4 - Common funtions - Vùng khai báo hàm dùng chung trong toàn bộ chương trình*/
+      // request dice
+      function sendRequestGetNewDice(paramUserObj, paramXmlHttp) {
+        // change object to JSON
+        var vPersonJsonData = JSON.stringify(paramUserObj);
+        paramXmlHttp.open("POST", gBASE_URL + "/dice", true);
+        paramXmlHttp.setRequestHeader(
+          "Content-Type",
+          gUTF8_TEXT_APPLICATON_HEADER
+        );
+        paramXmlHttp.send(vPersonJsonData);
+      }
+
+      //process when server response
+      function handleResponseNewDice(paramXmlHttp) {
+        var vDiceObj = JSON.parse(paramXmlHttp.responseText);
+        console.log("Dice: " + vDiceObj.dice);
+        if (vDiceObj.voucher !== null) {
+          console.log("Voucher: " + vDiceObj.voucher.phanTramGiamGia);
+        }
+
+        if (vDiceObj.prize !== null) {
+          console.log("Prize: " + vDiceObj.prize);
+        }
+      }
+    </script>
+
+    <body class="bg bg-light">
+      <div class="jumbotron container">
+        <div class="row form-group">
+          <p id="cmt2dev">Test Page for Javascrip Tasks. F5 to run code.</p>
+        </div>
+        <div class="row form-group">
+          <input
+            type="button"
+            onclick="myOnClickFunctionPostApi()"
+            class="btn btn-success"
+            value="Call post api!"
+          />
+        </div>
+        <div class="row form-group">
+          <p id="p-test" style="font-size: larger">Demo gọi 01 post API!</p>
+        </div>
+        <div class="row form-group">
+          <p>Input: username, firstname, lastname</p>
+        </div>
+        <div class="row form-group">
+          <p>Response: dice, voucher, prize</p>
+        </div>
+      </div>
+    </body>
+  </html>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Task 34.40</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        font-size: x-small;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="text-center mt-3 mb-3">
+        <h2>F100 - Quản trị người dùng</h2>
+      </div>
+      <div class="jumbotron container">
+        <div class="row form-group">
+          <label class="col-sm-2 col-form-label" for="firstNameInput"
+            >First name</label
+          >
+          <div class="col-sm-3">
+            <input
+              type="text"
+              id="firstNameInput"
+              class="form-control"
+              placeholder="Nhap first name ..."
+            />
+          </div>
+          <label class="col-sm-2 col-form-label" for="lastNameInput"
+            >Last name</label
+          >
+          <div class="col-sm-3">
+            <input
+              type="text"
+              id="lastNameInput"
+              class="form-control"
+              placeholder="Nhap last name ..."
+            />
+          </div>
+          <div class="col-sm-2">
+            <input
+              type="button"
+              value="Filter user"
+              class="btn btn-success"
+              id="filterUser"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container mt-2">
+      <div class="row">
+        <div class="col-12 text-nowrap">
+          <table
+            id="table-users"
+            class="table table-bordered table-striped table-hover"
+          >
+            <thead>
+              <tr>
+                <th>Mã người dùng</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Country</th>
+                <th>Subject</th>
+                <th>Customer Type</th>
+                <th>Register Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+  ​
+  <script>
+    "use strict";
+    /*** REGION 1 - Global variables - Vùng khai báo biến, hằng số, tham số TOÀN CỤC */
+    var gUsersArr = [];
+
+    /*** REGION 2 - Vùng gán / thực thi hàm xử lý sự kiện cho các elements */
+    onPageLoading();
+
+    $("#filterUser").on("click", function () {
+      onFilterUserClick();
+    });
+
+    $(document).on("click", ".details", function () {
+      onBtnDetailsClick(this);
+    });
+    /*** REGION 3 - Event handlers - Vùng khai báo các hàm xử lý sự kiện */
+    /**
+     * Call API để get all users và lưu vào mảng toàn cục gUsersArr.
+     * gUsersArr được sử dụng cho mục đích filter về sau
+     */
+    // Hàm thực thi khi load trang
+    function onPageLoading() {
+      // gọi api load dữ liệu users
+      $.ajax({
+        url: "http://42.115.221.44:8080/devcamp-register-java-api/users",
+        type: "GET",
+        dataType: "json",
+        success: function (paramObjectUser) {
+          gUsersArr = paramObjectUser;
+          fillDataTableUser(paramObjectUser);
+        },
+      });
+
+      // gọi hàm để load dữ liệu mảng users vào table
+    }
+
+    /*** REGION 4 - Common funtions - Vùng khai báo hàm dùng chung trong toàn bộ chương trình*/
+    function onBtnDetailsClick(paramElement) {
+      var vID = $(paramElement)
+        .parent()
+        .parent()
+        .children(":first-child")
+        .text();
+      alert(vID);
+    }
+    function onFilterUserClick() {
+      var vFirstnameFilter = $("#firstNameInput").val();
+      var vLastnameFilter = $("#lastNameInput").val();
+      if (vFirstnameFilter.trim() !== "" || vLastnameFilter.trim() !== "") {
+        $(
+          "#table-users tbody tr td:nth-child(2):not(:contains(" +
+            vFirstnameFilter +
+            "))"
+        ).each(function () {
+          $(this).parent().remove();
+        });
+
+        $(
+          "#table-users tbody tr td:nth-child(3):not(:contains(" +
+            vLastnameFilter +
+            "))"
+        ).each(function () {
+          $(this).parent().remove();
+        });
+      }
+    }
+    /**
+     * Hàm load data vào table
+     * Input: mảng users
+     * Output: table có dữ liệu
+     */
+    function fillDataTableUser(paramObjectUser) {
+      var vUserTable = $("#table-users");
+      for (var bI = 0; bI < paramObjectUser.length; bI++) {
+        var bNewRow = $("<tr/>").appendTo(vUserTable);
+        var bId = $("<td/>", {
+          html: paramObjectUser[bI].id,
+        }).appendTo(bNewRow);
+
+        var vFirstName = $("<td/>", {
+          html: paramObjectUser[bI].firstname,
+        }).appendTo(bNewRow);
+
+        var vLastName = $("<td/>", {
+          html: paramObjectUser[bI].lastname,
+        }).appendTo(bNewRow);
+
+        var vCountry = $("<td/>", {
+          html: paramObjectUser[bI].country,
+        }).appendTo(bNewRow);
+
+        var vSubject = $("<td/>", {
+          html: paramObjectUser[bI].subject,
+        }).appendTo(bNewRow);
+
+        var vCustomerType = $("<td/>", {
+          html: paramObjectUser[bI].customerType,
+        }).appendTo(bNewRow);
+
+        var vRegisterStatus = $("<td/>", {
+          html: paramObjectUser[bI].registerStatus,
+        }).appendTo(bNewRow);
+
+        var vAction = $("<td/>").appendTo(bNewRow);
+        var vDetailButon = $("<button/>", {
+          text: "Chi tiết",
+        })
+          .addClass("btn btn-primary details")
+          .appendTo(vAction);
+      }
+    }
+  </script>
+</html>
+​

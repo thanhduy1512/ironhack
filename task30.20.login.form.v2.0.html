@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <form>
+        <div class="row d-flex align-items-center min-vh-100">
+          <div class="col-sm-4 text-center mx-auto my-0 jumbotron">
+            <div class="mb-5">
+              <h3 class="text-center">Login to your account</h3>
+            </div>
+
+            <div>
+              <div class="form-group">
+                <input
+                  type="text"
+                  name="username"
+                  placeholder="Username"
+                  id="inp-login-username"
+                  class="form-control"
+                  value=""
+                  autocomplete="username"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  name="password"
+                  type="password"
+                  id="pwd-login-password"
+                  placeholder="Password"
+                  class="form-control"
+                  value=""
+                  autocomplete="inp-current-password"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  type="checkbox"
+                  name="rememberusername"
+                  id="ckb-remember-username"
+                  class="form-check-input"
+                />
+                <label class="form-check-label" for="rememberusername"
+                  >Reemember username</label
+                >
+
+                <a class="float-right" href="#">Lost password?</a>
+              </div>
+              <div class="form-group">
+                <button id="log-in" class="btn btn-log btn-block btn-info">
+                  Đăng nhập
+                </button>
+              </div>
+            </div>
+
+            <div class="text-left">
+              Or <a href="#">Sign-up</a> for having an account
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <script>
+      "use strict";
+      $(document).ready(function () {
+        /*** REGION 1 - Global variables - Vùng khai báo biến, hằng số, tham số TOÀN CỤC */
+
+        /*** REGION 2 - Vùng gán / thực thi sự kiện cho các elements */
+        $("#log-in").on("click", function (event) {
+          event.preventDefault();
+          onBtnLoginClick();
+        });
+        /*** REGION 3 - Event handlers - Vùng khai báo các hàm xử lý sự kiện */
+        function onBtnLoginClick() {
+          var vUsername = $("#inp-login-username");
+          var vPassword = $("#pwd-login-password");
+          var vRemember = $("#ckb-remember-username");
+
+          var vValueUsername = vUsername.val();
+          var vValuePassword = vPassword.val();
+
+          if (vRemember.is(":checked")) {
+            var vCheckRemember = "Checked";
+          } else {
+            var vCheckRemember = "UnChecked";
+          }
+          console.log(vValueUsername);
+          console.log(vValuePassword);
+          console.log(vCheckRemember);
+
+          var vCheck = validateInputData(vValueUsername, vValuePassword);
+        }
+        /*** REGION 4 - Common funtions - Vùng khai báo hàm dùng chung trong toàn bộ chương trình*/
+
+        function validateInputData(paramUsername, paramPassword) {
+          var vResult = true;
+          if (paramUsername.trim() == "") {
+            vResult = false;
+            alert("Provide Username!");
+          }
+          if (paramPassword.trim() == "") {
+            vResult = false;
+            alert("Provide Password!");
+          }
+          return vResult;
+        }
+      });
+    </script>
+  </body>
+</html>

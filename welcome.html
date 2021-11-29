@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1 id="h1-title">TDD - Welcome to devcamp</h1>
+    <label id="lbl-message">Message</label>
+    <input id="input-message" placeholder="message ..." /> <br />
+    <button id="btn-send" onclick="onBtnSendClick()">Send</button>
+  </body>
+  <script>
+    onPageLoading();
+    function onBtnSendClick() {
+      console.log("send start ...");
+      var inputMessageElement = document.getElementById("input-message").value;
+      alert(inputMessageElement);
+    }
+  </script>
+</html>

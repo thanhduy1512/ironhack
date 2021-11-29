@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Task 12.30</title>
+    <meta charset="UTF-8" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+  </head>
+
+  <body>
+    <!-- Bắt đầu vùng form màu xám -->
+    <div class="container jumbotron p-4 my-3">
+      <div class="row form-group">
+        <label class="col-md-2 col-form-label"
+          >First name <span class="text-danger">(*)</span></label
+        >
+        <div class="col-md-4">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="First name ..."
+            id="firstName"
+          />
+        </div>
+      </div>
+      <div class="row form-group">
+        <label class="col-md-2 col-form-label"
+          >Last name <span class="text-danger">(*)</span></label
+        >
+        <div class="col-md-4">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Last name ..."
+            id="lastName"
+          />
+        </div>
+      </div>
+      <div class="row form-group">
+        <label class="col-md-2 col-form-label">Country: </label>
+        <div class="col-md-2">
+          <select id="country" class="form-control">
+            <option value="vietnam">Việt Nam</option>
+            <option value="usa">Mỹ</option>
+            <option value="australia">Úc</option>
+            <option value="china">Trung Quốc</option>
+          </select>
+        </div>
+        <div class="col-sm-2">
+          <button
+            type="button"
+            class="btn btn-info"
+            id="btnSendData"
+            onclick="onBtnSendDataClick()"
+          >
+            Send
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Kết thúc vùng form màu xám -->
+
+    <!-- vùng hiển thị thông tin môn học -->
+    <div
+      id="div-container-subject"
+      class="container bg-info"
+      style="display: none"
+    >
+      <div id="div-subject-infor" class="text-white p-3">...</div>
+    </div>
+
+    <script>
+      "use strict";
+      /*** REGION 1 - Global variables - Vùng khai báo biến, hằng số, tham số TOÀN CỤC */
+
+      /*** REGION 2 - Vùng gán / thực thi sự kiện cho các elements */
+      /*** REGION 3 - Event handlers - Vùng khai báo các hàm xử lý sự kiện */
+
+      function onBtnSendDataClick() {
+        // khai báo đối tượng môn học chứa dữ liệu
+        var vPerson = {
+          firstName: "",
+          lastName: "",
+          country: "",
+        };
+        // B1: thu thập dữ liệu
+        getFormData(vPerson);
+        // B2: kiểm tra dữ liệu
+        var isValidData = validateData(vPerson);
+        if (isValidData) {
+          // B3: ghi dữ liệu vào vùng màu vàng
+          showData(vPerson);
+        }
+      }
+
+      /*** REGION 4 - Common funtions - Vùng khai báo hàm dùng chung trong toàn bộ chương trình*/
+      function getFormData(paramPerson) {
+        var vFirstName = document.getElementById("firstName");
+        var vLastName = document.getElementById("lastName");
+        var vCountry = document.getElementById("country");
+
+        paramPerson.firstName = vFirstName.value.trim();
+        paramPerson.lastName = vLastName.value.trim();
+        paramPerson.country = vCountry.value;
+      }
+
+      function validateData(paramPerson) {
+        if (paramPerson.firstName === "") {
+          alert("Missing First Name");
+          return false;
+        }
+        if (paramPerson.lastName === "") {
+          alert("Missing Last Name");
+          return false;
+        }
+
+        return true;
+      }
+
+      function showData(paramPerson) {
+        var vDivContainerSubject = document.getElementById(
+          "div-container-subject"
+        );
+        var vDivSubjectInfo = document.getElementById("div-subject-infor");
+
+        vDivContainerSubject.style.display = "block";
+
+        vDivSubjectInfo.innerHTML = "First Name: " + paramPerson.firstName;
+        vDivSubjectInfo.innerHTML += "<br/>Last Name: " + paramPerson.lastName;
+        vDivSubjectInfo.innerHTML += "<br/>Country: " + paramPerson.country;
+      }
+    </script>
+  </body>
+</html>

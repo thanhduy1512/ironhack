@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta
+      charset="UTF-8"
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h2>Responsive Form</h2>
+      <p>sample forms 02: multi colums</p>
+
+      <form id="inputform01" class="jumbotron">
+        <div class="row form-group">
+          <div class="col-sm-3">
+            <label for="fname">First Name</label>
+          </div>
+          <div class="col-sm-9">
+            <input
+              type="text"
+              id="inp-fname"
+              name="firstname"
+              placeholder="Your name.."
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-sm-3">
+            <label for="lname">Last Name</label>
+          </div>
+          <div class="col-sm-9">
+            <input
+              type="text"
+              id="inp-lname"
+              name="lastname"
+              placeholder="Your last name.."
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-sm-3">
+            <label for="country">Country</label>
+          </div>
+          <div class="col-sm-3">
+            <select id="select-country" name="country" class="form-control">
+              <option value="australia">Australia</option>
+              <option value="canada">Canada</option>
+              <option value="usa">USA</option>
+            </select>
+          </div>
+          <div class="col-sm-3">
+            <label for="region">Region</label>
+          </div>
+          <div class="col-sm-3">
+            <input
+              type="text"
+              id="inp-region"
+              name="regioninput"
+              placeholder="Your region.."
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-sm-3">
+            <label for="country">Gender</label>
+          </div>
+          <div class="col-sm-3">
+            <select id="select-gender" name="country" class="form-control">
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+          <div class="col-sm-3">
+            <label for="region">Age</label>
+          </div>
+          <div class="col-sm-3">
+            <input
+              type="number"
+              id="inp-age"
+              name="regioninput"
+              placeholder="Your age.."
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="row form-group text-right">
+          <div class="col-sm-12">
+            <input
+              type="button"
+              value="Send"
+              class="btn btn-info"
+              id="btn-send"
+              onclick="onCLickSend()"
+            />
+          </div>
+        </div>
+      </form>
+    </div>
+  </body>
+  <script>
+    "use strict";
+    /*** REGION 1 - Global variables - Vùng khai báo biến, hằng số, tham số TOÀN CỤC */
+    var firstName = document.getElementById("inp-fname");
+    var lastName = document.getElementById("inp-lname");
+    var country = document.getElementById("select-country").value;
+    var gender = document.getElementById("select-gender").value;
+    var region = document.getElementById("inp-region");
+    var age = document.getElementById("inp-age");
+
+    /*** REGION 2 - Vùng gán / thực thi hàm xử lý sự kiện cho các elements */
+
+    /*** REGION 3 - Event handlers - Vùng khai báo các hàm xử lý sự kiện */
+    function onCLickSend() {
+      var person = {
+        firstName: firstName.value,
+        lastName: lastName.value,
+        country: country,
+        gender: gender,
+        region: region.value,
+        age: age.value,
+      };
+      console.log("Start sending data");
+
+      console.log(person);
+    }
+    /*** REGION 4 - Common funtions - Vùng khai báo hàm dùng chung trong toàn bộ chương trình*/
+  </script>
+</html>

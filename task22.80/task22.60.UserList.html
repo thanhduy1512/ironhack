@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <style>
+      * {
+        font-size: small;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container bg-light">
+      <h2 class="text-center">User List</h2>
+      <table
+        id="user-table"
+        class="table table-bordered table-striped table-hover"
+      >
+        <thead>
+          <tr>
+            <th>User ID</th>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Country</th>
+            <th>Subject</th>
+            <th>Customer Type</th>
+            <th>Register Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      const gEND_ROW_TABLE = -1;
+      // Biến toàn cục định nghĩa chỉ số các cột tương ứng
+      const gUSER_ID_COL = 0;
+      const gFIRSTNAME_COL = 1;
+      const gLASTNAME_COL = 2;
+      const gCOUNTRY_COL = 3;
+      const gSUBJECT_COL = 4;
+      const gCUSTOMER_TYPE_COL = 5;
+      const gREGISTER_STATUS_COL = 6;
+      const gBUTTON_COL = 7;
+
+      const gREQUEST_STATUS_OK = 200;
+      const gREQUEST_READY_STATUS_FINISH_AND_OK = 4;
+      const gBASE_URL =
+        "http://42.115.221.44:8080/devcamp-register-java-api/users";
+
+      var gUserTable = document.getElementById("user-table");
+      var gTableBody = gUserTable.getElementsByTagName("tbody")[0];
+
+      onPageLoading();
+
+      function onPageLoading() {
+        loadUserToTable();
+      }
+
+      function loadUserToTable() {
+        var userXmlHttp = new XMLHttpRequest();
+        sendRequestGetUser(userXmlHttp);
+        userXmlHttp.onreadystatechange = function () {
+          if (
+            this.readyState == gREQUEST_READY_STATUS_FINISH_AND_OK &&
+            this.status == gREQUEST_STATUS_OK
+          ) {
+            processResponseData(userXmlHttp);
+          }
+        };
+      }
+
+      function sendRequestGetUser(paramXmlHttp) {
+        paramXmlHttp.open("GET", gBASE_URL, true);
+        paramXmlHttp.send();
+      }
+
+      function processResponseData(paramXmlHttp) {
+        var vUsersList = JSON.parse(paramXmlHttp.responseText);
+        for (let bI = 0; bI < vUsersList.length; bI++) {
+          var vUser = vUsersList[bI];
+          var vRow = gTableBody.insertRow(gEND_ROW_TABLE);
+
+          var vCellUserId = vRow.insertCell(gUSER_ID_COL);
+          var vCellFirstname = vRow.insertCell(gFIRSTNAME_COL);
+          var vCellLastname = vRow.insertCell(gLASTNAME_COL);
+          var vCellCountry = vRow.insertCell(gCOUNTRY_COL);
+          var vCellSubject = vRow.insertCell(gSUBJECT_COL);
+          var vCellCustomerType = vRow.insertCell(gCUSTOMER_TYPE_COL);
+          var vCellRegisterStatus = vRow.insertCell(gREGISTER_STATUS_COL);
+          var vCellUserAction = vRow.insertCell(gBUTTON_COL);
+
+          vCellUserId.innerHTML = vUser.id;
+          vCellFirstname.innerHTML = vUser.firstname;
+          vCellLastname.innerHTML = vUser.lastname;
+          vCellCountry.innerHTML = vUser.country;
+          vCellSubject.innerHTML = vUser.subject;
+          vCellCustomerType.innerHTML = vUser.customerType;
+          vCellRegisterStatus.innerHTML = vUser.registerStatus;
+
+          var vDetailBtn = document.createElement("button");
+          vDetailBtn.innerHTML = "Detail";
+          vDetailBtn.className = "btn btn-info info-user";
+          vDetailBtn.setAttribute("data-uid", vUser.id);
+          vDetailBtn.setAttribute("data-firstname", vUser.firstname);
+          vDetailBtn.setAttribute("data-lastname", vUser.lastname);
+          vDetailBtn.setAttribute("data-country", vUser.country);
+          vDetailBtn.setAttribute("data-subject", vUser.subject);
+          vDetailBtn.setAttribute("data-customertype", vUser.customerType);
+          vDetailBtn.setAttribute("data-registerstatus", vUser.registerStatus);
+          vCellUserAction.appendChild(vDetailBtn);
+          vDetailBtn.addEventListener("click", onDetailBtnClick);
+        }
+      }
+
+      function onDetailBtnClick() {
+        var vUserId = this.dataset.uid;
+        var vFirstname = this.dataset.firstname;
+        var vLastname = this.dataset.lastname;
+        var vCountry = this.dataset.country;
+        var vSubject = this.dataset.subject;
+        var vCustomerType = this.dataset.customertype;
+        var vRegisterStatus = this.dataset.registerstatus;
+        const vDETAIL_FORM_URL = "task22.60UserDetail.html";
+        var vUrlSiteToOpen =
+          vDETAIL_FORM_URL +
+          "?id=" +
+          vUserId +
+          "&firstname=" +
+          vFirstname +
+          "&lastname=" +
+          vLastname +
+          "&country=" +
+          vCountry +
+          "&subject=" +
+          vSubject +
+          "&customertype=" +
+          vCustomerType +
+          "&registerstatus=" +
+          vRegisterStatus;
+        window.location.href = vUrlSiteToOpen;
+      }
+    </script>
+  </body>
+</html>

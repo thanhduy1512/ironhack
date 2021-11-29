@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div class="container jumbotron">
+      <button onclick="onBackBtnClick()" class="btn btn-warning">Back</button>
+      <div class="col-12">
+        <div class="text-center mb-5"><h1>Detail Order</h1></div>
+        <form>
+          <div class="form-group row">
+            <label for="" class="col-sm-2 col-form-label">ID</label>
+            <div class="col-sm-4">
+              <input
+                id="inp-id"
+                type="text"
+                class="form-control"
+                placeholder="ID"
+              />
+            </div>
+            <label for="" class="col-sm-2 col-form-label">Order ID</label>
+            <div class="col-sm-4">
+              <input
+                id="inp-orderid"
+                type="text"
+                class="form-control"
+                placeholder="Order ID"
+              />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="" class="col-sm-2 col-form-label">Sườn</label>
+            <div class="col-sm-4">
+              <input
+                id="inp-suon"
+                type="text"
+                class="form-control"
+                placeholder="Sườn"
+              />
+            </div>
+            <label for="" class="col-sm-2 col-form-label">Salad</label>
+            <div class="col-sm-4">
+              <input
+                id="inp-salad"
+                type="text"
+                class="form-control"
+                placeholder="Salad"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-2 col-form-label">Số lượng nước</label>
+            <div class="col-sm-4">
+              <input
+                id="inp-soLuongNuoc"
+                type="text"
+                class="form-control"
+                placeholder="Số lượng nước"
+              />
+            </div>
+            <label for="" class="col-sm-2 col-form-label">Thành Tiền</label>
+            <div class="col-sm-4">
+              <input
+                id="inp-thanhTien"
+                type="text"
+                class="form-control"
+                placeholder="Thành Tiền"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-2 col-form-label">Cỡ Combo</label>
+            <div class="col-sm-4">
+              <select id="select-combo-size" class="form-control">
+                <option value="">Chọn cỡ Combo (Combo size)</option>
+                <option value="S">Nhỏ</option>
+                <option value="M">Vừa</option>
+                <option value="L">Lớn</option>
+              </select>
+            </div>
+            <label for="" class="col-sm-2 col-form-label">Đồ uống</label>
+            <div class="col-sm-4">
+              <select class="form-control" id="select-drink">
+                <option value="">Chọn đồ uống</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Mã voucher</label>
+            <div class="col-sm-4">
+              <input
+                id="inp-voucher"
+                type="text"
+                class="form-control"
+                placeholder="Voucher ID (mã voucher)"
+              />
+            </div>
+            <!-- làm thêm select nữa vào đây -->
+            <label for="" class="col-sm-2 col-form-label">Pizza</label>
+            <div class="col-sm-4">
+              <select class="form-control" id="select-pizza">
+                <option value="">Chọn pizza</option>
+                <option value="SEAFOOD">Seafood</option>
+                <option value="HAWAII">Hawaii</option>
+                <option value="BACON">Bacon</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="">Họ và tên</label>
+            <div class="col-sm-4">
+              <input
+                id="inp-fullname"
+                type="text"
+                class="form-control"
+                placeholder="Họ và tên"
+              />
+            </div>
+            <label for="" class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-4">
+              <input
+                id="inp-email"
+                type="email"
+                class="form-control"
+                placeholder="Email"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Số điện thoại</label>
+            <div class="col-sm-4">
+              <input
+                id="inp-phone"
+                type="text"
+                class="form-control"
+                placeholder="Số điện thoại"
+              />
+            </div>
+            <label class="col-sm-2 col-form-label">Địa chỉ</label>
+            <div class="col-sm-4">
+              <input
+                id="inp-address"
+                type="diaChi"
+                class="form-control"
+                placeholder="Địa chỉ"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-2 col-form-label">Đường Kính</label>
+            <div class="col-sm-4">
+              <input
+                id="inp-duongKinh"
+                type="text"
+                class="form-control"
+                placeholder="Đường Kính"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Lời nhắn</label>
+            <textarea
+              id="inp-message"
+              class="form-control h-75"
+              placeholder="Lời nhắn"
+            ></textarea>
+          </div>
+        </form>
+        <button onclick="onConfirmBtnClick()" class="btn btn-success">
+          Confirm
+        </button>
+        <button onclick="onCancelBtnClick()" class="btn btn-danger">
+          Cancel
+        </button>
+      </div>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      const gBASEURL = "http://42.115.221.44:8080/devcamp-pizza365/orders/";
+
+      const gREQUEST_STATUS_OK = 200;
+      const gREQUEST_READY_STATUS_FINISH_AND_OK = 4;
+
+      const gHOME_PAGE = "Task26.10loadallorder.v2.2.html";
+
+      //input form
+      var gInpId = document.getElementById("inp-id");
+      var gInpOrderId = document.getElementById("inp-orderid");
+      var gInpSuon = document.getElementById("inp-suon");
+      var gInpSalad = document.getElementById("inp-salad");
+      var gInpSoLuongNuoc = document.getElementById("inp-soLuongNuoc");
+      var gInpThanhTien = document.getElementById("inp-thanhTien");
+      var gSelectSize = document.getElementById("select-combo-size");
+      var gSelectDrink = document.getElementById("select-drink");
+      var gInpVoucher = document.getElementById("inp-voucher");
+      var gSelectPizza = document.getElementById("select-pizza");
+      var gInpFullname = document.getElementById("inp-fullname");
+      var gInpEmail = document.getElementById("inp-email");
+      var gInpPhone = document.getElementById("inp-phone");
+      var gInpAddress = document.getElementById("inp-address");
+      var gInpDuongKinh = document.getElementById("inp-duongKinh");
+      var gInpMessage = document.getElementById("inp-message");
+
+      //queryString
+      var gQueryString = window.location.search;
+      var gParam = new URLSearchParams(gQueryString);
+      var gOrderId = gParam.get("orderid");
+      var gId = gParam.get("id");
+      //console.log(gOrderId);
+      //console.log(gId);
+
+      onPageLoading();
+
+      function onPageLoading() {
+        loadDataDrinkList();
+      }
+
+      function loadDataDrinkList() {
+        var vXhttp = new XMLHttpRequest();
+        vXhttp.open(
+          "GET",
+          "http://42.115.221.44:8080/devcamp-pizza365/drinks",
+          true
+        );
+        vXhttp.send();
+        vXhttp.onreadystatechange = function () {
+          if (
+            this.readyState == gREQUEST_READY_STATUS_FINISH_AND_OK &&
+            this.status == gREQUEST_STATUS_OK
+          ) {
+            //console.log(vXhttp.responseText);
+            handleLoadDataToSelectDrink(vXhttp);
+            getOrderDetailByOrderId(gOrderId);
+          }
+        };
+      }
+
+      function handleLoadDataToSelectDrink(paramXhttp) {
+        var vArrayDrinkList = JSON.parse(paramXhttp.responseText);
+        //console.log("array drink list = " + vArrayDrinkList.length);
+        //load data to drink select
+        var vElementSelectDrink = document.getElementById("select-drink");
+        for (
+          var bIterator = 0;
+          bIterator < vArrayDrinkList.length;
+          bIterator++
+        ) {
+          var vDrinkOptionElement = document.createElement("option");
+          vDrinkOptionElement.value = vArrayDrinkList[bIterator].maNuocUong;
+          vDrinkOptionElement.text = vArrayDrinkList[bIterator].tenNuocUong;
+          vElementSelectDrink.appendChild(vDrinkOptionElement);
+        }
+      }
+
+      function getOrderDetailByOrderId(paramOrderId) {
+        "use strict";
+        var xmlHttpGetOrderById = new XMLHttpRequest();
+        xmlHttpGetOrderById.open("GET", gBASEURL + paramOrderId, true);
+        xmlHttpGetOrderById.send();
+        xmlHttpGetOrderById.onreadystatechange = function () {
+          if (
+            this.readyState == gREQUEST_READY_STATUS_FINISH_AND_OK &&
+            this.status == gREQUEST_STATUS_OK
+          ) {
+            console.log(xmlHttpGetOrderById.responseText);
+            loadResponseDataToForm(this);
+          }
+        };
+      }
+
+      function loadResponseDataToForm(paramXmlHttp) {
+        var vOrderObj = JSON.parse(paramXmlHttp.responseText);
+
+        gInpId.value = vOrderObj.id;
+        gInpOrderId.value = vOrderObj.orderId;
+        gInpSuon.value = vOrderObj.suon;
+        gInpSalad.value = vOrderObj.salad;
+        gInpSoLuongNuoc.value = vOrderObj.soLuongNuoc;
+        gInpThanhTien.value = vOrderObj.thanhTien;
+        gSelectSize.value = vOrderObj.kichCo;
+        gSelectDrink.value = vOrderObj.idLoaiNuocUong;
+        gInpVoucher.value = vOrderObj.idVourcher;
+        gSelectPizza.value = vOrderObj.loaiPizza;
+        gInpFullname.value = vOrderObj.hoTen;
+        gInpEmail.value = vOrderObj.email;
+        gInpPhone.value = vOrderObj.soDienThoai;
+        gInpAddress.value = vOrderObj.diaChi;
+        gInpDuongKinh.value = vOrderObj.diaChi;
+        gInpMessage.value = vOrderObj.loiNhan;
+      }
+
+      function onBackBtnClick() {
+        window.location.href = gHOME_PAGE;
+      }
+
+      function onConfirmBtnClick() {
+        console.log(gId);
+        sendRequestUpdateOrder(gId, 0);
+        window.location.href = gHOME_PAGE;
+      }
+
+      function onCancelBtnClick() {
+        console.log(gId);
+        sendRequestUpdateOrder(gId, 1);
+        window.location.href = gHOME_PAGE;
+      }
+
+      function sendRequestUpdateOrder(paramId, paramStatus) {
+        "use strict";
+
+        var vObjectRequest = {
+          trangThai: "", //3 trang thai open, confirmed, cancel
+        };
+        if (paramStatus == 0) {
+          vObjectRequest.trangThai = "confirmed";
+        } else if (paramStatus == 1) {
+          vObjectRequest.trangThai = "cancel";
+        }
+
+        var vXmlHttpUpdateOrder = new XMLHttpRequest();
+        vXmlHttpUpdateOrder.open("PUT", gBASEURL + paramId);
+        vXmlHttpUpdateOrder.setRequestHeader(
+          "Content-Type",
+          "application/json;charset=UTF-8"
+        );
+        vXmlHttpUpdateOrder.send(JSON.stringify(vObjectRequest));
+
+        vXmlHttpUpdateOrder.onreadystatechange = function () {
+          if (
+            this.readyState == gREQUEST_READY_STATUS_FINISH_AND_OK &&
+            this.status == gREQUEST_STATUS_OK
+          ) {
+            var vUpdatedOrder = vXmlHttpUpdateOrder.responseText;
+            console.log(vUpdatedOrder);
+          }
+        };
+      }
+    </script>
+  </body>
+</html>

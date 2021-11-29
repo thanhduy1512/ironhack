@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Task 12.35</title>
+    <meta charset="UTF-8" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+  </head>
+
+  <body>
+    <!-- Bắt đầu vùng form màu xám -->
+    <div class="container jumbotron p-4 my-3">
+      <div class="row form-group">
+        <label class="col-md-2 col-form-label"
+          >First name <span class="text-danger">(*)</span></label
+        >
+        <div class="col-md-4">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="First name ..."
+            id="firstName"
+          />
+        </div>
+      </div>
+      <div class="row form-group">
+        <label class="col-md-2 col-form-label"
+          >Last name <span class="text-danger">(*)</span></label
+        >
+        <div class="col-md-4">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Last name ..."
+            id="lastName"
+          />
+        </div>
+        </div>
+        <div class="row form-group">
+            <label class="col-md-2 col-form-label"
+              >Age <span class="text-danger">(*)</span></label
+            >
+            <div class="col-md-4">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Age ..."
+                id="age"
+              />
+            </div>
+        </div>
+        <div class="row form-group">
+            <label class="col-md-2 col-form-label"
+              >Email <span class="text-danger">(*)</span></label
+            >
+            <div class="col-md-4">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Email ..."
+                id="email"
+              />
+            </div>
+        </div>
+        
+        <div class="col-sm-2">
+          <button
+            type="button"
+            class="btn btn-info"
+            id="btnSendData"
+            onclick="onBtnSendDataClick()"
+          >
+            Send
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Kết thúc vùng form màu xám -->
+
+    <div class="container">
+    
+        <table id="table-person" class="table table-bordered">
+          <thead>
+            <!-- phần head, dòng tiêu đề  của bảng -->
+            <tr>
+              <td> First Name </td>
+              <td> Last Name </td>
+              <td> Age </td>
+              <td> Email </td>
+            </tr>
+            <thead>
+            <tbody>
+              <!-- phần dữ liệu của bảng -->
+              
+          <tbody>
+        </table>
+      </div>
+
+    <script>
+      "use strict";
+      /*** REGION 1 - Global variables - Vùng khai báo biến, hằng số, tham số TOÀN CỤC */
+
+      /*** REGION 2 - Vùng gán / thực thi sự kiện cho các elements */
+      /*** REGION 3 - Event handlers - Vùng khai báo các hàm xử lý sự kiện */
+
+      function onBtnSendDataClick() {
+        // khai báo đối tượng môn học chứa dữ liệu
+        var vPerson = {
+          firstName: "",
+          lastName: "",
+          age: "",
+          email: "",
+        };
+        // B1: thu thập dữ liệu
+        getFormData(vPerson);
+        // B2: kiểm tra dữ liệu
+        var isValidData = validateData(vPerson);
+        if (isValidData) {
+          // B3: ghi dữ liệu vào table
+          insertNewRowToTableClick(vPerson);
+        }
+        clearForm();
+      }
+
+      /*** REGION 4 - Common funtions - Vùng khai báo hàm dùng chung trong toàn bộ chương trình*/
+      
+      function getFormData(paramPerson) {
+        var vFirstName = document.getElementById("firstName");
+        var vLastName = document.getElementById("lastName");
+        var vAge = document.getElementById("age");
+        var vEmail = document.getElementById("email");
+
+        paramPerson.firstName = vFirstName.value.trim();
+        paramPerson.lastName = vLastName.value.trim();
+        paramPerson.age = parseInt(vAge.value);
+        paramPerson.email = vEmail.value.trim();
+      }
+
+      function validateData(paramPerson) {
+        if (paramPerson.firstName === "") {
+          alert("Missing First Name");
+          return false;
+        }
+        if (paramPerson.lastName === "") {
+          alert("Missing Last Name");
+          return false;
+        }
+        if (paramPerson.age <= 0 || paramPerson.age > 150 || isNaN(paramPerson.age)){
+          alert("Invalid Age");
+            return false;
+        }
+        if (paramPerson.email.includes("@") === false || paramPerson.email === ""){
+          alert("Invalid Email");
+            return false;
+        }
+
+        return true;
+      }
+
+      function insertNewRowToTableClick(paramPerson) {
+      const vEND_OF_TABLE = -1;
+      var vPersonTable = document.getElementById("table-person");
+      // insert to the end of table, thêm row mới vào bảng( <tr> </tr>)
+      var vNewRow = vPersonTable.insertRow(vEND_OF_TABLE);
+      // them moi 03 cell (03 ô) (<td> </td> 
+      var vCellFirstName = vNewRow.insertCell(0);
+      var vCellLastName = vNewRow.insertCell(1);
+      var vCellAge = vNewRow.insertCell(2);
+      var vCellEmail = vNewRow.insertCell(3);
+      //gán giá trị cho các ô
+      vCellFirstName.innerHTML = paramPerson.firstName;
+      vCellLastName.innerHTML = paramPerson.lastName;
+      vCellAge.innerHTML = paramPerson.age;
+      vCellEmail.innerHTML = paramPerson.email;
+    }
+    
+    function clearForm(){
+        var vFirstName = document.getElementById("firstName");
+        var vLastName = document.getElementById("lastName");
+        var vAge = document.getElementById("age");
+        var vEmail = document.getElementById("email");
+
+        vFirstName.value = "";
+        vLastName.value = "";
+        vAge.value = "";
+        vEmail.value = "";
+      }
+    </script>
+  </body>
+</html>
