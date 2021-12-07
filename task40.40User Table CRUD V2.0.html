@@ -35,7 +35,7 @@
           </div>
           <div class="col-6">
             <select class="form-control" id="filter-select">
-              <option value="">Choose Role</option>
+              <option value="0">Choose Role</option>
             </select>
           </div>
           <div class="col-3">
@@ -63,8 +63,8 @@
             <th>Username</th>
             <th>Firstname</th>
             <th>Lastname</th>
-            <th>Email</th>
             <th>Age</th>
+            <th>Email</th>
             <th>Role</th>
             <th>Action</th>
           </tr>
@@ -227,44 +227,66 @@
       // Biến toàn cục để lưu trữ id voucher đang đc update or delete. Mặc định = 0;
       var gUserId = 0;
 
-      var gUserObjects = [
-        {
-          id: 2,
-          username: "quannv",
-          firstname: "Ngo Van",
-          lastname: "Quan",
-          age: 18,
-          email: "quan@gmail.com",
-          roleId: 5,
+      var gUserObjects = {
+        users: [
+          {
+            id: 2,
+            username: "quannv",
+            firstname: "Ngo Van",
+            lastname: "Quan",
+            age: 18,
+            email: "quan@gmail.com",
+            roleId: 5,
+          },
+          {
+            id: 3,
+            username: "longdh",
+            firstname: "Do Hoang",
+            lastname: "Long",
+            age: 19,
+            email: "long@gmail.com",
+            roleId: 8,
+          },
+          {
+            id: 4,
+            username: "hiendt",
+            firstname: "Do Thi",
+            lastname: "Hien",
+            age: 29,
+            email: "hien@gmail.com",
+            roleId: 11,
+          },
+          {
+            id: 6,
+            username: "lanht",
+            firstname: "Ho Thi",
+            lastname: "Lan",
+            age: 27,
+            email: "lan@gmail.com",
+            roleId: 13,
+          },
+        ],
+
+        filterRole: function (paramRoleId) {
+          var vUpdatedUserArr = this.users.filter((user) => {
+            return user.roleId == paramRoleId || paramRoleId == 0;
+          });
+          return vUpdatedUserArr;
         },
-        {
-          id: 3,
-          username: "longdh",
-          firstname: "Do Hoang",
-          lastname: "Long",
-          age: 19,
-          email: "long@gmail.com",
-          roleId: 8,
+
+        saveUser: function (paramUser) {
+          if (gFormMode === gFORM_MODE_INSERT) {
+            this.users.push(paramUser);
+          } else {
+            vUserIndex = getUserIndexById(gUserId);
+            this.users.splice(vUserIndex, 1, paramUser);
+          }
         },
-        {
-          id: 4,
-          username: "hiendt",
-          firstname: "Do Thi",
-          lastname: "Hien",
-          age: 29,
-          email: "hien@gmail.com",
-          roleId: 11,
+
+        deleteUser: function (paramUserIndex) {
+          this.users.splice(paramUserIndex, 1);
         },
-        {
-          id: 6,
-          username: "lanht",
-          firstname: "Ho Thi",
-          lastname: "Lan",
-          age: 27,
-          email: "lan@gmail.com",
-          roleId: 13,
-        },
-      ];
+      };
 
       // TODO: Điền tiếp các phần tử tiếp theo của mảng Role (xem trong slide task specification)
       var gRoleObjects = [
@@ -379,21 +401,14 @@
       /*** REGION 3 - Event handlers - Vùng khai báo các hàm xử lý sự kiện */
       function onPageLoading() {
         loadRoleToSelectOption();
-        loadDataToUserTable(gUserObjects);
+        loadDataToUserTable(gUserObjects.users);
         $("#div-form-mod").html(gFormMode);
       }
 
       function onBtnFilterClick() {
-        var vRoleIdFilter = $("#filter-select").val();
-        if (vRoleIdFilter == "") {
-          loadDataToUserTable(gUserObjects);
-          return alert("Choose Role!");
-        } else {
-          var vUpdatedUserArr = gUserObjects.filter((user) => {
-            return user.roleId == vRoleIdFilter;
-          });
-          loadDataToUserTable(vUpdatedUserArr);
-        }
+        var vRoleIdFilter = parseInt($("#filter-select").val());
+        var vUpdatedUserArr = gUserObjects.filterRole(vRoleIdFilter);
+        loadDataToUserTable(vUpdatedUserArr);
       }
 
       function onBtnAddUser() {
@@ -439,9 +454,9 @@
         var vValidate = validateData(vUser);
         if (vValidate) {
           //process data
-          saveUserData(vUser);
+          gUserObjects.saveUser(vUser);
           //show data
-          loadDataToUserTable(gUserObjects);
+          loadDataToUserTable(gUserObjects.users);
           //notice
           alert("Update Success!");
           $("#user-modal").modal("hide");
@@ -453,10 +468,9 @@
       function onBtnConfirmDeleteUser() {
         //get index then delete in array
         var vUserIndex = getUserIndexById(gUserId);
-        gUserObjects.splice(vUserIndex, 1);
-
+        gUserObjects.deleteUser(vUserIndex);
         //load table and notice
-        loadDataToUserTable(gUserObjects);
+        loadDataToUserTable(gUserObjects.users);
         alert("Delete Success!");
         $("#delete-confirm-modal").modal("hide");
 
@@ -484,7 +498,6 @@
         paramUser.firstname = $("#input-firstname").val();
         paramUser.lastname = $("#input-lastname").val();
         paramUser.age = parseInt($("#input-age").val());
-        console.log(paramUser.age);
         paramUser.email = $("#input-email").val();
         paramUser.roleId = $("#input-role").val();
       }
@@ -529,32 +542,23 @@
         return true;
       }
 
-      function saveUserData(paramUser) {
-        if (gFormMode === gFORM_MODE_INSERT) {
-          gUserObjects.push(paramUser);
-        } else {
-          vUserIndex = getUserIndexById(gUserId);
-          gUserObjects.splice(vUserIndex, 1, paramUser);
-        }
-      }
-
       function isDataExist(paramData, paramValue) {
         var vFound = false;
         var vIndex = 0;
 
         if (gFormMode == gFORM_MODE_INSERT) {
-          while (!vFound && vIndex < gUserObjects.length) {
-            if (gUserObjects[vIndex][paramData] == paramValue) {
+          while (!vFound && vIndex < gUserObjects.users.length) {
+            if (gUserObjects.users[vIndex][paramData] == paramValue) {
               vFound = true;
             } else {
               vIndex++;
             }
           }
         } else {
-          while (!vFound && vIndex < gUserObjects.length) {
+          while (!vFound && vIndex < gUserObjects.users.length) {
             if (
-              gUserObjects[vIndex][paramData] == paramValue &&
-              gUserObjects[vIndex].id !== gUserId
+              gUserObjects.users[vIndex][paramData] == paramValue &&
+              gUserObjects.users[vIndex].id !== gUserId
             ) {
               vFound = true;
             } else {
@@ -595,8 +599,8 @@
         var vUserIndex = -1;
         var vFound = false;
         var index = 0;
-        while (!vFound && index < gUserObjects.length) {
-          if (gUserObjects[index].id == paramUserId) {
+        while (!vFound && index < gUserObjects.users.length) {
+          if (gUserObjects.users[index].id == paramUserId) {
             vUserIndex = index;
             vFound = true;
           } else {
@@ -608,22 +612,22 @@
 
       function showDataToModalUpdate(paramUserId) {
         var vUserIndex = getUserIndexById(paramUserId);
-        $("#input-username").val(gUserObjects[vUserIndex].username);
-        $("#input-firstname").val(gUserObjects[vUserIndex].firstname);
-        $("#input-lastname").val(gUserObjects[vUserIndex].lastname);
-        $("#input-email").val(gUserObjects[vUserIndex].email);
-        $("#input-age").val(gUserObjects[vUserIndex].age);
-        $("#input-role").val(gUserObjects[vUserIndex].roleId);
+        $("#input-username").val(gUserObjects.users[vUserIndex].username);
+        $("#input-firstname").val(gUserObjects.users[vUserIndex].firstname);
+        $("#input-lastname").val(gUserObjects.users[vUserIndex].lastname);
+        $("#input-email").val(gUserObjects.users[vUserIndex].email);
+        $("#input-age").val(gUserObjects.users[vUserIndex].age);
+        $("#input-role").val(gUserObjects.users[vUserIndex].roleId);
       }
 
       function getNextId() {
         var vNextId = 0;
         // nếu mảng chưa có phần tử nào, thì id sẽ bắt đầu từ 1
-        if (gUserObjects.length == 0) {
+        if (gUserObjects.users.length == 0) {
           vNextId = 1;
         } else {
           // id tiếp theo bằng id của phần tử cuối cùng cộng thêm 1
-          vNextId = gUserObjects[gUserObjects.length - 1].id + 1;
+          vNextId = gUserObjects.users[gUserObjects.users.length - 1].id + 1;
         }
         return vNextId;
       }

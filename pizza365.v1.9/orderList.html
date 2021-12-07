@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>task 44</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Import Datatable sau jquery -->
+    <!-- Import them style bootstrap cho datatable -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css"
+    />
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+    <script src="./orderList.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        font-size: small;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="text-center mt-5 mb-4">
+        <h1>Orders List</h1>
+      </div>
+      <div class="jumbotron">
+        <div class="row">
+          <div class="col-sm-2">
+            <label>Order Status</label>
+          </div>
+          <div class="col-sm-8">
+            <select id="select-filter" class="form-control">
+              <option value="">--All--</option>
+              <option value="open">Open</option>
+              <option value="confirm">Confirmed</option>
+              <option value="cancel">Canceled</option>
+            </select>
+          </div>
+          <div class="col-sm-2">
+            <button id="btn-filter" class="btn btn-primary">Filter</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ORDER TABLE -->
+      <table
+        class="table table-bordered table-striped table-hover"
+        id="order-table"
+      >
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Combo Size</th>
+            <th>Pizza Type</th>
+            <th>Drink Type</th>
+            <th>Payment</th>
+            <th>Full Name</th>
+            <th>Phone Number</th>
+            <th>Order Status</th>
+            <th>Detail</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+    <div id="detail-modal" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Modal title</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-3">
+                <label>Order ID</label>
+              </div>
+              <div class="col-sm-3">
+                <input id="inp-order-id" class="form-control" />
+              </div>
+              <div class="col-sm-3">
+                <label>Combo Size</label>
+              </div>
+              <div class="col-sm-3">
+                <select id="select-combo-size" class="form-control">
+                  <option value="">None</option>
+                  <option value="s">S</option>
+                  <option value="m">M</option>
+                  <option value="l">L</option>
+                </select>
+              </div>
+              <div class="col-sm-3">
+                <label>Pizza Diameter</label>
+              </div>
+              <div class="col-sm-3">
+                <input id="inp-diameter" class="form-control" />
+              </div>
+              <div class="col-sm-3">
+                <label>Ribs</label>
+              </div>
+              <div class="col-sm-3">
+                <input id="inp-ribs" class="form-control" />
+              </div>
+              <div class="col-sm-3">
+                <label>Drink</label>
+              </div>
+              <div class="col-sm-3">
+                <input class="form-control" id="inp-drink" />
+              </div>
+              <div class="col-sm-3">
+                <label>Drink Quantity</label>
+              </div>
+              <div class="col-sm-3">
+                <input id="inp-drink-quantity" class="form-control" />
+              </div>
+              <div class="col-sm-3">
+                <label>Voucher ID</label>
+              </div>
+              <div class="col-sm-3">
+                <input id="inp-voucher-id" class="form-control" />
+              </div>
+              <div class="col-sm-3">
+                <label>Pizza Type</label>
+              </div>
+              <div class="col-sm-3">
+                <input id="inp-pizza-type" class="form-control" />
+              </div>
+              <div class="col-sm-3">
+                <label>Salad</label>
+              </div>
+              <div class="col-sm-3">
+                <input id="inp-salad" class="form-control" />
+              </div>
+              <div class="col-sm-3">
+                <label>Price</label>
+              </div>
+              <div class="col-sm-3">
+                <input id="inp-price" class="form-control" />
+              </div>
+              <div class="col-sm-3">
+                <label>Discount</label>
+              </div>
+              <div class="col-sm-3">
+                <input id="inp-discount" class="form-control" />
+              </div>
+              <div class="col-sm-3">
+                <label>Fullname</label>
+              </div>
+              <div class="col-sm-3">
+                <input id="inp-fullname" class="form-control" />
+              </div>
+              <div class="col-sm-3">
+                <label>Email</label>
+              </div>
+              <div class="col-sm-3">
+                <input id="inp-email" class="form-control" />
+              </div>
+              <div class="col-sm-3">
+                <label>Phone Number</label>
+              </div>
+              <div class="col-sm-3">
+                <input id="inp-phone-number" class="form-control" />
+              </div>
+              <div class="col-sm-3">
+                <label>Address</label>
+              </div>
+              <div class="col-sm-3">
+                <input id="inp-address" class="form-control" />
+              </div>
+              <div class="col-sm-3">
+                <label>Message</label>
+              </div>
+              <div class="col-sm-3">
+                <input id="inp-message" class="form-control" />
+              </div>
+              <div class="col-sm-3">
+                <label>Order Status</label>
+              </div>
+              <div class="col-sm-3">
+                <input id="inp-order-status" class="form-control" />
+              </div>
+              <div class="col-sm-3">
+                <label>Create Date</label>
+              </div>
+              <div class="col-sm-3">
+                <input id="inp-create-date" class="form-control" />
+              </div>
+              <div class="col-sm-3">
+                <label>Update Date</label>
+              </div>
+              <div class="col-sm-3">
+                <input id="inp-update-date" class="form-control" />
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button id="btn-confirm" type="button" class="btn btn-success">
+              Confirm
+            </button>
+            <button id="btn-cancel" type="button" class="btn btn-danger">
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

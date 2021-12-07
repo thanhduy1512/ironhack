@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bootstrap template- Pizza 365 project</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- font -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Lato"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+
+    <!-- Bootstrap -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="./pizza.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="./script.js"></script>
+  </head>
+  <body>
+    <!-- Menu -->
+    <div class="container-fluid bg-light">
+      <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-warning">
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav nav-fill w-100">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#combo">Combo</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#pizzaType">Pizza Type</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link">Send Order</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <!-- Content -->
+    <div class="container mt-5">
+      <div class="row">
+        <!-- Heading Content -->
+        <div class="col-sm-12 mt-5 mb-3">
+          <h1 class="text-warning">Pizza 365</h1>
+          <i class="text-warning">Truly Italian!</i>
+        </div>
+        <!-- Slide -->
+        <div class="col-sm-12">
+          <div
+            id="carouselExampleIndicators"
+            class="carousel slide"
+            data-ride="carousel"
+          >
+            <ol class="carousel-indicators">
+              <li
+                data-target="#carouselExampleIndicators"
+                data-slide-to="0"
+                class="active"
+              ></li>
+              <li
+                data-target="#carouselExampleIndicators"
+                data-slide-to="1"
+              ></li>
+              <li
+                data-target="#carouselExampleIndicators"
+                data-slide-to="2"
+              ></li>
+              <li
+                data-target="#carouselExampleIndicators"
+                data-slide-to="3"
+              ></li>
+            </ol>
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img
+                  class="d-block w-100"
+                  src="./images/1.jpeg"
+                  alt="First slide"
+                />
+              </div>
+              <div class="carousel-item">
+                <img
+                  class="d-block w-100"
+                  src="./images/2.jpeg"
+                  alt="Second slide"
+                />
+              </div>
+              <div class="carousel-item">
+                <img
+                  class="d-block w-100"
+                  src="./images/3.jpeg"
+                  alt="Third slide"
+                />
+              </div>
+              <div class="carousel-item">
+                <img
+                  class="d-block w-100"
+                  src="./images/4.jpeg"
+                  alt="Third slide"
+                />
+              </div>
+            </div>
+            <a
+              class="carousel-control-prev"
+              href="#carouselExampleIndicators"
+              role="button"
+              data-slide="prev"
+            >
+              <span
+                class="carousel-control-prev-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a
+              class="carousel-control-next"
+              href="#carouselExampleIndicators"
+              role="button"
+              data-slide="next"
+            >
+              <span
+                class="carousel-control-next-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="sr-only">Next</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Why Pizza 365 -->
+        <div class="col-sm-12 text-center p-4 mt-4 text-warning">
+          <h2><b class="p-2 border-bottom border-warning">Why Pizza 365</b></h2>
+        </div>
+
+        <div class="col-sm-12">
+          <div class="row">
+            <div
+              class="col-sm-3 p-4 border border-warning"
+              style="background-color: lightgoldenrodyellow"
+            >
+              <h3 class="p-2">Diversity</h3>
+              <p class="p-2">
+                Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse
+                sodales pellentesque elementum.
+              </p>
+            </div>
+            <div
+              class="col-sm-3 p-4 border border-warning"
+              style="background-color: yellow"
+            >
+              <h3 class="p-2">Quality</h3>
+              <p class="p-2">
+                Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse
+                sodales pellentesque elementum.
+              </p>
+            </div>
+            <div
+              class="col-sm-3 p-4 border border-warning"
+              style="background-color: lightsalmon"
+            >
+              <h3 class="p-2">Taste</h3>
+              <p class="p-2">
+                Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse
+                sodales pellentesque elementum.
+              </p>
+            </div>
+            <div
+              class="col-sm-3 p-4 border border-warning"
+              style="background-color: orange"
+            >
+              <h3 class="p-2">Service</h3>
+              <p class="p-2">
+                Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse
+                sodales pellentesque elementum.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Title Menu Combo -->
+        <div class="col-sm-12">
+          <div id="combo" class="row">
+            <div class="col-sm-12 text-center text-warning p-4 mt-4">
+              <h2>
+                <b class="p-1 border-bottom border-warning"
+                  >Choose Pizza Size</b
+                >
+              </h2>
+              <p>
+                <span class="p-2"
+                  >Choose a pizza size that fits your needs.</span
+                >
+              </p>
+            </div>
+
+            <!-- Menu Combo -->
+            <div class="col-sm-12">
+              <div class="row">
+                <div class="col-sm-4">
+                  <div class="card">
+                    <div
+                      class="card-header text-white text-center"
+                      style="background-color: orange"
+                    >
+                      <h3>Small</h3>
+                    </div>
+                    <div class="card-body text-center">
+                      <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><b>20cm</b> Diameter</li>
+                        <li class="list-group-item"><b>2</b> Baked Ribs</li>
+                        <li class="list-group-item"><b>200g</b> Salad</li>
+                        <li class="list-group-item"><b>2</b> Drinks</li>
+                        <li class="list-group-item">
+                          <h1><b>150.000</b></h1>
+                          VNĐ
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="card-footer text-center">
+                      <button id="btnS" class="btn btn-warning w-100">
+                        Choose
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="card">
+                    <div class="card-header bg-warning text-white text-center">
+                      <h3>Medium</h3>
+                    </div>
+                    <div class="card-body text-center">
+                      <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><b>25cm</b> Diameter</li>
+                        <li class="list-group-item"><b>4</b> Baked Ribs</li>
+                        <li class="list-group-item"><b>300g</b> Salad</li>
+                        <li class="list-group-item"><b>3</b> Drinks</li>
+                        <li class="list-group-item">
+                          <h1><b>200.000</b></h1>
+                          VNĐ
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="card-footer text-center">
+                      <button id="btnM" class="btn btn-warning w-100">
+                        Choose
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="card">
+                    <div
+                      class="card-header text-white text-center"
+                      style="background-color: orange"
+                    >
+                      <h3>Large</h3>
+                    </div>
+                    <div class="card-body text-center">
+                      <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><b>30cm</b> Diameter</li>
+                        <li class="list-group-item"><b>8</b> Baked Ribs</li>
+                        <li class="list-group-item"><b>500g</b> Salad</li>
+                        <li class="list-group-item"><b>4</b> Drinks</li>
+                        <li class="list-group-item">
+                          <h1><b>250.000</b></h1>
+                          VNĐ
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="card-footer text-center">
+                      <button id="btnL" class="btn btn-warning w-100">
+                        Choose
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Title Pizza Type -->
+        <div class="col-sm-12">
+          <div id="pizzaType" class="row">
+            <div class="col-sm-12 text-center text-warning mt-4 p-4">
+              <h2>
+                <b class="border-bottom border-warning"> Choose Pizza Type </b>
+              </h2>
+            </div>
+
+            <!-- Content Pizza Type -->
+            <div class="col-sm-12">
+              <div class="row">
+                <div class="col-sm-4">
+                  <div class="card w-100" style="width: 18rem">
+                    <img src="images/seafood.jpeg" class="card-img-top" />
+                    <div class="card-body">
+                      <h3>OCEAN MANIA</h3>
+                      <p>Pork, pinapple, ...</p>
+                      <p>
+                        Phasellus eget enim eu lectus faucibus vestibulum.
+                        Suspendisse sodales pellentesque elementum.
+                      </p>
+                      <p>
+                        <button id="btnSeafood" class="btn btn-warning w-100">
+                          Choose
+                        </button>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="card w-100" style="width: 18rem">
+                    <img src="images/hawaiian.jpeg" class="card-img-top" />
+                    <div class="card-body">
+                      <h3>HAWAIIAN</h3>
+                      <p>Crab, shrimp, squid, ...</p>
+                      <p>
+                        Phasellus eget enim eu lectus faucibus vestibulum.
+                        Suspendisse sodales pellentesque elementum.
+                      </p>
+                      <p>
+                        <button id="btnHawaii" class="btn btn-warning w-100">
+                          Choose
+                        </button>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="card w-100" style="width: 18rem">
+                    <img src="images/bacon.jpeg" class="card-img-top" />
+                    <div class="card-body">
+                      <h3>Bacon</h3>
+                      <p>Bacon, tomato, ...</p>
+                      <p>
+                        Phasellus eget enim eu lectus faucibus vestibulum.
+                        Suspendisse sodales pellentesque elementum.
+                      </p>
+                      <p>
+                        <button id="btnBacon" class="btn btn-warning w-100">
+                          Choose
+                        </button>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Title Choose Drink -->
+        <div class="col-sm-12">
+          <div class="col-sm-12 text-center text-warning mt-4 p-4">
+            <h2>
+              <b class="border-bottom border-warning"> Choose Drink </b>
+            </h2>
+          </div>
+          <!-- Content Choose Drink -->
+          <div class="col-sm-12">
+            <select id="select-drink" class="form-control">
+              <option value="">All Drink</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Title Send Order -->
+        <div class="col-sm-12">
+          <div class="col-sm-12 text-center text-warning mt-4 p-4">
+            <h2>
+              <b class="border-bottom border-warning"> Send Order </b>
+            </h2>
+          </div>
+          <!-- Form Send Order -->
+          <div class="col-sm-12 p-2 jumbotron">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label for="fullname"><b>Full name</b></label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inpFullName"
+                    placeholder="Full name"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="email"><b>Email</b></label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="inpEmail"
+                    placeholder="Email"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="dien-thoai"><b>Phone Number</b></label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inpPhoneNumber"
+                    placeholder="Phone Number"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="dia-chi"><b>Address</b></label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inpAddress"
+                    placeholder="Address"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="message"><b>Message</b></label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inpMessage"
+                    placeholder="Message"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="voucher"><b>Discount Code (Voucher ID)</b></label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inpVoucherId"
+                    placeholder="Voucher ID"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <button
+            id="btn-send-order"
+            type="button"
+            class="btn btn-warning w-100 mb-5"
+          >
+            Send Order
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Order Confirm -->
+    <div id="order-confirm-modal" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Order Information</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label for="fullname"><b>Full name</b></label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inp-modal-fullname"
+                    disabled
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="email"><b>Email</b></label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="inp-modal-email"
+                    disabled
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="dien-thoai"><b>Phone Number</b></label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inp-modal-phone"
+                    disabled
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="dia-chi"><b>Address</b></label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inp-modal-address"
+                    disabled
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="message"><b>Message</b></label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inp-modal-message"
+                    disabled
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="voucher"><b>Discount Code (Voucher ID)</b></label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inp-modal-voucher-id"
+                    disabled
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="voucher"><b>Detail Information</b></label>
+                  <textarea
+                    type="text"
+                    rows="4"
+                    class="form-control"
+                    id="inp-modal-detail"
+                    disabled
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">
+              Close
+            </button>
+            <button id="btn-create-order" type="button" class="btn btn-warning">
+              Create Order
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Order Success -->
+    <div
+      id="order-success-modal"
+      class="modal pt-5 mt-5"
+      tabindex="-1"
+      role="dialog"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body bg-warning">
+            <h5>Thank you for ordering at Pizza 365. Your order ID:</h5>
+            <div class="row">
+              <div class="col-sm-4">
+                <label>Order ID:</label>
+              </div>
+              <div class="col-sm-8">
+                <input disabled id="inp-order-success" class="form-control" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="container-fluid" style="background-color: orange">
+      <div class="row text-center">
+        <div class="col-sm-12 mt-5">
+          <h4>Footer</h4>
+        </div>
+        <div class="col-sm-12 mt-3">
+          <a href="#">
+            <button class="btn btn-dark">
+              <i class="far fa-hand-point-up"></i> To the top
+            </button>
+          </a>
+        </div>
+        <div class="col-sm-12 mt-4 mb-3">
+          <i class="fab fa-facebook-square"></i>
+          <i class="fab fa-instagram"></i>
+          <i class="fab fa-snapchat"></i>
+          <i class="fab fa-pinterest"></i>
+          <i class="fab fa-twitter"></i>
+          <i class="fab fa-linkedin"></i>
+        </div>
+        <div class="col-sm-12 mb-4">
+          <p>Powered by DEVCAMP</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
