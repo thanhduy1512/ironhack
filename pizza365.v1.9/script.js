@@ -42,31 +42,37 @@ $(document).ready(function () {
 
   $("#btnS").on("click", function () {
     gComboSize = sizeS;
+    console.log(gComboSize);
     changeBtnColor(0, ["#btnS", "#btnM", "#btnL"]);
   });
 
   $("#btnM").on("click", function () {
     gComboSize = sizeM;
+    console.log(gComboSize);
     changeBtnColor(1, ["#btnS", "#btnM", "#btnL"]);
   });
 
   $("#btnL").on("click", function () {
     gComboSize = sizeL;
+    console.log(gComboSize);
     changeBtnColor(2, ["#btnS", "#btnM", "#btnL"]);
   });
 
   $("#btnSeafood").on("click", function () {
     gPizzaType = "Seafood";
+    console.log(gPizzaType);
     changeBtnColor(0, ["#btnSeafood", "#btnHawaii", "#btnBacon"]);
   });
 
   $("#btnHawaii").on("click", function () {
     gPizzaType = "Hawaii";
+    console.log(gPizzaType);
     changeBtnColor(1, ["#btnSeafood", "#btnHawaii", "#btnBacon"]);
   });
 
   $("#btnBacon").on("click", function () {
     gPizzaType = "Bacon";
+    console.log(gPizzaType);
     changeBtnColor(2, ["#btnSeafood", "#btnHawaii", "#btnBacon"]);
   });
 
